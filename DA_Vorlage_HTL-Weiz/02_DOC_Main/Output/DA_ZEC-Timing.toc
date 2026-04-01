@@ -1,0 +1,57 @@
+\babel@toc {ngerman}{}\relax 
+\contentsline {section}{\nonumberline Eidesstattliche Erklärung}{3}{}%
+\contentsline {section}{\nonumberline Kurzbeschreibung}{4}{}%
+\contentsline {section}{\nonumberline Vorwort}{5}{}%
+\contentsline {section}{\numberline {1}Individuelle Aufgabenstellung}{9}{}%
+\contentsline {subsection}{\numberline {1.1}David Darnhofer}{9}{}%
+\contentsline {subsection}{\numberline {1.1}Niklas}{9}{}%
+\contentsline {section}{\numberline {2}Theoretische Grundlagen}{11}{}%
+\contentsline {subsection}{\numberline {2.1}Containerisierung}{11}{}%
+\contentsline {subsection}{\numberline {2.2}Microservices}{11}{}%
+\contentsline {subsection}{\numberline {2.3}MQTT}{11}{}%
+\contentsline {section}{\numberline {3}Systemarchitektur}{12}{}%
+\contentsline {subsection}{\numberline {3.1}Überblick}{12}{}%
+\contentsline {subsection}{\numberline {3.2}Erklärung}{12}{}%
+\contentsline {subsection}{\numberline {3.3}Server}{12}{}%
+\contentsline {subsection}{\numberline {3.4}Desktop App}{12}{}%
+\contentsline {section}{\numberline {4}Implementation}{13}{}%
+\contentsline {subsection}{\numberline {4.1}Server}{13}{}%
+\contentsline {subsection}{\numberline {4.2}Desktop App}{13}{}%
+\contentsline {subsection}{\numberline {4.3}GitHub Workflows}{13}{}%
+\contentsline {subsection}{\numberline {4.4}Kubernetes Cluster}{13}{}%
+\contentsline {section}{\numberline {5}Testen und Deployment}{14}{}%
+\contentsline {subsection}{\numberline {5.1}Testen}{14}{}%
+\contentsline {subsubsection}{\numberline {5.1.1}Pytest}{14}{}%
+\contentsline {subsubsection}{\numberline {5.1.2}Playwright}{14}{}%
+\contentsline {subsection}{\numberline {5.2}Deployment}{14}{}%
+\contentsline {subsubsection}{\numberline {5.2.1}Deployment mit Docker}{14}{}%
+\contentsline {subsubsection}{\numberline {5.2.2}Deployment mit Kubernetes}{14}{}%
+\contentsline {section}{\numberline {6}Ergebnisse}{15}{}%
+\contentsline {section}{\numberline {7}Zukunftsausblick}{16}{}%
+\contentsline {subsection}{\numberline {7.1}Datenbank Skalierung}{16}{}%
+\contentsline {subsection}{\numberline {7.2}Stand über Lichtschranke abrufen}{16}{}%
+\contentsline {subsection}{\numberline {7.3}SD-Karten-Schutz}{16}{}%
+\contentsline {section}{\numberline {8}Resümee}{17}{}%
+\contentsline {section}{\numberline {9}Appendix}{18}{}%
+\contentsline {subsection}{\numberline {9.1}Stundenverzeichnis}{18}{}%
+\contentsline {subsubsection}{\numberline {9.1.1}David Darnhofer}{18}{}%
+\contentsline {subsubsection}{\numberline {9.1.2}Niklas}{18}{}%
+\contentsline {subsection}{\numberline {9.2}Technologieauswahl}{18}{}%
+\contentsline {subsubsection}{\numberline {9.2.1}GitHub}{18}{}%
+\contentsline {subsubsection}{\numberline {9.2.2}Docker}{18}{}%
+\contentsline {subsubsection}{\numberline {9.2.3}Kubernetes}{18}{}%
+\contentsline {subsubsection}{\numberline {9.2.4}MQTT}{18}{}%
+\contentsline {subsubsection}{\numberline {9.2.5}Redis}{18}{}%
+\contentsline {subsubsection}{\numberline {9.2.6}PostgreSQL}{18}{}%
+\contentsline {subsubsection}{\numberline {9.2.7}Keycloak}{18}{}%
+\contentsline {subsubsection}{\numberline {9.2.8}SQLAlchemy}{18}{}%
+\contentsline {subsubsection}{\numberline {9.2.9}FastAPI}{18}{}%
+\contentsline {subsubsection}{\numberline {9.2.10}Next.js}{18}{}%
+\contentsline {subsubsection}{\numberline {9.2.11}shadcn}{18}{}%
+\contentsline {subsection}{\numberline {9.3}Abbildungsverzeichnis}{18}{}%
+\contentsline {subsection}{\numberline {9.1}Quellenverzeichnis}{18}{}%
+\contentsline {section}{\numberline {10}Zusammenfassung}{19}{}%
+\contentsline {section}{\numberline {11}Anhang}{20}{}%
+\contentsline {section}{\numberline {12}Verzeichnisse}{21}{}%
+\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 
+\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

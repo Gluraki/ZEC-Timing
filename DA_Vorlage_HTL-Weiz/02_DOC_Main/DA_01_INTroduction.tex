@@ -1,0 +1,116 @@
+%
+%****************************************************************************************************
+%================================ B E G I N  1.   P A G E =============================
+%****************************************************************************************************
+%
+\thispagestyle{ErsteSeite}
+$~$
+\vspace{0.5cm}
+
+\begin{center}
+\textcolor{dred} {\resizebox{10cm}{1.0cm}{\textbf{DIPLOMARBEIT}}}
+\vspace{1cm}
+
+\begin{tabular}{p{15.0cm}} 
+\begin{center}\textcolor{black!}{\LARGE\textbf{\DAName}}   \\ \end{center}
+\end{tabular}
+\end{center}
+
+\vspace{1.0cm}
+\begin{center}
+\includegraphics[width=0.5\textwidth, keepaspectratio]{../../03_AUX/01_PICT/LogoDerDA.pdf}
+\end{center}
+\vfill
+
+\begin{tabular}{p{6cm} p{4cm} p{5cm}}
+\textbf{Ausgeführt von:} & \textbf{Jahrgang/Klasse:} & \textbf{Betreuer:} \\ 
+\DPLNameOne& \SYear/\SClass& \BNameOne\\ 
+\DPLNameTwo& \SYear/\SClass& \BNameOne\\ 
+&&\\
+\textbf{Projektpartner:} &&\\
+Firmenname 1 &Ansprechpartner 1& Funktion 1\\
+& Ansprechpartner 2& Funktion 2\\
+&&\\
+&&\\ \hline
+\textbf{Abgabevermerk:} & &\\ 
+&&\\
+Datum: & Unterschrift:& \\ 
+&&\\
+\end{tabular}
+
+\newpage
+%
+%****************************************************************************************************
+%============================= B E G I N   2.    P A G E ==============================
+%****************************************************************************************************
+%
+\setlength{\headsep }{2.4cm}
+\thispagestyle{ErsteSeite}
+\addsec{Eidesstattliche Erklärung}
+
+\begin{quote}
+Ich erkläre an Eides statt, dass ich die vorliegende Diplomarbeit selbst\-ständig und ohne fremde Hilfe verfasst, andere als die angegebenen Quellen und
+Hilfsmittel nicht benutzt und die den benutzten Quellen wörtlich und inhaltlich entnommenen Stellen als solche erkenntlich gemacht habe.
+\\[4\baselineskip]
+\end{quote}
+
+\begin{center}
+\begin{tabular}{p{10cm} p{4cm}}
+Weiz, am \ADatum$~$\DPLNameOne:  & \dotfill \\ 
+ &  \\ 
+ & \\
+Weiz, am \ADatum$~$\DPLNameTwo:  & \dotfill \\ 
+\end{tabular} 
+\end{center}
+\newpage
+
+%
+%****************************************************************************************************
+%=============================== B E G I N   3.   P A G E ============================
+%****************************************************************************************************
+%
+\thispagestyle{ErsteSeite}
+\addsec{Kurzbeschreibung}
+Diese Diplomarbeit befasst sich mit der Konzeption und Implementierung eines Zeitmesssystem für die \textit{Zero Emission Challenge} (ZEC), einem Kart Wetbewerb der HTL Weiz. 
+Die bestehende Umsetzung war schlecht wartbar, nicht erweiterbar und hatte einen aufwendigen Setup Prozess, daher wurde die Entscheidung getroffen eine das System
+vollständig neu zu entwickeln. Ziel der Neuentwicklung war ein erweiterbares sowie einfach aufsetzbares System, welches den gesamten Ablauf von der Zeitmessung über die 
+Punkteauswertung bis zur Anzeige der Ergebnisse beinhaltet. Die Kernkomponenten umfassen einen Backend-Server (realisiert mit Python und FastAPI), eine mit Next.js umgesetzte Webanwendung welche Zeitstempel per MQTT-Protokoll 
+von den Lichtschranken empfängt und dann an den Server weiterleitet, sowie eine weitere Next.js basierte Webanwendung zur Anzeige der Ergebnisse und Verwaltung der Teams und Benutzer. 
+Die Authentifizierung und rollenbasierte Zugriffskontrolle wird über Keycloak umgesetzt, die Datenhaltung über eine PostgreSQL-Datenbank.
+Das System basiert auf einer microservice Architektur und kann in einem Kubernetes-Cluster betrieben werden, was Deployment und Hosting erheblich vereinfacht.
+Zur Sicherstellung der Softwarequalität wurden automatisierte CI/CD-Pipelines, welche das Testen, Bauen und Veröffentlichen der Container-Images übernehmen. 
+\vspace{3.0cm}
+\newpage
+
+%
+%****************************************************************************************************
+%=============================== B E G I N   5.   P A G E ============================
+%****************************************************************************************************
+%
+\thispagestyle{ErsteSeite}
+\addsec{Vorwort}
+Im Vorwort soll eine kurze Beschreibung des schulischen Umfeldes stehen; per\-sön\-liche Vorstellungen können ebenfalls enthalten sein. Im Vorwort können auch Gründe für die Wahl des Themas, Angaben zu einem persönlichen Bezug und ähnliches aufgeführt werden. Das Vorwort ist auch der Platz für Danksagungen.
+Das Vorwort endet mit dem Datum und dem Namen des Autors bzw. der Autorin.\\
+Um die Diplomarbeit möglichst reibungsfrei und effektiv bearbeiten zu können, sollten Sie die nachfolgenden Punkte schon zu Beginn beachten.
+\vspace{2.0cm}
+
+\begin{center}
+\begin{tabular}{p{10cm} p{6.5cm}}
+Ort, am \ADatum$~$\DPLNameOne\\ 
+ &  \\ 
+Ort, am \ADatum$~$\DPLNameTwo\\ 
+\end{tabular} 
+\end{center}
+\newpage
+\newpage
+%
+%
+%****************************************************************************************************
+%=============================== B E G I N   6.   P A G E ============================
+%****************************************************************************************************
+%
+%
+\setlength{\headsep }{1.2cm}
+\setlength{\voffset}{1.0cm}
+\tableofcontents
+%
