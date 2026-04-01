@@ -1,0 +1,287 @@
+import pytest
+import requests
+from fastapi.security import HTTPAuthorizationCredentials
+from jose import jwt
+from app.crud import auth as crud
+from app.core.config import settings
+import app.exceptions.exceptions as exc
+
+KC_CLIENT_ID = settings.KEYCLOAK_LOGIN_CLIENT_ID
+
+def test_extract_roles_success():
+    payload = {
+        "resource_access": {
+            KC_CLIENT_ID: {
+                "roles": ["ADMIN", "VIEWER"]
+            }
+        }
+    }
+    roles = crud.extract_roles_from_payload(payload)
+    assert roles == ["ADMIN", "VIEWER"]
+
+def test_extract_roles_empty():
+    roles = crud.extract_roles_from_payload({})
+    assert roles == []
+
+def test_extract_roles_invalid_type():
+    roles = crud.extract_roles_from_payload({"resource_access": "invalid"})
+    assert roles == []
+
+def test_extract_roles_payload_not_dict():
+    with pytest.raises(exc.InvalidClaims):
+        crud.extract_roles_from_payload("invalid")
+
+def test_extract_roles_roles_not_list():
+    payload = {
+        "resource_access": {
+            KC_CLIENT_ID: {
+                "roles": "ADMIN"
+            }
+        }
+    }
+    with pytest.raises(exc.InvalidClaims):
+        crud.extract_roles_from_payload(payload)
+
+def test_extract_roles_filters_invalid_roles():
+    payload = {
+        "resource_access": {
+            KC_CLIENT_ID: {
+                "roles": ["ADMIN", "invalid_role"]
+            }
+        }
+    }
+    roles = crud.extract_roles_from_payload(payload)
+    assert roles == []
+
+def test_extract_roles_no_client_access():
+    payload = {
+        "resource_access": {
+            "other-client": {
+                "roles": ["ADMIN"]
+            }
+        }
+    }
+    roles = crud.extract_roles_from_payload(payload)
+    assert roles == []
+
+def test_extract_roles_no_roles_key():
+    payload = {
+        "resource_access": {
+            KC_CLIENT_ID: {}
+        }
+    }
+    roles = crud.extract_roles_from_payload(payload)
+    assert roles == []
+
+def test_decode_token_success(mock_jwks):
+    credentials = HTTPAuthorizationCredentials(
+        scheme="Bearer",
+        credentials="header.payload.signature",
+    )
+    payload = crud.decode_keycloak_token(credentials)
+    assert payload["preferred_username"] == "test"
+    assert payload["email"] == "test@test.com"
+
+def test_decode_token_missing_header():
+    with pytest.raises(exc.TokenHeaderRequired):
+        crud.decode_keycloak_token(None)
+
+def test_decode_token_invalid_format():
+    credentials = HTTPAuthorizationCredentials(
+        scheme="Bearer",
+        credentials="invalid-token",
+    )
+    with pytest.raises(exc.InvalidTokenFormat):
+        crud.decode_keycloak_token(credentials)
+
+def test_decode_token_missing_kid(mock_jwks, mocker):
+    mocker.patch(
+        "app.crud.auth.jwt.get_unverified_header",
+        return_value={},
+    )
+    credentials = HTTPAuthorizationCredentials(
+        scheme="Bearer",
+        credentials="a.b.c",
+    )
+    with pytest.raises(exc.InvalidTokenHeader):
+        crud.decode_keycloak_token(credentials)
+
+def test_decode_token_public_key_not_found(mock_jwks, mocker):
+    mocker.patch(
+        "app.crud.auth.jwt.get_unverified_header",
+        return_value={"kid": "missing"},
+    )
+    credentials = HTTPAuthorizationCredentials(
+        scheme="Bearer",
+        credentials="a.b.c",
+    )
+    with pytest.raises(exc.PublicKeyNotFound):
+        crud.decode_keycloak_token(credentials)
+
+def test_decode_token_invalid_public_key(mock_jwks, mocker):
+    mocker.patch(
+        "app.crud.auth.jwk.construct",
+        side_effect=Exception("bad key"),
+    )
+    credentials = HTTPAuthorizationCredentials(
+        scheme="Bearer",
+        credentials="a.b.c",
+    )
+    with pytest.raises(exc.InvalidPublicKey):
+        crud.decode_keycloak_token(credentials)
+
+def test_decode_token_expired(mock_jwks, mocker):
+    mocker.patch(
+        "app.crud.auth.jwt.decode",
+        side_effect=jwt.ExpiredSignatureError(),
+    )
+    credentials = HTTPAuthorizationCredentials(
+        scheme="Bearer",
+        credentials="a.b.c",
+    )
+    with pytest.raises(exc.TokenExpired):
+        crud.decode_keycloak_token(credentials)
+
+def test_decode_token_invalid_claims(mock_jwks, mocker):
+    mocker.patch(
+        "app.crud.auth.jwt.decode",
+        side_effect=jwt.JWTClaimsError(),
+    )
+    credentials = HTTPAuthorizationCredentials(
+        scheme="Bearer",
+        credentials="a.b.c",
+    )
+    with pytest.raises(exc.InvalidClaims):
+        crud.decode_keycloak_token(credentials)
+
+def test_get_current_user_success():
+    payload = {
+        "sub": "123",
+        "email": "test@test.com",
+        "preferred_username": "test",
+        "resource_access": {
+            KC_CLIENT_ID: {
+                "roles": ["ADMIN"]
+            }
+        },
+    }
+    user = crud.get_current_user(payload)
+    assert user["username"] == "test"
+    assert "ADMIN" in user["roles"]
+
+def test_get_current_user_insufficient_roles():
+    payload = {
+        "sub": "123",
+        "email": "test@test.com",
+        "preferred_username": "test",
+        "resource_access": {},
+    }
+    with pytest.raises(exc.InsufficientPermissions):
+        crud.get_current_user(payload)
+
+def test_keycloak_login_success(mocker):
+    mocker.patch(
+        "app.crud.auth.requests.post",
+        return_value=mocker.Mock(
+            json=lambda: {"access_token": "token"},
+            raise_for_status=lambda: None,
+        ),
+    )
+    data = crud.keycloak_login("user", "pass")
+    assert "access_token" in data
+
+def test_keycloak_login_invalid_credentials(mocker):
+    err = requests.HTTPError()
+    err.response = mocker.Mock(status_code=401)
+    mocker.patch(
+        "app.crud.auth.requests.post",
+        return_value=mocker.Mock(raise_for_status=mocker.Mock(side_effect=err)),
+    )
+    with pytest.raises(exc.InvalidCredentials):
+        crud.keycloak_login("user", "pass")
+
+def test_keycloak_login_timeout(mocker):
+    mocker.patch(
+        "app.crud.auth.requests.post",
+        side_effect=requests.Timeout(),
+    )
+    with pytest.raises(exc.KeycloakUnavailable):
+        crud.keycloak_login("user", "pass")
+
+def test_keycloak_login_connection_error(mocker):
+    mocker.patch(
+        "app.crud.auth.requests.post",
+        side_effect=requests.ConnectionError(),
+    )
+    with pytest.raises(exc.KeycloakUnavailable):
+        crud.keycloak_login("user", "pass")
+
+def test_keycloak_login_other_http_error(mocker):
+    err = requests.HTTPError()
+    err.response = mocker.Mock(status_code=500)
+    mocker.patch(
+        "app.crud.auth.requests.post",
+        return_value=mocker.Mock(raise_for_status=mocker.Mock(side_effect=err)),
+    )
+    with pytest.raises(exc.KeycloakUnavailable):
+        crud.keycloak_login("user", "pass")
+
+def test_keycloak_refresh_success(mocker):
+    mocker.patch(
+        "app.crud.auth.requests.post",
+        return_value=mocker.Mock(
+            json=lambda: {"access_token": "new"},
+            raise_for_status=lambda: None,
+        ),
+    )
+    data = crud.keycloak_refresh("refresh")
+    assert "access_token" in data
+
+def test_keycloak_refresh_failure(mocker):
+    err = requests.HTTPError()
+    mocker.patch(
+        "app.crud.auth.requests.post",
+        return_value=mocker.Mock(raise_for_status=mocker.Mock(side_effect=err)),
+    )
+    with pytest.raises(exc.TokenRefreshFailed):
+        crud.keycloak_refresh("refresh")
+
+def test_get_admin_token_success(mocker):
+    mocker.patch(
+        "app.crud.auth.requests.post",
+        return_value=mocker.Mock(
+            json=lambda: {"access_token": "admin-token"},
+            raise_for_status=lambda: None,
+        ),
+    )
+    token = crud.get_admin_token()
+    assert token == "admin-token"
+
+def test_get_admin_token_http_error(mocker):
+    err = requests.HTTPError()
+    mocker.patch(
+        "app.crud.auth.requests.post",
+        return_value=mocker.Mock(raise_for_status=mocker.Mock(side_effect=err)),
+    )
+    with pytest.raises(exc.AuthserviceApiError):
+        crud.get_admin_token()
+
+def test_get_admin_token_connection_error_retries(mocker):
+    mocker.patch(
+        "app.crud.auth.requests.post",
+        side_effect=requests.ConnectionError(),
+    )
+    mocker.patch("app.crud.auth.time.sleep")
+    with pytest.raises(exc.KeycloakUnavailable):
+        crud.get_admin_token()
+
+def test_get_admin_token_empty_response(mocker):
+    mocker.patch(
+        "app.crud.auth.requests.post",
+        return_value=mocker.Mock(
+            json=lambda: {},
+            raise_for_status=lambda: None,
+        ),
+    )
+    with pytest.raises(exc.AuthserviceApiError):
+        crud.get_admin_token()

@@ -1,0 +1,7 @@
+fastapi[standard]
+sqlalchemy
+pydantic
+pydantic-settings
+typing-extensions
+uvicorn[standard]
+psycopg[binary]
