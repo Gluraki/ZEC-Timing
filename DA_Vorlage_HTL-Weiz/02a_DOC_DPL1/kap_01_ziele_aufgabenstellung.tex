@@ -1,0 +1,35 @@
+\section{Einleitung}
+\subsection{Ziele}
+
+Das Ziel dieser Diplomarbeit ist es, ein wartbares, erweiterbares und einfach 
+aufsetzbares Zeitmesssystem für die \textit{Zero Emission Challenge} zu entwickeln, 
+welches den gesamten Ablauf von der Zeiterfassung über die Punkteauswertung bis zur Ergebnisanzeige umfasst.
+Das System soll zusätzlich auch die Verwaltung von Teams und Benutzern ermöglichen und 
+eine rollenbasierte Zugriffskontrolle implementieren.
+
+Das entwickelte System soll:
+\begin{itemize}
+    \item Renndaten aller Bewerbe zuverlässig erfassen, speichern und auswerten
+    \item Versuchsdaten per API in das System einspeichern zu können
+    \item Eine webbasierte Plattform zur Verwaltung von Teams, Benutzern und 
+          Ergebnissen bereitstellen
+    \item Sicherheit durch rollenbasierte Zugriffskontrolle und eine zentrale 
+          Authentifizierung über Keycloak gewährleisten
+    \item Mittels Docker einfach und plattformunabhängig betreibbar sein
+    \item Softwarequalität durch automatisierte Tests wie Pytest, Playwright sicherstellen
+\end{itemize}
+\newpage
+
+\subsection{Aufgabenstellung}
+
+Um diesen Zielen gerecht zu werden, wurden folgende Aufgaben definiert, die im Rahmen der Diplomarbeit umgesetzt werden sollen:
+
+\begin{itemize}
+      \item Entwicklung eines in Microservices aufgeteilten RESTful-API-Backends zur Zeiterfassung, Punkteauswertung sowie Team- und Benutzerverwaltung
+      \item Entwicklung einer webbasierten Anwendung mit unterschiedlichen Funktionen für die Benutzergruppen Administrator, Teamleiter und Zuschauer
+      \item Implementierung eines dedizierten Authentifizierungsdienstes
+      \item Rollenbasierte Zugriffskontrolle auf die Website sowie die API-Endpunkte
+      \item Modellierung und Anbindung einer relationalen PostgreSQL-Datenbank zur Datenspeicherung
+      \item Containerisierung aller Systemkomponenten mittels Docker
+      \item Implementierung automatisierter Testfälle mit Pytest und Playwright
+\end{itemize}
