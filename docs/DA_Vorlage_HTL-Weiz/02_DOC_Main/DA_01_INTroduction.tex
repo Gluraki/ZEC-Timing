@@ -27,7 +27,7 @@ $~$
 \DPLNameOne& \SYear/\SClass& \BNameOne\\ 
 &&\\
 \textbf{Projektpartner:} &&\\
-Firmenname 1 &Ansprechpartner 1& Funktion 1\\
+HTL-Weiz &Ansprechpartner 1& Funktion 1\\
 & Ansprechpartner 2& Funktion 2\\
 &&\\
 &&\\ \hline
@@ -67,15 +67,18 @@ Weiz, am \ADatum$~$\DPLNameOne:  & \dotfill \\
 %
 \thispagestyle{ErsteSeite}
 \section{Kurzbeschreibung}
-Diese Diplomarbeit befasst sich mit der Konzeption und Implementierung eines Zeitmesssystem für die \textit{Zero Emission Challenge} (ZEC), einem Kart Wetbewerb der HTL Weiz. 
-Die bestehende Umsetzung war schlecht wartbar, nicht erweiterbar und hatte einen aufwendigen Setup Prozess, daher wurde die Entscheidung getroffen eine das System
-vollständig neu zu entwickeln. Ziel der Neuentwicklung war ein erweiterbares sowie einfach aufsetzbares System, welches den gesamten Ablauf von der Zeitmessung über die 
-Punkteauswertung bis zur Anzeige der Ergebnisse beinhaltet. Die Kernkomponenten umfassen einen Backend-Server (realisiert mit Python und FastAPI), eine mit Next.js umgesetzte Webanwendung welche Zeitstempel per MQTT-Protokoll 
-von den Lichtschranken empfängt und dann an den Server weiterleitet, sowie eine weitere Next.js basierte Webanwendung zur Anzeige der Ergebnisse und Verwaltung der Teams und Benutzer. 
-Die Authentifizierung und rollenbasierte Zugriffskontrolle wird über Keycloak umgesetzt, die Datenhaltung über eine PostgreSQL-Datenbank.
-Das System basiert auf einer microservice Architektur und kann in einem Kubernetes-Cluster betrieben werden, was Deployment und Hosting erheblich vereinfacht.
-Zur Sicherstellung der Softwarequalität wurden automatisierte CI/CD-Pipelines, welche das Testen, Bauen und Veröffentlichen der Container-Images übernehmen. 
+Diese Diplomarbeit befasst sich mit der Konzeption und Implementierung eines Zeitmesssystems für die Zero Emission Challenge (ZEC), einen Kartwettbewerb der HTL Weiz. \
+Ausgangspunkt war eine bestehende Lösung, die sich als schwer wartbar, kaum erweiterbar und mit einem aufwendigen Setup-Prozess verbunden erwies, weshalb eine vollständige Neuentwicklung des Systems beschlossen wurde. \
+Ziel war die Entwicklung einer Softwarelösung, die den gesamten Ablauf von der Zeitmessung über die Punkteauswertung bis hin zur Anzeige der Ergebnisse abdeckt und dabei eine hohe Erweiterbarkeit sowie eine einfache Inbetriebnahme gewährleistet. \
+Die implementierten Kernkomponenten umfassen einen Backend-Server zur Verarbeitung und Verwaltung der Daten (realisiert mit Python und FastAPI), eine Webanwendung zur Erfassung von Zeitstempeln, welche diese per MQTT-Protokoll von Lichtschranken empfängt und an den Server weiterleitet, sowie eine weitere Webanwendung zur Darstellung der Ergebnisse und zur Verwaltung von Teams und Benutzern. \
+Die Authentifizierung und rollenbasierte Zugriffskontrolle werden über Keycloak realisiert, während die Datenhaltung in einer PostgreSQL-Datenbank erfolgt. \
+Das System basiert auf einer Microservice-Architektur und kann in einem Kubernetes-Cluster betrieben werden, wodurch Deployment und Hosting wesentlich vereinfacht werden. \
+Zur Sicherstellung der Softwarequalität wurde der Entwicklungsprozess durch automatisierte CI/CD-Pipelines unterstützt, welche das Testen, Bauen und Veröffentlichen der Container-Images übernehmen.
 \vspace{3.0cm}
+\newpage
+
+\section*{Abstract}
+Kurzbeschreibung auf Englisch:
 \newpage
 
 %

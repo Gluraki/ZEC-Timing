@@ -23,7 +23,7 @@ Im Vergleich zu Alternativen wie Traefik oder HAProxy bietet Nginx eine
 besonders hohe Stabilität, sowie eine flexible Konfigurierbarkeit. Gegenüber einem vollwertigen API-Gateway wie Kong 
 bringt Nginx deutlich weniger Overhead mit und ist damit besser für 
 kleine Microservice-Deployments geeignet.
-In der Diplomarbeit übernimmt Nginx die zentrale Rolle als einziger 
+In der DA übernimmt Nginx die zentrale Rolle als einziger 
 Einstiegspunkt für alle Anfragen der Webanwendung und stellt sicher, 
 dass kein Service ohne gültige Authentifizierung erreichbar ist.
 
@@ -62,7 +62,7 @@ Im Vergleich zur Eigenimplementierung reduziert Keycloak den Entwicklungsaufwand
 gleichzeitig ein höheres Sicherheitsniveau durch standardkonforme Protokolle.
 Gegenüber einfacheren Lösungen wie Auth0 bietet Keycloak den Vorteil, dass es
 vollständig mit Docker selbstgehostet werden zu kann. 
-In der Diplomarbeit übernimmt Keycloak die Ausstellung und Validierung 
+In der DA übernimmt Keycloak die Ausstellung und Validierung 
 von JWTs.
 
 \subsection{SQLAlchemy}
@@ -85,7 +85,7 @@ und automatische Validierung von Request- und Response-Daten durch
 Pydantic.\cite{jetbrains_frameworks}
 Verglichen mit Django bringt FastAPI deutlich weniger Overhead mit und ist 
 damit besser für kleine Microservices geeignet.\cite{jetbrains_frameworks}
-In der Diplomarbeit bildet FastAPI die Grundlage jedes einzelnen 
+In der DA bildet FastAPI die Grundlage jedes einzelnen 
 Backend-Service und stellt die jeweiligen REST-Endpunkte zur Verfügung, 
 über die die Webanwendung und die Services untereinander kommunizieren.
 
@@ -96,7 +96,7 @@ und sowohl serverseitiges Rendering (SSR) als auch statische
 Seitengenerierung (SSG) unterstützt.\cite{nextjs}
 Im vergleich zu anderen Frameworks spricht für Next.js die bessere Ladezeit sowie
 die vereinfachte Projektstruktur durch das dateibasierte Routing-System.
-In der Diplomarbeit wird Next.js für die Webanwendung eingesetzt, 
+In der DA wird Next.js für die Webanwendung eingesetzt, 
 über das die Nutzer auf das System zugreifen.
 
 \subsection{shadcn/ui}

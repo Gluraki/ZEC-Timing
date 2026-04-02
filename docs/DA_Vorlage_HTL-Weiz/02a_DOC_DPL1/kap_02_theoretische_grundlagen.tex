@@ -42,7 +42,7 @@ Docker-Container sind leichtgewichtig, da sie den Betriebssystemkernel des Host-
 \subsubsection{Docker Compose}
 Docker Compose ist ein Werkzeug zur Definition und Verwaltung von Multi-Container-Applikationen. In einer einzigen YAML-Datei
 standardmäßig \texttt{compose.yaml}, werden alle Komponenten einer Aplikation beschrieben.\cite{docker_compose} 
-In dieser Diplomarbeit wird Docker Compose verwendet, um Backend-Services, Datenbanken, API-Gateway sowie
+In dieser \gls{DA} wird Docker Compose verwendet, um Backend-Services, Datenbanken, API-Gateway sowie
 Authentifizierungsdienst mit einem einzigen Befehl starten zu können.
 
 \subsubsection{Vorteile der Containerisierung}
@@ -65,13 +65,13 @@ Jeder Service ist auf eine spezifische Aufgabe ausgerichtet und kann unabhängig
 \begin{itemize}
     \item \textbf{Flexible Skalierung:} Jeder Service kann unabhängig von den anderen skaliert werden um der Nachfrage gerecht zu werden, ohne das gesamte System zu skalieren.
     \item \textbf{Technologische Freiheit:} Teams können für jeden Service die passendste Technologie wählen, unabhängig von den Stacks anderer Services.
-    Zum Beispiel könnte ein neuer Service für diese Diplomarbeit in Rust implementiert werden, während sich die anderen Services nicht ändern müssen.
+    Zum Beispiel könnte ein neuer Service für diese \gls{DA} in Rust implementiert werden, während sich die anderen Services nicht ändern müssen.
     \item \textbf{Einfache Deployment:} Änderungen an einem Service können unabhängig deployet werden, ohne das gesamte System neu zu deployen. Das ermöglicht schnellere Iterationen und häufigere Updates.
     \item \textbf{Resilienz:} Falls ein einzelner Service ausfällt, kann die Anwendung weiterhin funktionieren, wenn auch mit eingeschränkter Funktionalität.\cite{aws_microservices}:
 \end{itemize}
 
-\subsubsection{Nutzung von Microservices in dieser Diplomarbeit}
-In dieser Diplomarbeit wurde der Backend-API-Server als Microservice-Architektur umgesetzt. 
+\subsubsection{Nutzung von Microservices in dieser \gls{DA}}
+In dieser \gls{DA} wurde der Backend-API-Server als Microservice-Architektur umgesetzt. 
 Er ist in mehrere unabhängige Services unterteilt,die jeweils über eine eigene Datenbankinstanz verfügen und über REST API miteinander kommunizieren.
 Alle Anfragen der Webanwendung werden über ein zentrales Nginx API-Gateway geleitet, welches die Anfragen an das jeweils zuständige Service weiterleitet.
 
