@@ -1,7 +1,5 @@
 # ZEC-Timing
 
-Implementation project for timing/scoring in the ZEC racing context.
-
 This repository contains:
 - A Next.js frontend in [Web-App/](Web-App/)
 - A microservice backend stack in [ZEC-API/](ZEC-API/)
