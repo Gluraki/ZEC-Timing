@@ -1,45 +1,77 @@
 % ==============================================================
-% Kapitel 5: Theoretische Grundlagen
+% Kapitel 2: Theoretische Grundlagen
 % ==============================================================
 
 \section{Theoretische Grundlagen}
 
-\subsection{Containerisierung (Docker)}
-Containerisierung ist eine Methode der Softwarebereitstellung, bei der eine 
-Anwendung zusammen mit allen ihren Abhängigkeiten -- wie Laufzeitumgebungen, 
-Bibliotheken und Konfigurationsdateien -- in einer isolierten Einheit, dem 
-sogenannten Container, verpackt wird. Im Gegensatz zu herkömmlichen virtuellen 
-Maschinen teilen sich Container den Kernel des Hostsystems und benötigen daher 
-keine vollständige Betriebssysteminstallation. Dies macht sie deutlich 
-ressourcenschonender und schneller startbar.
+\subsection{Containerisierung}
+Containerisierung ist eine Methode, bei der Anwendungen zusammen mit ihren Abhängigkeiten und Konfiguratiosdateien in einer isolierten Umgebung, sogenannten Containern. 
+Traditionell muss man um eine Anwendung zu installieren die zum jeweiligen Betriebsystem kompatible Version herunterladen.
+Mit Containerisierung ist es jedoch möglich, das ganze Software-Packet in einem Container auf verschiedenen Betriebsystemen auszuführen\cite{aws_containerization}
 
-Docker ist die am weitesten verbreitete Plattform zur Erstellung und Verwaltung 
-von Containern. Die Grundlage eines jeden Docker-Containers bildet ein 
-\textit{Image} -- eine unveränderliche Vorlage, die mithilfe eines 
-\textit{Dockerfiles} definiert wird. In diesem Dockerfile werden alle 
-Schritte festgelegt, die notwendig sind, um die Anwendung in einen 
-lauffähigen Zustand zu versetzen. Aus einem Image können beliebig viele 
-Container instanziiert werden, die jeweils isoliert und reproduzierbar 
-laufen.
+\subsubsection{Docker}
+Docker ist eine weitverbreitete, offene Plattform zur Erstellung und Verwaltung von Containern.
+Docker ermöglicht es, Anwendungen von der Infrastruktur zu trennen, indem es Container bereitstellt, die in jeder Umgebung konsistent laufen.\cite{docker_overview} 
 
-Ein wesentlicher Vorteil von Docker ist die Plattformunabhängigkeit: Ein 
-einmal erstelltes Image verhält sich auf jedem System identisch, unabhängig 
-davon, ob es auf einem lokalen Entwicklungsrechner, einem Server oder einem 
-Einplatinencomputer wie dem Raspberry Pi betrieben wird. Dies löst das 
-klassische Problem \textit{„works on my machine"} und erleichtert sowohl 
-die Entwicklung als auch den Betrieb erheblich.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=4cm]{docker-mark-ocean-blue.png}
+    \caption{Docker Logo}
+    \source{\url{https://www.docker.com/company/newsroom/media-resources/}}
+\end{figure}
 
-Für die Verwaltung mehrerer Container, die gemeinsam eine Anwendung bilden, 
-bietet Docker mit \textit{Docker Compose} ein Werkzeug zur Definition und 
-Orchestrierung von Multi-Container-Anwendungen. Dabei werden alle Services, 
-Netzwerke und Volumes in einer einzigen \texttt{docker-compose.yml}-Datei 
-beschrieben und mit einem einzigen Befehl gestartet. Im Kontext dieser 
-Diplomarbeit wird Docker eingesetzt, um alle Serverkomponenten -- Backend-Services, 
-Datenbanken, API-Gateway und Authentifizierungsdienst -- containerisiert und 
-reproduzierbar bereitzustellen.
+\subsubsection{Architektur von Docker}
 
-% -------------------------------------------------------------------
+Docker verwendet eine Client-Server-Architektur. Der \textit{Docker-Client} 
+kommuniziert dabei mit dem \textit{Docker-Daemon} (\texttt{dockerd}), welcher 
+die eigentliche Arbeit des Erstellens, Ausführens und Verteilens von Containern 
+übernimmt. Die Kommunikation zwischen Client und Daemon erfolgt über eine 
+REST-API, wahlweise über Unix-Sockets oder eine Netzwerkschnittstelle.\cite{docker_overview} 
+
+\newpage
+
+\subsubsection{Funktionsweise}
+Alles beginnt mit einem Dockerfile. Docker erstellt Images basierend auf den Anweisungen in einem Dockerfile. Ein Dockerfile ist eine Textdatei, die die Anweisungen enthält, 
+wie der Source-code zu builden ist, welche Packete installiert werden müssen und wie die Anwendung gestartet wird. Docker-Images bestehen aus mehreren Schichten (Layers). 
+Jede Anweisung im Dockerfile erzeugt eine neue Schicht, die auf den vorherigen aufbaut.\cite{docker_dockerfile}
+
+Ein Container ist eine laufende Instanz eines Docker-Images. Er enthält alles, was die Anwendung benötigt, um zu laufen, einschließlich des Programmcodes.
+Docker-Container sind leichtgewichtig, da sie den Betriebssystemkernel des Host-Systems gemeinsam nutzen, anstatt wie virtuelle Maschinen ein ganzen Betriebssystem zu benötigen.\cite{docker_overview}
+
+\subsubsection{Docker Compose}
+Docker Compose ist ein Werkzeug zur Definition und Verwaltung von Multi-Container-Applikationen. In einer einzigen YAML-Datei
+standardmäßig \texttt{compose.yaml}, werden alle Komponenten einer Aplikation beschrieben.\cite{docker_compose} 
+In dieser Diplomarbeit wird Docker Compose verwendet, um Backend-Services, Datenbanken, API-Gateway sowie
+Authentifizierungsdienst mit einem einzigen Befehl starten zu können.
+
+\subsubsection{Vorteile der Containerisierung}
+Der Hauptvorteil der Containerisierung liegt in der Eliminierung des \textit{„works on my machine"}-Problems. 
+Ein Image, das einmal erstellt wurde, läuft auf jedem System identisch, unabhängig von der Infrastruktur, egal ob es sich um einen Respberry Pi oder einen Server handelt.
+Da jeder Container komplett isoliert ist, synergiert die Containerisierung auch sehr gut mit der Microservice-Architektur, da jeder Service in einem eigenen Container laufen kann
+ohne dass es zu Konflikten mit Abhängigkeiten anderer Services kommt.
+Das erleichtert die Entwicklung als auch Deployment und Betrieb da das System immer identisch läuft.
+Weiters ermöglichen die Container eine leichte horizontale Skalierbarkeit. Mittels Orchestrierungstools wie Kubernetes können Container automatisch skaliert 
+und verwaltet werden, um den Anforderungen der Anwendung gerecht zu werden.
+
+\newpage
+
 \subsection{Microservices}
-% Autor: Niklas | Umfang: 3–4 Seiten
-% TODO: Wie Kubernetes funktioniert. Eventuell Unterschied zu Docker. Zusammenspiel von beidem
+Die Microservice-Architektur ist ein Ansatz zur Softwareentwicklung, bei dem eine Applikation als Sammlung unabhängiger Komponenten
+aufgebaut wird, wovon jeder als eigenständiger Service läuft. Diese Services kommunizieren über definierte Schnittstellen mittels APIs.
+Jeder Service ist auf eine spezifische Aufgabe ausgerichtet und kann unabhängig von den anderen aktualisiert, deployt und skaliert werden.\cite{aws_microservices}
 
+\subsubsection{Vorteile von Microservices}
+\begin{itemize}
+    \item \textbf{Flexible Skalierung:} Jeder Service kann unabhängig von den anderen skaliert werden um der Nachfrage gerecht zu werden, ohne das gesamte System zu skalieren.
+    \item \textbf{Technologische Freiheit:} Teams können für jeden Service die passendste Technologie wählen, unabhängig von den Stacks anderer Services.
+    Zum Beispiel könnte ein neuer Service für diese Diplomarbeit in Rust implementiert werden, während sich die anderen Services nicht ändern müssen.
+    \item \textbf{Einfache Deployment:} Änderungen an einem Service können unabhängig deployet werden, ohne das gesamte System neu zu deployen. Das ermöglicht schnellere Iterationen und häufigere Updates.
+    \item \textbf{Resilienz:} Falls ein einzelner Service ausfällt, kann die Anwendung weiterhin funktionieren, wenn auch mit eingeschränkter Funktionalität.\cite{aws_microservices}:
+\end{itemize}
+
+\subsubsection{Nutzung von Microservices in dieser Diplomarbeit}
+In dieser Diplomarbeit wurde der Backend-API-Server als Microservice-Architektur umgesetzt. 
+Er ist in mehrere unabhängige Services unterteilt,die jeweils über eine eigene Datenbankinstanz verfügen und über REST API miteinander kommunizieren.
+Alle Anfragen der Webanwendung werden über ein zentrales Nginx API-Gateway geleitet, welches die Anfragen an das jeweils zuständige Service weiterleitet.
+
+\newpage
