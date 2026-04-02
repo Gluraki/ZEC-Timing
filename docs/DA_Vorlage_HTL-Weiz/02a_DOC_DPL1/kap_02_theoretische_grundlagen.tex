@@ -1,0 +1,45 @@
+% ==============================================================
+% Kapitel 5: Theoretische Grundlagen
+% ==============================================================
+
+\section{Theoretische Grundlagen}
+
+\subsection{Containerisierung (Docker)}
+Containerisierung ist eine Methode der Softwarebereitstellung, bei der eine 
+Anwendung zusammen mit allen ihren Abhängigkeiten -- wie Laufzeitumgebungen, 
+Bibliotheken und Konfigurationsdateien -- in einer isolierten Einheit, dem 
+sogenannten Container, verpackt wird. Im Gegensatz zu herkömmlichen virtuellen 
+Maschinen teilen sich Container den Kernel des Hostsystems und benötigen daher 
+keine vollständige Betriebssysteminstallation. Dies macht sie deutlich 
+ressourcenschonender und schneller startbar.
+
+Docker ist die am weitesten verbreitete Plattform zur Erstellung und Verwaltung 
+von Containern. Die Grundlage eines jeden Docker-Containers bildet ein 
+\textit{Image} -- eine unveränderliche Vorlage, die mithilfe eines 
+\textit{Dockerfiles} definiert wird. In diesem Dockerfile werden alle 
+Schritte festgelegt, die notwendig sind, um die Anwendung in einen 
+lauffähigen Zustand zu versetzen. Aus einem Image können beliebig viele 
+Container instanziiert werden, die jeweils isoliert und reproduzierbar 
+laufen.
+
+Ein wesentlicher Vorteil von Docker ist die Plattformunabhängigkeit: Ein 
+einmal erstelltes Image verhält sich auf jedem System identisch, unabhängig 
+davon, ob es auf einem lokalen Entwicklungsrechner, einem Server oder einem 
+Einplatinencomputer wie dem Raspberry Pi betrieben wird. Dies löst das 
+klassische Problem \textit{„works on my machine"} und erleichtert sowohl 
+die Entwicklung als auch den Betrieb erheblich.
+
+Für die Verwaltung mehrerer Container, die gemeinsam eine Anwendung bilden, 
+bietet Docker mit \textit{Docker Compose} ein Werkzeug zur Definition und 
+Orchestrierung von Multi-Container-Anwendungen. Dabei werden alle Services, 
+Netzwerke und Volumes in einer einzigen \texttt{docker-compose.yml}-Datei 
+beschrieben und mit einem einzigen Befehl gestartet. Im Kontext dieser 
+Diplomarbeit wird Docker eingesetzt, um alle Serverkomponenten -- Backend-Services, 
+Datenbanken, API-Gateway und Authentifizierungsdienst -- containerisiert und 
+reproduzierbar bereitzustellen.
+
+% -------------------------------------------------------------------
+\subsection{Microservices}
+% Autor: Niklas | Umfang: 3–4 Seiten
+% TODO: Wie Kubernetes funktioniert. Eventuell Unterschied zu Docker. Zusammenspiel von beidem
+
