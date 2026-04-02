@@ -67,18 +67,28 @@ Weiz, am \ADatum$~$\DPLNameOne:  & \dotfill \\
 %
 \thispagestyle{ErsteSeite}
 \section{Kurzbeschreibung}
-Diese Diplomarbeit befasst sich mit der Konzeption und Implementierung eines Zeitmesssystems für die Zero Emission Challenge (ZEC), einen Kartwettbewerb der HTL Weiz. \
-Ausgangspunkt war eine bestehende Lösung, die sich als schwer wartbar, kaum erweiterbar und mit einem aufwendigen Setup-Prozess verbunden erwies, weshalb eine vollständige Neuentwicklung des Systems beschlossen wurde. \
-Ziel war die Entwicklung einer Softwarelösung, die den gesamten Ablauf von der Zeitmessung über die Punkteauswertung bis hin zur Anzeige der Ergebnisse abdeckt und dabei eine hohe Erweiterbarkeit sowie eine einfache Inbetriebnahme gewährleistet. \
-Die implementierten Kernkomponenten umfassen einen Backend-Server zur Verarbeitung und Verwaltung der Daten (realisiert mit Python und FastAPI), eine Webanwendung zur Erfassung von Zeitstempeln, welche diese per MQTT-Protokoll von Lichtschranken empfängt und an den Server weiterleitet, sowie eine weitere Webanwendung zur Darstellung der Ergebnisse und zur Verwaltung von Teams und Benutzern. \
-Die Authentifizierung und rollenbasierte Zugriffskontrolle werden über Keycloak realisiert, während die Datenhaltung in einer PostgreSQL-Datenbank erfolgt. \
-Das System basiert auf einer Microservice-Architektur und kann in einem Kubernetes-Cluster betrieben werden, wodurch Deployment und Hosting wesentlich vereinfacht werden. \
-Zur Sicherstellung der Softwarequalität wurde der Entwicklungsprozess durch automatisierte CI/CD-Pipelines unterstützt, welche das Testen, Bauen und Veröffentlichen der Container-Images übernehmen.
+Diese Diplomarbeit befasst sich mit dem Konzept und der Implementierung eines Zeitmesssystems für die Zero Emission Challenge (ZEC), ein Kartwettbewerb der HTL Weiz.
+Ausgangspunkt war ein bestehendes System, welches allerdings schwer wartbar, kaum erweiterbar und mit einem aufwendigen Setup-Prozess verbunden war. Deshalb wurde eine 
+komplette Neuentwicklung des Systems angestrebt. Das Ziel war eine Lösung, die den gesamten Ablauf von der Zeitmessung über die Punkteauswertung bis zur Anzeige der Ergebnisse 
+sowie die Teams- und Benutzerverwaltung abdeckt. Weiters sollte das System eine hohe Erweiterbarkeit, unkomplizierte Wartbarkeit und eine einfache Inbetriebnahme gewährleisten.
+Die Hauptkomponenten dieses Systems umfassen einen Backend-Server zur Datenverwaltung und -verarbeitung, eine Webanwendung zur Erfassung von Zeitstempeln, 
+welche diese per MQTT-Protokoll von Lichtschranken empfängt und an den Server weiterleitet, sowie eine weitere Webanwendung zur Darstellung der Ergebnisse und 
+zur Verwaltung von Teams und Benutzern. Die Authentifizierung und Zugriffskontrolle werden mit Keycloak umgesetzt, während die Datenspeicherung in einer PostgreSQL-Datenbank erfolgt. 
+Das System basiert auf einer Microservice-Architektur und kann in einem Kubernetes-Cluster betrieben werden.
+Zur Sicherstellung der Softwarequalität wurden automatisierte CI/CD-Pipelines erstellt, welche das Testen, Bauen und Veröffentlichen der Container-Images übernehmen.
 \vspace{3.0cm}
 \newpage
 
 \section*{Abstract}
-Kurzbeschreibung auf Englisch:
+This diploma thesis deals with the concept and implementation of a timing system for the Zero Emission Challenge (ZEC), a karting competition organized by HTL Weiz.
+The starting point was an existing system that was difficult to maintain, hardly expandable, and required a complex setup process.
+Therefore, a complete redevelopment of the system was pursued.
+The goal was a solution that covers the entire workflow, from time measurement and score calculation to result presentation, as well as team and user management.
+In addition, the system was designed to provide high extensibility, simple maintenance, and easy deployment.
+The main components of this system include a backend server for data management and processing, a web application for capturing timestamps, which receives them from light barriers via the MQTT protocol and forwards them to the server, and another web application for displaying results and managing teams and users.
+Authentication and access control are implemented with Keycloak, while data is stored in a PostgreSQL database.
+The system is based on a microservice architecture and can be operated in a Kubernetes cluster.
+To ensure software quality, automated CI/CD pipelines were created to handle testing, building, and publishing container images.
 \newpage
 
 %
