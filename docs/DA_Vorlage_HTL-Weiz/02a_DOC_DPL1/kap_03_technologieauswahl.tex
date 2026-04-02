@@ -1,36 +1,109 @@
-% -------------------------------------------------------------------
+% ==============================================================
+% Kapitel 3: Technologieauswahl
+% ==============================================================
+
 \section{Technologieauswahl}
 
-% maybe nginx
-
 \subsection{GitHub}
-% Autor: Niklas | Umfang: ~0.5 Seiten
-% TODO
+
+Als Versionskontrollplattform wurde GitHub gewählt, welches auf dem 
+verteilten Versionskontrollsystem Git basiert und kollaborative 
+Softwareentwicklung durch Branching, Pull Requests und Code-Reviews 
+ermöglicht.\cite{github}
+Im Vergleich zu Alternativen wie GitLab oder Bitbucket bietet GitHub 
+die größte Entwickler-Community
+
+\subsection{Nginx}
+
+Als API-Gateway wurde Nginx gewählt, welches eingehende 
+HTTP-Anfragen entgegennimmt, die JWT-Authentifizierung über das 
+\texttt{auth\_request}-Modul übernimmt und Anfragen an den jeweils 
+zuständigen Microservice weiterleitet.\cite{nginx}
+Im Vergleich zu Alternativen wie Traefik oder HAProxy bietet Nginx eine 
+besonders hohe Stabilität, sowie eine flexible Konfigurierbarkeit. Gegenüber einem vollwertigen API-Gateway wie Kong 
+bringt Nginx deutlich weniger Overhead mit und ist damit besser für 
+kleine Microservice-Deployments geeignet.
+In der Diplomarbeit übernimmt Nginx die zentrale Rolle als einziger 
+Einstiegspunkt für alle Anfragen der Webanwendung und stellt sicher, 
+dass kein Service ohne gültige Authentifizierung erreichbar ist.
 
 \subsection{Docker}
-% Autor: Niklas | Umfang: ~0.5 Seiten
-% TODO
+
+Zur Containerisierung wurde Docker gewählt, welches, wie in 
+Kapitel~\ref{sec:containerisierung} detailliert beschrieben, die 
+plattformunabhängige Bereitstellung aller Systemkomponenten ermöglicht. 
+\cite{docker_overview}
+Im Vergleich zu alternativen Container-Runtimes wie Podman ist Docker 
+durch seine weite Verbreitung, die umfangreiche Dokumentation besonders gut geeignet.
+Die Containerisierung ermöglicht das Hosting aller Services auf unterschiedlichen Plattformen,
+von einem Raspberry Pi bis hin zu einem Server, ohne dass Änderungen am Code notwendig sind.
+
+\newpage
 
 \subsection{PostgreSQL}
-% Autor: David | Umfang: ~0.5 Seiten
-% TODO
+
+Für die Datenhaltung wurde PostgreSQL als relationale Datenbank gewählt, 
+welche ACID-Konformität, komplexe Abfragen und strukturierte 
+Datenbeziehungen unterstützt.\cite{postgresql}
+Während NoSQL-Datenbanken wie MongoDB für dokumentenbasierte oder 
+hochskalierbare Anwendungen Vorteile bieten, fällt die Entscheidung aufgrund der strukturierten Beziehungen 
+zwischen den Daten im vorliegenden Fall auf eine relationale Datenbank.
+Gegenüber MySQL bietet PostgreSQL eine strengere Standardkonformität 
+sowie bessere Unterstützung für komplexe Datentypen und Constraints, 
+was die Datenintegrität über alle Microservices hinweg sicherstellt.
 
 \subsection{Keycloak}
-% Autor: David | Umfang: ~0.5 Seiten
-% TODO
+
+Für die Authentifizierung und Benutzerverwaltung wurde Keycloak als 
+dedizierter Identity Provider gewählt, welcher OAuth2- und 
+OpenID-Connect-basierte Authentifizierung sowie rollenbasierte 
+Zugriffskontrolle (RBAC) out-of-the-box bereitstellt.\cite{keycloak}
+Im Vergleich zur Eigenimplementierung reduziert Keycloak den Entwicklungsaufwand erheblich und bietet 
+gleichzeitig ein höheres Sicherheitsniveau durch standardkonforme Protokolle.
+Gegenüber einfacheren Lösungen wie Auth0 bietet Keycloak den Vorteil, dass es
+vollständig mit Docker selbstgehostet werden zu kann. 
+In der Diplomarbeit übernimmt Keycloak die Ausstellung und Validierung 
+von JWTs.
 
 \subsection{SQLAlchemy}
-% Autor: David | Umfang: ~0.5 Seiten
-% TODO
+
+Als Object-Relational-Mapper (ORM) wurde SQLAlchemy gewählt, welches 
+den Zugriff auf die PostgreSQL-Datenbank über Python-Objekte abstrahiert 
+und direkte SQL-Abfragen überflüssig macht.\cite{sqlalchemy}
+Im Vergleich zu reinen SQL-Ansätzen reduziert SQLAlchemy Boilerplate-Code 
+erheblich, verbessert die Lesbarkeit und ermöglicht durch das deklarative 
+Modellsystem eine klare Abbildung der Datenbankstruktur auf Python-Klassen.
+
+\newpage
 
 \subsection{FastAPI}
-% Autor: David | Umfang: ~0.5 Seiten
-% TODO
+
+Als Web-Framework wurde FastAPI. FastAPI ist ein modernes Python-Web-Framework.
+welches automatisch API-Dokumentation generiert.\cite{fastapi}
+Anderen Python API-Frameworks wie Flask, bietet FastAPI native Type-Hints-Unterstützung 
+und automatische Validierung von Request- und Response-Daten durch 
+Pydantic.\cite{jetbrains_frameworks}
+Verglichen mit Django bringt FastAPI deutlich weniger Overhead mit und ist 
+damit besser für kleine Microservices geeignet.\cite{jetbrains_frameworks}
+In der Diplomarbeit bildet FastAPI die Grundlage jedes einzelnen 
+Backend-Service und stellt die jeweiligen REST-Endpunkte zur Verfügung, 
+über die die Webanwendung und die Services untereinander kommunizieren.
 
 \subsection{Next.js}
-% Autor: David | Umfang: ~0.5 Seiten
-% TODO
 
-\subsection{shadcn}
-% Autor: David | Umfang: ~0.5 Seiten
-% TODO
+Als Frontend-Framework wurde Next.js gewählt, welches auf React basiert 
+und sowohl serverseitiges Rendering (SSR) als auch statische 
+Seitengenerierung (SSG) unterstützt.\cite{nextjs}
+Im vergleich zu anderen Frameworks spricht für Next.js die bessere Ladezeit sowie
+die vereinfachte Projektstruktur durch das dateibasierte Routing-System.
+In der Diplomarbeit wird Next.js für die Webanwendung eingesetzt, 
+über das die Nutzer auf das System zugreifen.
+
+\subsection{shadcn/ui}
+
+Als UI-Bibliothek wurde shadcn/ui gewählt, welches auf 
+Radix UI und Tailwind CSS basiert und vorgefertigte, vollständig 
+anpassbare Komponenten bereitstellt.\cite{shadcn}
+Gegenüber einer Selbstimplementierung reduziert shadcn/ui den Programmieraufwand
+für häufig benötigte UI-Elemente wie Formulare, Dialoge und Tabellen 
+erheblich, ohne dabei die Flexibilität beim Styling einzuschränken.
