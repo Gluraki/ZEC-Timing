@@ -3,18 +3,64 @@
 % ==============================================================
 
 \section{Testen}
-
-% -------------------------------------------------------------------
-\subsection{Testen}
-% Autor: Niklas | Umfang: 3–4 Seiten
-% TODO: Warum automatische Testcases nützlich sind
-%       und wie sie in GitHub Workflow eingebunden werden können
-%       Was abgetestet werden soll + Negativ-Testcases
+\subsection{Teststrategie}
+\label{sec:teststrategie}
+Die Teststrategie des Projekts verwendet Unit- und Integrationstests für die Backend-Services so wie End-to-End-Tests für die Webanwendung. 
+Als Testframework für die Backend-Tests wird \texttt{pytest}\cite{pytest} eingesetzt, während für die End-to-End-Tests \texttt{Playwright}\cite{playwright} zum Einsatz kommt.
+Zur Sicherstellung der als Ziel gesetzten Testabdeckung von über 80\% wird \texttt{pytest-cov}\cite{pytest_cov} verwendet.
+Die Testabdeckung wurde in allen Backend-Services erreicht, mit im Durchschnitt von 85\%. Um diese zu erreichen, wurden nicht nur die "Happy Path"-Szenarien,
+sondern auch die Fehlerfälle getestet.
 
 \subsection{Pytest}
-% Autor: David | Umfang: 2–3 Seiten
-% TODO: Testcase mit Beispielscode erklären
+Wie in \ref{sec:teststrategie} beschrieben, wurden die Backend-Tests mit \texttt{pytest} umgesetzt.
+Für die jeweiligen Tests wird eine SQLite-Testdatenbank\cite{sqlite} verwendet, um eine isolierte Testumgebung zu schaffen.
+Die Testdaten werden über \texttt{pytest}-Fixtures\cite{pytest_fixtures} bereitgestellt.
+Abhängigkeiten von anderen Services werden mit werden mit \texttt{unittest.mock}\cite{unittest_mock} 
+bzw. \texttt{monkeypatch}\cite{monkeypatch} simuliert. So kann die Businesslogik der Services isoliert getestet werden.
+
+\subsubsection{Unit-Tests}
+Unit-Tests überprüfen die Funktionalität einzelner Funktionen oder Methoden innerhalb der Services. 
+Sie stellen sicher, dass die Kernlogik korrekt erwartungsgemäß funktioniert.
+
+Ein Beispieltest für die Funktion \texttt{get\_fastest\_attempt}:
+\begin{CodeBox}[language=Python]
+def test_fastest_attempt(db, seeded_attempts):
+    attempt = crud.get_fastest_attempt(db=db, challenge_id=1)
+    time = attempt.end_time - attempt.start_time
+    assert time == timedelta(seconds=9)
+\end{CodeBox}
+
+\newpage
+
+\subsubsection{Integrationstests}
+Integrationstests prüfen die HTTP-Schnittstellen des Services mit dem \texttt{FastAPI TestClient}\cite{fastapi_testclient}.
+Diese Tests prüfen das Verhalten der \gls{API} aus Sicht eines externen Clients, indem sie HTTP-Anfragen an die Endpunkte senden und die Antworten validieren.
+
+Ein Beispieltest für das Abrufen aller Attempts:
+\begin{CodeBox}[language=Python]
+def test_list_attempts(client):
+    response = client.get("/api/attempts/")
+    assert response.status_code == 200
+    assert len(response.json()) == 2
+\end{CodeBox}
+
+
 
 \subsection{Playwright}
-% Autor: Niklas | Umfang: 1–2 Seiten
-% TODO: Testcase mit Beispielscode erklären
+Wie in \ref{sec:teststrategie} beschrieben, werden die End-to-End-Tests mit \texttt{Playwright}\cite{playwright} umgesetzt.
+Ziel dieser Tests ist die Validierung der Webanwendung aus Sicht eines realen Benutzers im Browser.
+Im Unterschied zu den Backend-Test, welche Funktionalität isolirt testen, wird hier das Gesamtsystem getestet.
+
+Ein Beispieltest ob ein Admin-Benutzer alle Tabs der Webanwendung sehen kann:
+\begin{CodeBox}
+test('admin can log in and see all tabs', async ({ page }) => {
+  await loginAs(page, 'admin', 'changeme');
+
+  await expect(page.getByRole('button', { name: 'Leaderboard' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Attempts' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Teams' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Challenges' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Users' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Export' })).toBeVisible();
+)}
+\end{CodeBox}

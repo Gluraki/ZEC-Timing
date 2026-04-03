@@ -151,6 +151,29 @@
 	keywordstyle=\color{blue}
 }
 
+\newtcblisting{CodeBox}[1][] {
+	enhanced,
+	breakable,
+	colback=black!2,
+	colframe=itblue!70!black,
+	boxrule=0.8pt,
+	arc=2mm,
+	left=1.5mm,
+	right=1.5mm,
+	top=1mm,
+	bottom=1mm,
+	listing only,
+	listing options={
+		basicstyle=\ttfamily\small,
+		columns=fullflexible,
+		keepspaces=true,
+		breaklines=true,
+		showstringspaces=false,
+		tabsize=2,
+		#1
+	}
+}
+
 \setcounter{footnote}{0}
 
 % Abschnittsnummern als X darstellen (z.B. 1, 2)
