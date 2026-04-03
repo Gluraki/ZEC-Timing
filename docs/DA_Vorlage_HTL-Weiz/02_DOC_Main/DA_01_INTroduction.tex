@@ -6,6 +6,7 @@
 \thispagestyle{ErsteSeite}
 $~$
 \vspace{0.5cm}
+% !TeX root = DA_ZEC-Timing.tex
 
 \begin{center}
 \textcolor{dred} {\resizebox{10cm}{1.0cm}{\textbf{DIPLOMARBEIT}}}
@@ -82,7 +83,7 @@ Die Hauptkomponenten dieses Systems umfassen einen Backend-Server zur Datenverwa
 welche diese per MQTT-Protokoll von Lichtschranken empfängt und an den Server weiterleitet, sowie eine weitere Webanwendung zur Darstellung der Ergebnisse und 
 zur Verwaltung von Teams und Benutzern. Die Authentifizierung und Zugriffskontrolle werden mit Keycloak umgesetzt, während die Datenspeicherung in einer PostgreSQL-Datenbank erfolgt. 
 Das System basiert auf einer Microservice-Architektur und kann in einem Kubernetes-Cluster betrieben werden.
-Zur Sicherstellung der Softwarequalität wurden automatisierte CI/CD-Pipelines erstellt, welche das Testen, Bauen und Veröffentlichen der Container-Images übernehmen.
+Zur Sicherstellung der Softwarequalität wurden automatisierte \gls{CICD}-Pipelines erstellt, welche das Testen, Bauen und Veröffentlichen der Container-Images übernehmen.
 \vspace{3.0cm}
 \newpage
 
@@ -95,7 +96,7 @@ In addition, the system was designed to provide high extensibility, simple maint
 The main components of this system include a backend server for data management and processing, a web application for capturing timestamps, which receives them from light barriers via the MQTT protocol and forwards them to the server, and another web application for displaying results and managing teams and users.
 Authentication and access control are implemented with Keycloak, while data is stored in a PostgreSQL database.
 The system is based on a microservice architecture and can be operated in a Kubernetes cluster.
-To ensure software quality, automated CI/CD pipelines were created to handle testing, building, and publishing container images.
+To ensure software quality, automated \gls{CICD} pipelines were created to handle testing, building, and publishing container images.
 \newpage
 
 %
@@ -105,11 +106,11 @@ To ensure software quality, automated CI/CD pipelines were created to handle tes
 %
 \thispagestyle{ErsteSeite}
 \section{Vorwort}
-Das Thema der \gls{DA} wurde von der HTL Weiz ausgegeben. Im Zuge dessen wurde ich von Herrn Prof. Mock auf diese 
+Das Thema der \gls{DA} wurde von der HTL Weiz ausgegeben. Ich wurde von Herrn Prof. Mock auf diese 
 Arbeit aufmerksam gemacht und er vermittelte mir diese Aufgabe. An dieser Stelle möchte ich mich herzlich bei ihm für die 
 Betreuung und Unterstützung während der gesamten Diplomarbeit bedanken. Durch seine fachliche Expertise und seine Unterstützung konnte
-ich die Arbeit zielgerichtet und erfolgreich durchführen. Ebenso möchte ich meinen Freunden danken, die mich vorallem mit ihrer Faszination am Namen 
-der \gls{DA} immer wieder motiviert haben, weiterzumachen. Abschließend gilt der größte Dank meiner Familie. Sie hat mich über mein gesamtes Leben 
+ich die Arbeit zielgerichtet und erfolgreich durchführen. Ebenso möchte ich meinen Freunden danken, die mich vor allem mit ihrer Faszination am Namen 
+der \gls{DA} (ZEC-Timing) immer wieder motiviert haben, weiterzumachen. Abschließend gilt der größte Dank meiner Familie. Sie hat mich mein gesamtes Leben 
 hinweg stets unterstützt und begleitet, wofür ich sehr dankbar bin. Ohne ihre Unterstützung wäre diese Arbeit nicht möglich gewesen.
 \vspace{2.0cm}
 

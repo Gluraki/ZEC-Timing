@@ -6,20 +6,74 @@
 
 % -------------------------------------------------------------------
 \subsection{Überblick}
-% Autor: großteils David | Umfang: 2–3 Seiten
-% TODO: Alle Komponenten zusammen grafisch darstellen und kurz erklären
+\label{sec:systemarchitektur_ueberblick}
+
+Das \gls{ZEC}-Timingsystem besteht aus zwei zentralen Teilen: einer webbasierten Anwendung,
+welche zur Anzeige der Renndaten und zur Verwaltung der Teams und Fahrer dient, sowie einem
+Backend-Server, welcher als Microservice-Architektur umgesetzt ist.
+Der Server übernimmt die gesamte Geschäftslogik, die Authentifizierung, 
+die Datenverwaltung und die Kommunikation mit der Webanwendung und anderen externen Systemen.
+Abbildung~\ref{fig:systemarchitektur} zeigt einen Überblick über alle 
+Komponenten des Servers und deren Zusammenspiel intern sowie nach außen.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=14cm]{systemarchitektur.png}
+    \caption{Systemarchitektur}
+    \label{fig:systemarchitektur}
+\end{figure}
+
+Alle Anfragen von außen laufen über ein zentrales 
+\textbf{Nginx API-Gateway}, welches als einziger Einstiegspunkt des Systems 
+fungiert. Es übernimmt die \gls{JWT}-Validierung jeder eingehenden Anfrage 
+über das \texttt{auth\_request}-Modul und leitet diese anschließend 
+an den zuständigen Microservice weiter. So ist sichergestellt, 
+dass kein Service ohne gültige Authentifizierung erreichbar ist.
+
+Die Authentifizierung selbst wird vom \textbf{Auth Service} in 
+Zusammenarbeit mit \textbf{Keycloak} übernommen. Keycloak stellt als 
+dedizierter Identity Provider die \gls{JWT} aus und verwaltet 
+Benutzerkonten sowie Rollen. Der Auth Service fungiert dabei als 
+Vermittler zwischen Keycloak und den restlichen Services und 
+synchronisiert Benutzerdaten zwischen \textbf{Keycloak} und \textbf{User Service}.
+
+Die eigentliche Geschäftslogik ist auf fünf spezialisierte 
+\textbf{Business Services} aufgeteilt:
+
+\begin{itemize}
+    \item \textbf{User Service:} Verwaltung der Benutzerkonten und 
+          Teamzugehörigkeiten
+    \item \textbf{Team Service:} Speicherung und Verwaltung der 
+          teilnehmenden Teams und Fahrerinformationen
+    \item \textbf{Challenge Service:} Verwaltung der einzelnen Bewerbe 
+          und deren Konfigurationen
+    \item \textbf{Attempt Service:} Erfassung der Zeitversuche und 
+          Auslösen der Punkteberechnung
+    \item \textbf{Score Service:} Berechnung der Gesamtpunktestände 
+          und Bereitstellung der Ergebnislisten
+\end{itemize}
+
+Jeder dieser Services verfügt über eine eigene dedizierte 
+\textbf{PostgreSQL-Datenbank}, wodurch eine klare Datentrennung 
+gemäß dem Microservice-Prinzip gewährleistet wird und Services 
+unabhängig voneinander skaliert werden können. Keycloak betreibt 
+ebenfalls eine eigene Datenbankinstanz zur Verwaltung von 
+seiner Daten.
+
+Die gesamte Infrastruktur ist mittels \textbf{Docker} containerisiert 
+und kann als Docker-Compose-Stack betrieben werden, was eine flexible 
+und reproduzierbare Bereitstellung auf unterschiedlicher Hardware 
+ermöglicht.
+
+\newpage
 
 % -------------------------------------------------------------------
-\subsection{Erklärung}
-% Autor: großteils David | Umfang: 1–2 Seiten
-% TODO: Wie alle Komponenten zusammenspielen
-
-% -------------------------------------------------------------------
-\subsection{Server}
+%\subsection{Server}
 % Autor: David | Umfang: 8–10 Seiten
 % TODO: Alle Microservices der Reihe nach erklären
 %       + Datenbankschema (max. 3 Tabellen pro Service)
 %       + Web App
+
 
 % -------------------------------------------------------------------
 \subsection{Web App}
