@@ -44,7 +44,7 @@ Datum: & Unterschrift:& \\
 %============================= B E G I N   2.    P A G E ==============================
 %****************************************************************************************************
 %
-\setlength{\headsep }{2.4cm}
+\setlength{\headsep }{1.2cm}
 \thispagestyle{ErsteSeite}
 \section{Eidesstattliche Erklärung}
 
@@ -75,10 +75,10 @@ Weiz, am \ADatum$~$\DPLNameOne:  & \dotfill \\
 %
 \thispagestyle{ErsteSeite}
 \section{Kurzbeschreibung}
-Diese Diplomarbeit befasst sich mit dem Konzept und der Implementierung eines Zeitmesssystems für die Zero Emission Challenge (ZEC), ein Kartwettbewerb der HTL Weiz.
+Diese Diplomarbeit befasst sich mit dem Konzept und der Implementierung eines Zeitmesssystems für die Zero Emission Challenge (ZEC), einem Kartwettbewerb der HTL Weiz.
 Ausgangspunkt war ein bestehendes System, welches allerdings schwer wartbar, kaum erweiterbar und mit einem aufwendigen Setup-Prozess verbunden war. Deshalb wurde eine 
 komplette Neuentwicklung des Systems angestrebt. Das Ziel war eine Lösung, die den gesamten Ablauf von der Zeitmessung über die Punkteauswertung bis zur Anzeige der Ergebnisse 
-sowie die Teams- und Benutzerverwaltung abdeckt. Weiters sollte das System eine hohe Erweiterbarkeit, unkomplizierte Wartbarkeit und eine einfache Inbetriebnahme gewährleisten.
+sowie die Team- und Benutzerverwaltung abdeckt. Weiters sollte das System eine hohe Erweiterbarkeit, unkomplizierte Wartbarkeit und eine einfache Inbetriebnahme gewährleisten.
 Die Hauptkomponenten dieses Systems umfassen einen Backend-Server zur Datenverwaltung und -verarbeitung, eine Webanwendung zur Erfassung von Zeitstempeln, 
 welche diese per MQTT-Protokoll von Lichtschranken empfängt und an den Server weiterleitet, sowie eine weitere Webanwendung zur Darstellung der Ergebnisse und 
 zur Verwaltung von Teams und Benutzern. Die Authentifizierung und Zugriffskontrolle werden mit Keycloak umgesetzt, während die Datenspeicherung in einer PostgreSQL-Datenbank erfolgt. 
@@ -110,7 +110,7 @@ Das Thema der \gls{DA} wurde von der HTL Weiz ausgegeben. Ich wurde von Herrn Pr
 Arbeit aufmerksam gemacht und er vermittelte mir diese Aufgabe. An dieser Stelle möchte ich mich herzlich bei ihm für die 
 Betreuung und Unterstützung während der gesamten Diplomarbeit bedanken. Durch seine fachliche Expertise und seine Unterstützung konnte
 ich die Arbeit zielgerichtet und erfolgreich durchführen. Ebenso möchte ich meinen Freunden danken, die mich vor allem mit ihrer Faszination am Namen 
-der \gls{DA} (ZEC-Timing) immer wieder motiviert haben, weiterzumachen. Abschließend gilt der größte Dank meiner Familie. Sie hat mich mein gesamtes Leben 
+der \gls{DA} (ZEC-Timing) immer wieder motiviert haben, weiterzumachen. Abschließend gilt der größte Dank meiner Familie. Sie hat mich mein ganzes Leben 
 hinweg stets unterstützt und begleitet, wofür ich sehr dankbar bin. Ohne ihre Unterstützung wäre diese Arbeit nicht möglich gewesen.
 \vspace{2.0cm}
 
@@ -130,6 +130,6 @@ Weiz, am \ADatum$~$\DPLNameOne\\
 %
 %
 \setlength{\headsep }{1.2cm}
-\setlength{\voffset}{1.0cm}
+\setlength{\voffset}{0.0cm}
 \tableofcontents
 %

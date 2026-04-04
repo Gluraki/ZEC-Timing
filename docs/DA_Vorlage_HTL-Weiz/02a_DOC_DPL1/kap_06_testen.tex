@@ -8,19 +8,19 @@
 Die Teststrategie des Projekts verwendet Unit- und Integrationstests für die Backend-Services so wie End-to-End-Tests für die Webanwendung. 
 Als Testframework für die Backend-Tests wird \texttt{pytest}\cite{pytest} eingesetzt, während für die End-to-End-Tests \texttt{Playwright}\cite{playwright} zum Einsatz kommt.
 Zur Sicherstellung der als Ziel gesetzten Testabdeckung von über 80\% wird \texttt{pytest-cov}\cite{pytest_cov} verwendet.
-Die Testabdeckung wurde in allen Backend-Services erreicht, mit im Durchschnitt von 85\%. Um diese zu erreichen, wurden nicht nur die "Happy Path"-Szenarien,
+Die Testabdeckung wurde in allen Backend-Services erreicht, im Durchschnitt mit 85\%. Um diese zu erreichen, wurden nicht nur die "Happy Path"-Szenarien,
 sondern auch die Fehlerfälle getestet.
 
 \subsection{Pytest}
 Wie in \ref{sec:teststrategie} beschrieben, wurden die Backend-Tests mit \texttt{pytest} umgesetzt.
 Für die jeweiligen Tests wird eine SQLite-Testdatenbank\cite{sqlite} verwendet, um eine isolierte Testumgebung zu schaffen.
 Die Testdaten werden über \texttt{pytest}-Fixtures\cite{pytest_fixtures} bereitgestellt.
-Abhängigkeiten von anderen Services werden mit werden mit \texttt{unittest.mock}\cite{unittest_mock} 
+Abhängigkeiten von anderen Services werden mit \texttt{unittest.mock}\cite{unittest_mock} 
 bzw. \texttt{monkeypatch}\cite{monkeypatch} simuliert. So kann die Businesslogik der Services isoliert getestet werden.
 
 \subsubsection{Unit-Tests}
 Unit-Tests überprüfen die Funktionalität einzelner Funktionen oder Methoden innerhalb der Services. 
-Sie stellen sicher, dass die Kernlogik korrekt erwartungsgemäß funktioniert.
+Sie stellen sicher, dass die Kernlogik erwartungsgemäß funktioniert.
 
 Ein Beispieltest für die Funktion \texttt{get\_fastest\_attempt}:
 \begin{CodeBox}[language=Python]
@@ -49,9 +49,9 @@ def test_list_attempts(client):
 \subsection{Playwright}
 Wie in \ref{sec:teststrategie} beschrieben, werden die End-to-End-Tests mit \texttt{Playwright}\cite{playwright} umgesetzt.
 Ziel dieser Tests ist die Validierung der Webanwendung aus Sicht eines realen Benutzers im Browser.
-Im Unterschied zu den Backend-Test, welche Funktionalität isolirt testen, wird hier das Gesamtsystem getestet.
+Im Unterschied zu den Backend-Tests, welche die Funktionalität isoliert testen, wird hier das Gesamtsystem getestet.
 
-Ein Beispieltest ob ein Admin-Benutzer alle Tabs der Webanwendung sehen kann:
+Ein Beispieltest dafür, ob ein Admin-Benutzer alle Tabs der Webanwendung sehen kann:
 \begin{CodeBox}
 test('admin can log in and see all tabs', async ({ page }) => {
   await loginAs(page, 'admin', 'changeme');
