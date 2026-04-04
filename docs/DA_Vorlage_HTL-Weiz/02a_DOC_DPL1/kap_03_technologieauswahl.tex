@@ -11,7 +11,8 @@ verteilten Versionskontrollsystem Git basiert und kollaborative
 Softwareentwicklung durch Branching, Pull Requests und Code-Reviews 
 ermöglicht.\cite{github}
 Im Vergleich zu Alternativen wie GitLab oder Bitbucket bietet GitHub 
-die größte Entwickler-Community
+die größte Entwickler-Community und eine nahtlose Integration mit zahlreichen 
+Entwicklungstools. 
 
 \subsection{Nginx}
 
@@ -20,7 +21,7 @@ HTTP-Anfragen entgegennimmt, die JWT-Authentifizierung über das
 \texttt{auth\_request}-Modul übernimmt und Anfragen an den jeweils 
 zuständigen Microservice weiterleitet.\cite{nginx}
 Im Vergleich zu Alternativen wie Traefik oder HAProxy bietet Nginx eine 
-besonders hohe Stabilität, sowie eine flexible Konfigurierbarkeit. Gegenüber einem vollwertigen API-Gateway wie Kong 
+besonders hohe Stabilität sowie eine flexible Konfigurierbarkeit. Gegenüber einem vollwertigen API-Gateway wie Kong 
 bringt Nginx deutlich weniger Overhead mit und ist damit besser für 
 kleine Microservice-Deployments geeignet.
 In der DA übernimmt Nginx die zentrale Rolle als einziger 
@@ -34,7 +35,7 @@ Kapitel~\ref{sec:containerisierung} detailliert beschrieben, die
 plattformunabhängige Bereitstellung aller Systemkomponenten ermöglicht. 
 \cite{docker_overview}
 Im Vergleich zu alternativen Container-Runtimes wie Podman ist Docker 
-durch seine weite Verbreitung, die umfangreiche Dokumentation besonders gut geeignet.
+durch seine weite Verbreitung und die umfangreiche Dokumentation besonders gut geeignet.
 Die Containerisierung ermöglicht das Hosting aller Services auf unterschiedlichen Plattformen,
 von einem Raspberry Pi bis hin zu einem Server, ohne dass Änderungen am Code notwendig sind.
 
@@ -61,7 +62,7 @@ Zugriffskontrolle (RBAC) out-of-the-box bereitstellt.\cite{keycloak}
 Im Vergleich zur Eigenimplementierung reduziert Keycloak den Entwicklungsaufwand erheblich und bietet 
 gleichzeitig ein höheres Sicherheitsniveau durch standardkonforme Protokolle.
 Gegenüber einfacheren Lösungen wie Auth0 bietet Keycloak den Vorteil, dass es
-vollständig mit Docker selbstgehostet werden zu kann. 
+vollständig mit Docker selbst gehostet werden kann. 
 In der DA übernimmt Keycloak die Ausstellung und Validierung 
 von JWTs.
 
@@ -78,15 +79,15 @@ Modellsystem eine klare Abbildung der Datenbankstruktur auf Python-Klassen.
 
 \subsection{FastAPI}
 
-Als Web-Framework wurde FastAPI. FastAPI ist ein modernes Python-Web-Framework.
+Als Web-Framework wurde FastAPI gewählt. FastAPI ist ein modernes Python-Web-Framework,
 welches automatisch API-Dokumentation generiert.\cite{fastapi}
-Anderen Python API-Frameworks wie Flask, bietet FastAPI native Type-Hints-Unterstützung 
+Im Vergleich zu anderen Python-API-Frameworks wie Flask bietet FastAPI native Type-Hints-Unterstützung 
 und automatische Validierung von Request- und Response-Daten durch 
 Pydantic.\cite{jetbrains_frameworks}
 Verglichen mit Django bringt FastAPI deutlich weniger Overhead mit und ist 
 damit besser für kleine Microservices geeignet.\cite{jetbrains_frameworks}
 In der DA bildet FastAPI die Grundlage jedes einzelnen 
-Backend-Service und stellt die jeweiligen REST-Endpunkte zur Verfügung, 
+Backend-Services und stellt die jeweiligen REST-Endpunkte zur Verfügung, 
 über die die Webanwendung und die Services untereinander kommunizieren.
 
 \subsection{Next.js}
@@ -94,10 +95,10 @@ Backend-Service und stellt die jeweiligen REST-Endpunkte zur Verfügung,
 Als Frontend-Framework wurde Next.js gewählt, welches auf React basiert 
 und sowohl serverseitiges Rendering (SSR) als auch statische 
 Seitengenerierung (SSG) unterstützt.\cite{nextjs}
-Im vergleich zu anderen Frameworks spricht für Next.js die bessere Ladezeit sowie
+Im Vergleich zu anderen Frameworks spricht für Next.js die bessere Ladezeit sowie
 die vereinfachte Projektstruktur durch das dateibasierte Routing-System.
 In der DA wird Next.js für die Webanwendung eingesetzt, 
-über das die Nutzer auf das System zugreifen.
+über die die Nutzer auf das System zugreifen.
 
 \subsection{shadcn/ui}
 

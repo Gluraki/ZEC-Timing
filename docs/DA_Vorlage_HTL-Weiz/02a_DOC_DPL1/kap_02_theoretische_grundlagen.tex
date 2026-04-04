@@ -6,9 +6,9 @@
 
 \subsection{Containerisierung}
 \label{sec:containerisierung}
-Containerisierung ist eine Methode, bei der Anwendungen zusammen mit ihren Abhängigkeiten und Konfiguratiosdateien in einer isolierten Umgebung, sogenannten Containern. 
-Traditionell muss man um eine Anwendung zu installieren die zum jeweiligen Betriebsystem kompatible Version herunterladen.
-Mit Containerisierung ist es jedoch möglich, das ganze Software-Packet in einem Container auf verschiedenen Betriebsystemen auszuführen\cite{aws_containerization}
+Containerisierung ist eine Methode, bei der Anwendungen zusammen mit ihren Abhängigkeiten und Konfigurationsdateien in isolierten Umgebungen, sogenannten Containern, ausgeführt werden.
+Traditionell muss man, um eine Anwendung zu installieren, die zum jeweiligen Betriebssystem kompatible Version herunterladen.
+Mit Containerisierung ist es jedoch möglich, das gesamte Softwarepaket in einem Container auf verschiedenen Betriebssystemen auszuführen\cite{aws_containerization}
 
 \subsubsection{Docker}
 Docker ist eine weitverbreitete, offene Plattform zur Erstellung und Verwaltung von Containern.
@@ -33,24 +33,24 @@ REST-API, wahlweise über Unix-Sockets oder eine Netzwerkschnittstelle.\cite{doc
 
 \subsubsection{Funktionsweise}
 Alles beginnt mit einem Dockerfile. Docker erstellt Images basierend auf den Anweisungen in einem Dockerfile. Ein Dockerfile ist eine Textdatei, die die Anweisungen enthält, 
-wie der Source-code zu builden ist, welche Packete installiert werden müssen und wie die Anwendung gestartet wird. Docker-Images bestehen aus mehreren Schichten (Layers). 
+wie der Quellcode gebaut wird, welche Pakete installiert werden müssen und wie die Anwendung gestartet wird. Docker-Images bestehen aus mehreren Schichten (Layers). 
 Jede Anweisung im Dockerfile erzeugt eine neue Schicht, die auf den vorherigen aufbaut.\cite{docker_dockerfile}
 
 Ein Container ist eine laufende Instanz eines Docker-Images. Er enthält alles, was die Anwendung benötigt, um zu laufen, einschließlich des Programmcodes.
-Docker-Container sind leichtgewichtig, da sie den Betriebssystemkernel des Host-Systems gemeinsam nutzen, anstatt wie virtuelle Maschinen ein ganzen Betriebssystem zu benötigen.\cite{docker_overview}
+Docker-Container sind leichtgewichtig, da sie den Betriebssystemkernel des Host-Systems gemeinsam nutzen, anstatt wie virtuelle Maschinen ein ganzes Betriebssystem zu benötigen.\cite{docker_overview}
 
 \subsubsection{Docker Compose}
 Docker Compose ist ein Werkzeug zur Definition und Verwaltung von Multi-Container-Applikationen. In einer einzigen YAML-Datei
-standardmäßig \texttt{compose.yaml}, werden alle Komponenten einer Aplikation beschrieben.\cite{docker_compose} 
+\texttt{compose.yaml}, werden alle Komponenten einer Applikation beschrieben.\cite{docker_compose} 
 In dieser \gls{DA} wird Docker Compose verwendet, um Backend-Services, Datenbanken, API-Gateway sowie
-Authentifizierungsdienst mit einem einzigen Befehl starten zu können.
+den Authentifizierungsdienst mit einem einzigen Befehl starten zu können.
 
 \subsubsection{Vorteile der Containerisierung}
 Der Hauptvorteil der Containerisierung liegt in der Eliminierung des \textit{„works on my machine"}-Problems. 
-Ein Image, das einmal erstellt wurde, läuft auf jedem System identisch, unabhängig von der Infrastruktur, egal ob es sich um einen Respberry Pi oder einen Server handelt.
-Da jeder Container komplett isoliert ist, synergiert die Containerisierung auch sehr gut mit der Microservice-Architektur, da jeder Service in einem eigenen Container laufen kann
+Ein Image, das einmal erstellt wurde, läuft auf jedem System identisch, unabhängig von der Infrastruktur, egal ob es sich um einen Raspberry Pi oder einen Server handelt.
+Da jeder Container komplett isoliert ist, eignet sich die Containerisierung auch sehr gut für die Microservice-Architektur, da jeder Service in einem eigenen Container laufen kann,
 ohne dass es zu Konflikten mit Abhängigkeiten anderer Services kommt.
-Das erleichtert die Entwicklung als auch Deployment und Betrieb da das System immer identisch läuft.
+Das erleichtert sowohl die Entwicklung als auch Deployment und Betrieb, da das System immer identisch läuft.
 Weiters ermöglichen die Container eine leichte horizontale Skalierbarkeit. Mittels Orchestrierungstools wie Kubernetes können Container automatisch skaliert 
 und verwaltet werden, um den Anforderungen der Anwendung gerecht zu werden.
 
@@ -58,21 +58,21 @@ und verwaltet werden, um den Anforderungen der Anwendung gerecht zu werden.
 
 \subsection{Microservices}
 Die Microservice-Architektur ist ein Ansatz zur Softwareentwicklung, bei dem eine Applikation als Sammlung unabhängiger Komponenten
-aufgebaut wird, wovon jeder als eigenständiger Service läuft. Diese Services kommunizieren über definierte Schnittstellen mittels APIs.
+aufgebaut wird, wobei jede als eigenständiger Service läuft. Diese Services kommunizieren über definierte Schnittstellen mittels APIs.
 Jeder Service ist auf eine spezifische Aufgabe ausgerichtet und kann unabhängig von den anderen aktualisiert, deployt und skaliert werden.\cite{aws_microservices}
 
 \subsubsection{Vorteile von Microservices}
 \begin{itemize}
-    \item \textbf{Flexible Skalierung:} Jeder Service kann unabhängig von den anderen skaliert werden um der Nachfrage gerecht zu werden, ohne das gesamte System zu skalieren.
-    \item \textbf{Technologische Freiheit:} Teams können für jeden Service die passendste Technologie wählen, unabhängig von den Stacks anderer Services.
+    \item \textbf{Flexible Skalierung:} Jeder Service kann unabhängig von den anderen skaliert werden, um der Nachfrage gerecht zu werden, ohne das gesamte System zu skalieren.
+    \item \textbf{Technologische Freiheit:} Teams können für jeden Service die passendste Technologie wählen, unabhängig von den Technologie-Stacks anderer Services.
     Zum Beispiel könnte ein neuer Service für diese \gls{DA} in Rust implementiert werden, während sich die anderen Services nicht ändern müssen.
-    \item \textbf{Einfache Deployment:} Änderungen an einem Service können unabhängig deployet werden, ohne das gesamte System neu zu deployen. Das ermöglicht schnellere Iterationen und häufigere Updates.
-    \item \textbf{Resilienz:} Falls ein einzelner Service ausfällt, kann die Anwendung weiterhin funktionieren, wenn auch mit eingeschränkter Funktionalität.\cite{aws_microservices}:
+    \item \textbf{Einfaches Deployment:} Änderungen an einem Service können unabhängig deployt werden, ohne das gesamte System neu zu deployen. Das ermöglicht schnellere Iterationen und häufigere Updates.
+    \item \textbf{Resilienz:} Falls ein einzelner Service ausfällt, kann die Anwendung weiterhin funktionieren, wenn auch mit eingeschränkter Funktionalität.\cite{aws_microservices}
 \end{itemize}
 
 \subsubsection{Nutzung von Microservices in dieser \gls{DA}}
 In dieser \gls{DA} wurde der Backend-API-Server als Microservice-Architektur umgesetzt. 
-Er ist in mehrere unabhängige Services unterteilt,die jeweils über eine eigene Datenbankinstanz verfügen und über REST API miteinander kommunizieren.
-Alle Anfragen der Webanwendung werden über ein zentrales Nginx API-Gateway geleitet, welches die Anfragen an das jeweils zuständige Service weiterleitet.
+Er ist in mehrere unabhängige Services unterteilt, die jeweils über eine eigene Datenbankinstanz verfügen und über REST-APIs miteinander kommunizieren.
+Alle Anfragen der Webanwendung werden über ein zentrales Nginx-API-Gateway geleitet, welches die Anfragen an den jeweils zuständigen Service weiterleitet.
 
 \newpage
