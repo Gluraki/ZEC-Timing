@@ -1,5 +1,5 @@
 % ==============================================================
-% Kapitel 6: Systemarchitektur
+% Kapitel 4: Systemarchitektur
 % ==============================================================
 
 \section{Systemarchitektur}
@@ -11,7 +11,7 @@
 Das \gls{ZEC}-Timingsystem besteht aus zwei zentralen Teilen: einer webbasierten Anwendung,
 welche zur Anzeige der Renndaten und zur Verwaltung der Teams und Fahrer dient, sowie einem
 Backend-Server, welcher als Microservice-Architektur umgesetzt ist.
-Der Server übernimmt die gesamte Geschäftslogik, die Authentifizierung, 
+Der Server übernimmt die gesamte Businesslogik, die Authentifizierung, 
 die Datenverwaltung und die Kommunikation mit der Webanwendung und anderen externen Systemen.
 Abbildung~\ref{fig:systemarchitektur} zeigt einen Überblick über alle 
 Komponenten des Servers und deren Zusammenspiel intern sowie nach außen.
@@ -22,60 +22,403 @@ Komponenten des Servers und deren Zusammenspiel intern sowie nach außen.
     \caption{Systemarchitektur}
     \label{fig:systemarchitektur}
 \end{figure}
+\newpage
 
-Alle Anfragen von außen laufen über ein zentrales 
-\textbf{Nginx API-Gateway}, welches als einziger Einstiegspunkt des Systems 
-fungiert. Es übernimmt die \gls{JWT}-Validierung jeder eingehenden Anfrage 
-über das \texttt{auth\_request}-Modul und leitet diese anschließend 
-an den zuständigen Microservice weiter. So ist sichergestellt, 
-dass kein Service ohne gültige Authentifizierung erreichbar ist.
+\subsection{Server}
+\label{sec:server}
+Die Microservices kommunizieren untereinander über \gls{API}, wenn sie Daten
+von anderen Services benötigen. Braucht z.B. der Attempt Service Informationen
+über ein Team, fragt er diese beim Team Service ab. Jeder Service verwaltet seine 
+Daten in seiner eigenen PostgreSQL-Datenbank. Da jeder Service eine eigene Datenbank 
+besitzt, existieren die im Gesamtschema~\ref{fig:datenbankschema} dargestellten Beziehungen
+zwischen den Tabellen nicht als echte Fremdschlüssel, sondern werden in den Services sichergestellt.
 
-Die Authentifizierung selbst wird vom \textbf{Auth Service} in 
-Zusammenarbeit mit \textbf{Keycloak} übernommen. Keycloak stellt als 
-dedizierter Identity Provider die \gls{JWT} aus und verwaltet 
-Benutzerkonten sowie Rollen. Der Auth Service fungiert dabei als 
-Vermittler zwischen Keycloak und den restlichen Services und 
-synchronisiert Benutzerdaten zwischen \textbf{Keycloak} und \textbf{User Service}.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=15cm]{datenbankschema_gesamt.png}
+    \caption{Datenbankschema des ZEC-Timing-Systems}
+    \label{fig:datenbankschema}
+\end{figure}
+\newpage
 
-Die eigentliche Geschäftslogik ist auf fünf spezialisierte 
-\textbf{Business Services} aufgeteilt:
+\subsubsection{Nginx API-Gateway}
+\label{sec:nginx}
+Das API-Gateway bildet den einzigen Zugang zum System und ist für das Routing,
+die Authentifizierung sowie die CORS-Konfiguration aller Anfragen zuständig.
+
+\paragraph{Routing}
+Das Routing erfolgt pfadbasiert; jeder Pfad wird einem bestimmten 
+Service zugeordnet:
 
 \begin{itemize}
-    \item \textbf{User Service:} Verwaltung der Benutzerkonten und 
-          Teamzugehörigkeiten
-    \item \textbf{Team Service:} Speicherung und Verwaltung der 
-          teilnehmenden Teams und Fahrerinformationen
-    \item \textbf{Challenge Service:} Verwaltung der einzelnen Bewerbe 
-          und deren Konfigurationen
-    \item \textbf{Attempt Service:} Erfassung der Zeitversuche und 
-          Auslösen der Punkteberechnung
-    \item \textbf{Score Service:} Berechnung der Gesamtpunktestände 
-          und Bereitstellung der Ergebnislisten
+    \item \texttt{/users} → User Service
+    \item \texttt{/teams}, \texttt{/drivers} → Team Service
+    \item \texttt{/challenges} → Challenge Service
+    \item \texttt{/attempts} → Attempt Service
+    \item \texttt{/scores}, \texttt{/leaderboard}, \texttt{/penalties} → Score Service
+    \item \texttt{/login}, \texttt{/refresh} → Auth Service
 \end{itemize}
 
-Jeder dieser Services verfügt über eine eigene dedizierte 
-\textbf{PostgreSQL-Datenbank}, wodurch eine klare Datentrennung 
-gemäß dem Microservice-Prinzip gewährleistet wird und Services 
-unabhängig voneinander skaliert werden können. Keycloak betreibt 
-ebenfalls eine eigene Datenbankinstanz zur Verwaltung von 
-seiner Daten.
+\paragraph{Authentifizierung}
+Bei jeder weitergeleiteten Anfrage wird ein Subrequest an den Auth Service gesendet,
+welcher den angehängten \gls{JWT} validiert und die Rolle des Users prüft.
+Schlägt die Validierung fehl, wird die Anfrage abgewiesen, ohne die anderen
+Services zu treffen. Anfragen mit einem gültigen API-Key bilden eine Ausnahme,
+sie sind für die Kommunikation mit anderen Applikationen im System vorgesehen.
 
-Die gesamte Infrastruktur ist mittels \textbf{Docker} containerisiert 
-und kann als Docker-Compose-Stack betrieben werden, was eine flexible 
-und reproduzierbare Bereitstellung auf unterschiedlicher Hardware 
-ermöglicht.
+\paragraph{Header-Weitergabe}
+Nach erfolgreicher Authentifizierung fügt Nginx die Userdaten als HTTP-Header der weitergeleiteten Anfrage hinzu. 
+Services können so auf die Identität des Nutzers zugreifen, ohne Tokenvalidierung durchführen zu müssen.
+
+\paragraph{CORS}
+Für alle Endpunkte werden die CORS-Header gesetzt, sodass die Webanwendung vom Browser 
+aus auf die API zugreifen kann. Preflight-Anfragen werden direkt von Nginx beantwortet, 
+ohne dass ein Backend-Service involviert wird.
 
 \newpage
 
-% -------------------------------------------------------------------
-%\subsection{Server}
-% Autor: David | Umfang: 8–10 Seiten
-% TODO: Alle Microservices der Reihe nach erklären
-%       + Datenbankschema (max. 3 Tabellen pro Service)
-%       + Web App
+\subsubsection{Auth Service}
+\label{sec:auth_service}
+Der Auth Service übernimmt jegliche Authentifizierung im System und ist eng mit 
+Keycloak als Identity Provider verbunden. 
 
+\paragraph{Interne Verifikation}
+Der Auth Service stellt drei interne Endpunkte bereit, welche ausschließlich 
+vom API-Gateway aufgerufen werden. Es gibt pro Nutzerrolle (Administrator, Teamleiter, Viewer) 
+einen Endpunkt, welcher überprüft, ob der Nutzer die entsprechende Rolle besitzt.
 
-% -------------------------------------------------------------------
+\paragraph{Login \& Token-Refresh}
+Öffentlich stellt der Auth Service zwei Endpunkte bereit: einen Login-Endpunkt
+und einen Refresh-Endpunkt. Diese dienen der Authentifizierung sowie der Erneuerung eines abgelaufenen Tokens.
+
+\subsubsection{User Service}
+\label{sec:user_service}
+Der User Service verwaltet die Nutzerkonten außerhalb von Keycloak und agiert 
+als Bindeglied zwischen Keycloak und der restlichen Anwendung. Er speichert nur systeminterne Daten
+; Passwörter und Rollen liegen jedoch in Keycloak.
+
+\paragraph{Datenbankschema}
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|l|l|}
+        \hline
+        \textbf{Spalte} & \textbf{Typ} & \textbf{Beschreibung} \\
+        \hline
+        id & Integer (PK) & Interne ID des Benutzers \\
+        kc\_id & String (UNIQUE) & Keycloak-ID des Benutzers \\
+        username & String (UNIQUE) & Benutzername \\
+        team\_id & Integer & Zugehöriges Team (optional) \\
+        created\_at & DateTime & Erstellungszeitpunkt \\
+        \hline
+    \end{tabular}
+    \caption{Datenbankschema: User Service}
+    \label{tab:user_schema}
+\end{table}
+
+Die \texttt{kc\_id} stellt die Verbindung zwischen dem lokalen 
+Datenbankdatensatz und dem entsprechenden Keycloak-Benutzerkonto 
+her. Wie in~\ref{sec:server} beschrieben, ist \texttt{team\_id} kein echter Fremdschlüssel, 
+sondern wird in der Businesslogik des User Service sichergestellt.
+
+\paragraph{Funktionalität}
+Der User Service ermöglicht das Erstellen, Aktualisieren und 
+Löschen von Benutzern, wobei Änderungen stets sowohl in Keycloak 
+als auch in der lokalen Datenbank durchgeführt werden. Darüber 
+hinaus können Benutzern Rollen in Keycloak zugewiesen oder 
+entzogen werden. Für Operationen in Keycloak bezieht der 
+User Service über den Auth Service einen kurzlebigen Admin-Token.
+
+\subsubsection{Team Service}
+\label{sec:team_service}
+
+Der Team Service verwaltet die teilnehmenden Teams sowie deren 
+Fahrer und stellt diese Daten den anderen Services über seine 
+REST-API zur Verfügung.
+
+\paragraph{Datenbankschema}
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|l|l|}
+        \hline
+        \textbf{Spalte} & \textbf{Typ} & \textbf{Beschreibung} \\
+        \hline
+        id & Integer (PK) & Interne ID des Teams \\
+        name & String & Name des Teams \\
+        category & Enum & Teamkategorie \\
+        vehicle\_weight & Float & Fahrzeuggewicht in kg \\
+        mean\_power & Float & Durchschnittliche Leistung in W \\
+        rfid\_identifier & String & RFID-Kennung des Fahrzeugs \\
+        created\_at & DateTime & Erstellungszeitpunkt \\
+        \hline
+    \end{tabular}
+    \caption{Datenbankschema: Teams}
+    \label{tab:team_schema}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|l|l|}
+        \hline
+        \textbf{Spalte} & \textbf{Typ} & \textbf{Beschreibung} \\
+        \hline
+        id & Integer (PK) & Interne ID des Fahrers \\
+        name & String & Name des Fahrers \\
+        team\_id & Integer & Zugehöriges Team \\
+        weight & Float & Gewicht des Fahrers in kg \\
+        created\_at & DateTime & Erstellungszeitpunkt \\
+        \hline
+    \end{tabular}
+    \caption{Datenbankschema: Drivers}
+    \label{tab:driver_schema}
+\end{table}
+
+\paragraph{Funktionalität}
+Der Team Service bietet die Funktionalität zum Erstellen, Lesen, 
+Aktualisieren und Löschen von Teams und Fahrern. Greift ein User mit der
+Rolle \texttt{TEAM\_LEAD} auf die API zu, wird überprüft, ob er auf sein eigenes Team zugreift, 
+andernfalls wird die Anfrage abgelehnt.
+
+\newpage
+
+\subsubsection{Challenge Service}
+\label{sec:challenge_service}
+
+Der Challenge Service verwaltet die einzelnen Bewerbe der \gls{ZEC} und stellt deren Konfiguration 
+den anderen Services zur Verfügung. Ein Bewerb definiert die maximale Anzahl an Versuchen 
+sowie die MAC-Adressen der zugehörigen Lichtschranken.
+
+\paragraph{Datenbankschema}
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|l|l|}
+        \hline
+        \textbf{Spalte} & \textbf{Typ} & \textbf{Beschreibung} \\
+        \hline
+        id & Integer (PK) & Interne ID des Bewerbs \\
+        name & String & Name des Bewerbs \\
+        max\_attempts & Integer & Maximale Anzahl an Versuchen \\
+        esp\_mac\_start1 & String & MAC-Adresse Startlichtschranke 1 \\
+        esp\_mac\_start2 & String & MAC-Adresse Startlichtschranke 2 \\
+        esp\_mac\_finish1 & String & MAC-Adresse Ziellichtschranke 1 \\
+        esp\_mac\_finish2 & String & MAC-Adresse Ziellichtschranke 2 \\
+        created\_at & DateTime & Erstellungszeitpunkt \\
+        \hline
+    \end{tabular}
+    \caption{Datenbankschema: Challenge Service}
+    \label{tab:challenge_schema}
+\end{table}
+
+\paragraph{Funktionalität}
+Der Challenge Service bietet nur Leseoperationen und Aktualisierungen an, da die Bewerbe einmalig 
+per Datenbankskript angelegt und danach nur noch aktualisiert werden. GET-Anfragen sind öffentlich zugänglich, 
+sodass die Ergebnisanzeige ohne Anmeldung auf Bewerbsinformationen zugreifen kann.
+Schreibende Operationen sind ausschließlich Administratoren erlaubt.
+
+\newpage
+
+\subsubsection{Attempt Service}
+\label{sec:attempt_service}
+Der Attempt Service ist für die Erfassung und Verwaltung der Versuche zuständig.
+Er hat eine Vielzahl von Inter-Service-Abhängigkeiten, siehe~\ref{fig:systemarchitektur}, da viele Daten verifiziert werden müssen. 
+Außerdem werden automatisch die Punkteberechnung sowie die Strafpunkte im Score Service ausgelöst.
+
+\paragraph{Datenbankschema}
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|l|l|}
+        \hline
+        \textbf{Spalte} & \textbf{Typ} & \textbf{Beschreibung} \\
+        \hline
+        id & Integer (PK) & Interne ID des Versuchs \\
+        team\_id & Integer & Zugehöriges Team \\
+        driver\_id & Integer & Zugehöriger Fahrer \\
+        challenge\_id & Integer & Zugehöriger Bewerb \\
+        is\_valid & Boolean & Gültigkeit des Versuchs \\
+        start\_time & DateTime & Startzeitpunkt \\
+        end\_time & DateTime & Endzeitpunkt \\
+        energy\_used & Float & Verbrauchte Energie in Wh \\
+        created\_at & DateTime & Erstellungszeitpunkt \\
+        \hline
+    \end{tabular}
+    \caption{Datenbankschema: Attempt Service}
+    \label{tab:attempt_schema}
+\end{table}
+
+\paragraph{Funktionalität}
+Beim Erstellen eines Versuchs werden Team, Fahrer und Bewerb 
+validiert sowie überprüft, ob das Team die maximale Versuchsanzahl 
+bereits erreicht hat. Nach dem Speichern werden optional 
+Strafpunkte sowie automatisch ein Score-Eintrag im Score Service 
+angelegt. Wird ein Versuch nachträglich als ungültig markiert, 
+wird der zugehörige Score automatisch entfernt. Beim Löschen 
+eines Versuchs werden Score und Strafpunkte ebenfalls gelöscht.
+
+\paragraph{Export}
+Über einen Export-Endpunkt können alle Versuche eines Bewerbs als CSV- oder XLSX-Datei heruntergeladen werden. 
+Die Daten werden dabei mit Team- und Fahrerinformationen verbunden und können optional nach Teamkategorie gefiltert werden.
+
+\newpage
+
+\subsubsection{Score Service}
+\label{sec:score_service}
+Der Score Service ist für die Berechnung und Verwaltung der 
+Punktestände sowie die Bereitstellung der Ergebnislisten 
+zuständig. Er verwaltet neben den Scores auch die Strafpunkte und
+implementiert die bewerbsspezifische Punkteberechnungslogik.
+
+\paragraph{Datenbankschema}
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|l|l|}
+        \hline
+        \textbf{Spalte} & \textbf{Typ} & \textbf{Beschreibung} \\
+        \hline
+        id & Integer (PK) & Interne ID des Scores \\
+        attempt\_id & Integer & Zugehöriger Versuch \\
+        challenge\_id & Integer & Zugehöriger Bewerb \\
+        value & Float & Berechneter Punktewert \\
+        created\_at & DateTime & Erstellungszeitpunkt \\
+        \hline
+    \end{tabular}
+    \caption{Datenbankschema: Scores}
+    \label{tab:score_schema}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|l|l|}
+        \hline
+        \textbf{Spalte} & \textbf{Typ} & \textbf{Beschreibung} \\
+        \hline
+        id & Integer (PK) & Interne ID der Strafe \\
+        attempt\_id & Integer & Zugehöriger Versuch \\
+        penalty\_type\_id & Integer & Art der Strafe \\
+        count & Integer & Anzahl der Strafen \\
+        created\_at & DateTime & Erstellungszeitpunkt \\
+        \hline
+    \end{tabular}
+    \caption{Datenbankschema: Penalties}
+    \label{tab:penalty_schema}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|l|l|}
+        \hline
+        \textbf{Spalte} & \textbf{Typ} & \textbf{Beschreibung} \\
+        \hline
+        id & Integer (PK) & Interne ID des Straftyps \\
+        type & String & Bezeichnung der Strafe \\
+        amount & Integer & Strafzeit in Sekunden \\
+        \hline
+    \end{tabular}
+    \caption{Datenbankschema: Penalty Types}
+    \label{tab:penalty_type_schema}
+\end{table}
+
+\paragraph{Punkteberechnung}
+Die Punkteberechnung ist pro Bewerb unterschiedlich. Die Berechnungsformeln der 
+einzelnen Bewerbe werden im Kapitel zur Score-Implementierung 
+im Detail beschrieben.
+
+\paragraph{Leaderboard}
+Pro Bewerb und Teamkategorie gibt es eine Ergebnisliste, in der jedes Team mit 
+seinem besten Score angeführt wird. Diese Listen können als CSV- oder XLSX-Datei exportiert werden. 
+GET-Anfragen auf die Leaderboard-Endpunkte sind öffentlich zugänglich, 
+sodass die Ergebnisanzeige ohne Anmeldung auf die Daten zugreifen kann. 
+
 \subsection{Web App}
-% Autor: Niklas | Umfang: 2–3 Seiten
-% TODO: Erklärung Kommunikation mit Server und MQTT (Zeitstempel)
+\label{sec:webapp}
+
+Die Webanwendung ist mit Next.js\cite{nextjs} umgesetzt und bildet die
+Benutzeroberfläche des \gls{ZEC}-Timing-Systems. Sie kommuniziert 
+über das Nginx API-Gateway mit dem Backend und passt ihre Anzeige 
+dynamisch an die Rolle des angemeldeten Benutzers an.
+
+\paragraph{Authentifizierung \& Sitzungsverwaltung}
+
+Die Anmeldung erfolgt über den Login-Tab, auf dem Benutzername und Passwort eingegeben werden. 
+Nach erfolgreicher Anmeldung werden Access- und Refresh-Token lokal gespeichert und 
+bei jeder API-Anfrage mitgesendet. Läuft die Sitzung ab, wird der 
+Benutzer automatisch zur Login-Seite weitergeleitet und über das 
+Sitzungsende informiert.
+
+\paragraph{Rollenbasierte Ansichten}
+
+Die Webanwendung unterscheidet drei Benutzerrollen mit 
+unterschiedlichen Tabs:
+
+\begin{itemize}
+    \item \textbf{Viewer:} Hat nur Zugriff auf die 
+          öffentliche Ergebnisliste (\textit{Leaderboard}), die 
+          die aktuellen Punktestände aller Teams pro Bewerb und 
+          Teamkategorie anzeigt. Dieser Bereich ist auch ohne 
+          Anmeldung zugänglich.
+
+    \item \textbf{Teamleiter:} Sieht nach der Anmeldung eine 
+          personalisierte Teamansicht mit den Daten des eigenen 
+          Teams und eine Übersicht der eigenen Fahrer. 
+          Teamleiter können Teamdaten und Fahrer bearbeiten, 
+          jedoch ausschließlich innerhalb ihres eigenen Teams.
+
+    \item \textbf{Administrator:} Hat Zugriff auf alle 
+          Tabs der Anwendung. Dazu zählen die Verwaltung von Benutzern und Rollen, die Verwaltung 
+          aller Teams und Fahrer, die Einsicht und Bearbeitung 
+          aller Versuche, die Konfiguration der Bewerbe 
+          sowie der Export von Ergebnissen und Versuchen.
+\end{itemize}
+
+\newpage
+
+\paragraph{Tabs}
+
+Die Anwendung ist in folgende Tabs unterteilt, die je nach Rolle 
+sichtbar sind:
+
+\begin{itemize}
+    \item \textbf{Leaderboard:} Zeigt die Ergebnislisten aller 
+          Bewerbe, gefiltert nach Teamkategorie. Für jeden Bewerb 
+          wird ein eigenes Ranking mit Punktestand angezeigt.
+
+    \item \textbf{Attempts:} Ermöglicht Administratoren die 
+          Einsicht, Bearbeitung und Löschung aller Zeitversuche. 
+          Start- und Endzeit sowie Energieverbrauch können 
+          nachträglich korrigiert und Versuche als ungültig 
+          markiert werden.
+
+    \item \textbf{Teams:} Bietet Administratoren eine vollständige 
+          Übersicht aller Teams inklusive Fahrerliste. Teamleiter sehen hingegen ausschließlich 
+          ihr eigenes Team in einer detaillierten Einzelansicht.
+
+    \item \textbf{Challenges:} Erlaubt Administratoren die 
+          Konfiguration der Bewerbe.
+
+    \item \textbf{Users:} Ermöglicht Administratoren das Erstellen, 
+          Bearbeiten und Löschen von Benutzern sowie die Verwaltung 
+          von Rollenzuweisungen.
+
+    \item \textbf{Export:} Stellt Administratoren den Export der 
+          Ergebnislisten und Zeitversuche als CSV- oder 
+          XLSX-Datei zur Verfügung, gefiltert nach Bewerb und 
+          optional nach Teamkategorie.
+\end{itemize}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{viewer_leaderboard_anzeige.png}
+    \caption{Leaderboard-Tab für Viewer}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{teamlead_teams_anzeige.png}
+    \caption{Teams-Tab für Teamleiter}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{admin_team_anzeige.png}
+    \caption{Teams-Tab für Administrator}
+\end{figure}
+
+\newpage
