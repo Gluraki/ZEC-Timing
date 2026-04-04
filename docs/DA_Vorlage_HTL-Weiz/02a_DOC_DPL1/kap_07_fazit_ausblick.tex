@@ -1,0 +1,26 @@
+% ==============================================================
+% Kapitel 07: Fazit und Ausblick
+% ==============================================================
+\section{Fazit und Ausblick}
+\subsection{Zusammenfassung}
+In dieser Diplomarbeit wurde ein Timing-System für die \gls{ZEC} entwickelt. Das System bietet eine REST-\gls{API} Schnittstelle, die es
+ermöglicht, Versuche in die Datenbank einzutragen, welche auch automatisch bewertet werden. Zusätzlich können die Ergebnisse über die \gls{API} 
+abgerufen werden, und alle wichtigen Informationen können einfach über die Weboberfläche eingesehen und bearbeitet werden. 
+
+Der Microservice-Ansatz hat sich als passend für das Projekt erwiesen, da er eine klare Trennung der Verantwortlichkeiten ermöglicht und die Wartbarkeit des Systems verbessert.
+Die Verwendung von Docker-Containern war ebenfalls eine richtige Entscheidung, da so die Bereitstellung erleichtert wurde und eine Unabhängigkeit von der 
+Infrastruktur gewährleistet werden konnte. Die Verwendung einer zentralen Datenbank hätte die Entwicklung erleichtert, allerdings hätte dies die 
+Eigenständigkeit der Services massiv eingeschränkt, weshalb die Entscheidung für einzelne Datenbanken pro Service auch hier die richtige war.
+
+\subsection{Zukunftsausblick}
+
+Zusätzlich zu den offensichtlichen Erweiterungen, wie der Fertigstellung der noch nicht implementierten Features, etwa der Desktop-App zur Verbindung mit 
+der Lichtschranke per MQTT, der Kubernetes-Integration und den \gls{CICD}-Pipelines, kamen während der Entwicklung auch andere Ideen auf, die in Zukunft umgesetzt werden könnten.
+
+\begin{itemize}
+    \item \textbf{SD-Karten-Schutz: } Derzeit ist kein Schutz für die SD-Karten der Raspberry Pis implementiert. Eine Implementierung von Caching im Backend oder Frontend
+    wäre notwendig, sollte der Server auf einem Raspberry Pi laufen.
+    \item \textbf{Anbindung einer Bluetooth-Datenübertragung: } Im derzeitigen System muss der Zeitnehmer von den Sensoren ablesen, wie viel Energie verbraucht wurde.
+    Eine Anbindung der Bluetooth-Datenübertragung könnte es ermöglichen, dass die Sensoren die Daten an die Desktop-App übermitteln.
+    
+\end{itemize}
