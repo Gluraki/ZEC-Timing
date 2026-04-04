@@ -27,7 +27,7 @@ Docker verwendet eine Client-Server-Architektur. Der \textit{Docker-Client}
 kommuniziert dabei mit dem \textit{Docker-Daemon} (\texttt{dockerd}), welcher 
 die eigentliche Arbeit des Erstellens, Ausführens und Verteilens von Containern 
 übernimmt. Die Kommunikation zwischen Client und Daemon erfolgt über eine 
-REST-API, wahlweise über Unix-Sockets oder eine Netzwerkschnittstelle.\cite{docker_overview} 
+REST-\gls{API}, wahlweise über Unix-Sockets oder eine Netzwerkschnittstelle.\cite{docker_overview} 
 
 \newpage
 
@@ -42,7 +42,7 @@ Docker-Container sind leichtgewichtig, da sie den Betriebssystemkernel des Host-
 \subsubsection{Docker Compose}
 Docker Compose ist ein Werkzeug zur Definition und Verwaltung von Multi-Container-Applikationen. In einer einzigen YAML-Datei
 \texttt{compose.yaml}, werden alle Komponenten einer Applikation beschrieben.\cite{docker_compose} 
-In dieser \gls{DA} wird Docker Compose verwendet, um Backend-Services, Datenbanken, API-Gateway sowie
+In dieser \gls{DA} wird Docker Compose verwendet, um Backend-Services, Datenbanken, \gls{API}-Gateway sowie
 den Authentifizierungsdienst mit einem einzigen Befehl starten zu können.
 
 \subsubsection{Vorteile der Containerisierung}
@@ -58,7 +58,7 @@ und verwaltet werden, um den Anforderungen der Anwendung gerecht zu werden.
 
 \subsection{Microservices}
 Die Microservice-Architektur ist ein Ansatz zur Softwareentwicklung, bei dem eine Applikation als Sammlung unabhängiger Komponenten
-aufgebaut wird, wobei jede als eigenständiger Service läuft. Diese Services kommunizieren über definierte Schnittstellen mittels APIs.
+aufgebaut wird, wobei jede als eigenständiger Service läuft. Diese Services kommunizieren über definierte Schnittstellen mittels \gls{API}s.
 Jeder Service ist auf eine spezifische Aufgabe ausgerichtet und kann unabhängig von den anderen aktualisiert, deployt und skaliert werden.\cite{aws_microservices}
 
 \subsubsection{Vorteile von Microservices}
@@ -71,8 +71,8 @@ Jeder Service ist auf eine spezifische Aufgabe ausgerichtet und kann unabhängig
 \end{itemize}
 
 \subsubsection{Nutzung von Microservices in dieser \gls{DA}}
-In dieser \gls{DA} wurde der Backend-API-Server als Microservice-Architektur umgesetzt. 
-Er ist in mehrere unabhängige Services unterteilt, die jeweils über eine eigene Datenbankinstanz verfügen und über REST-APIs miteinander kommunizieren.
-Alle Anfragen der Webanwendung werden über ein zentrales Nginx-API-Gateway geleitet, welches die Anfragen an den jeweils zuständigen Service weiterleitet.
+In dieser \gls{DA} wurde der Backend-\gls{API}-Server als Microservice-Architektur umgesetzt. 
+Er ist in mehrere unabhängige Services unterteilt, die jeweils über eine eigene Datenbankinstanz verfügen und über REST-\gls{API}s miteinander kommunizieren.
+Alle Anfragen der Webanwendung werden über ein zentrales Nginx-\gls{API}-Gateway geleitet, welches die Anfragen an den jeweils zuständigen Service weiterleitet.
 
 \newpage

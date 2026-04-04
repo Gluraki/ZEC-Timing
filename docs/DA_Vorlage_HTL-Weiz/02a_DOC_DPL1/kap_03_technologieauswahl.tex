@@ -16,15 +16,15 @@ Entwicklungstools.
 
 \subsection{Nginx}
 
-Als API-Gateway wurde Nginx gewählt, welches eingehende 
-HTTP-Anfragen entgegennimmt, die JWT-Authentifizierung über das 
+Als \gls{API}-Gateway wurde Nginx gewählt, welches eingehende 
+HTTP-Anfragen entgegennimmt, die \gls{JWT}-Authentifizierung über das 
 \texttt{auth\_request}-Modul übernimmt und Anfragen an den jeweils 
 zuständigen Microservice weiterleitet.\cite{nginx}
 Im Vergleich zu Alternativen wie Traefik oder HAProxy bietet Nginx eine 
-besonders hohe Stabilität sowie eine flexible Konfigurierbarkeit. Gegenüber einem vollwertigen API-Gateway wie Kong 
+besonders hohe Stabilität sowie eine flexible Konfigurierbarkeit. Gegenüber einem vollwertigen \gls{API}-Gateway wie Kong 
 bringt Nginx deutlich weniger Overhead mit und ist damit besser für 
 kleine Microservice-Deployments geeignet.
-In der DA übernimmt Nginx die zentrale Rolle als einziger 
+In der \gls{DA} übernimmt Nginx die zentrale Rolle als einziger 
 Einstiegspunkt für alle Anfragen der Webanwendung und stellt sicher, 
 dass kein Service ohne gültige Authentifizierung erreichbar ist.
 
@@ -63,8 +63,8 @@ Im Vergleich zur Eigenimplementierung reduziert Keycloak den Entwicklungsaufwand
 gleichzeitig ein höheres Sicherheitsniveau durch standardkonforme Protokolle.
 Gegenüber einfacheren Lösungen wie Auth0 bietet Keycloak den Vorteil, dass es
 vollständig mit Docker selbst gehostet werden kann. 
-In der DA übernimmt Keycloak die Ausstellung und Validierung 
-von JWTs.
+In der \gls{DA} übernimmt Keycloak die Ausstellung und Validierung 
+von \gls{JWT}s.
 
 \subsection{SQLAlchemy}
 
@@ -80,13 +80,13 @@ Modellsystem eine klare Abbildung der Datenbankstruktur auf Python-Klassen.
 \subsection{FastAPI}
 
 Als Web-Framework wurde FastAPI gewählt. FastAPI ist ein modernes Python-Web-Framework,
-welches automatisch API-Dokumentation generiert.\cite{fastapi}
-Im Vergleich zu anderen Python-API-Frameworks wie Flask bietet FastAPI native Type-Hints-Unterstützung 
+welches automatisch \gls{API}-Dokumentation generiert.\cite{fastapi}
+Im Vergleich zu anderen Python-\gls{API}-Frameworks wie Flask bietet FastAPI native Type-Hints-Unterstützung 
 und automatische Validierung von Request- und Response-Daten durch 
 Pydantic.\cite{jetbrains_frameworks}
 Verglichen mit Django bringt FastAPI deutlich weniger Overhead mit und ist 
 damit besser für kleine Microservices geeignet.\cite{jetbrains_frameworks}
-In der DA bildet FastAPI die Grundlage jedes einzelnen 
+In der \gls{DA} bildet FastAPI die Grundlage jedes einzelnen 
 Backend-Services und stellt die jeweiligen REST-Endpunkte zur Verfügung, 
 über die die Webanwendung und die Services untereinander kommunizieren.
 
@@ -97,7 +97,7 @@ und sowohl serverseitiges Rendering (SSR) als auch statische
 Seitengenerierung (SSG) unterstützt.\cite{nextjs}
 Im Vergleich zu anderen Frameworks spricht für Next.js die bessere Ladezeit sowie
 die vereinfachte Projektstruktur durch das dateibasierte Routing-System.
-In der DA wird Next.js für die Webanwendung eingesetzt, 
+In der \gls{DA} wird Next.js für die Webanwendung eingesetzt, 
 über die die Nutzer auf das System zugreifen.
 
 \subsection{shadcn/ui}

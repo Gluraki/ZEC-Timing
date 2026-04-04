@@ -43,7 +43,7 @@ zwischen den Tabellen nicht als echte Fremdschlüssel, sondern werden in den Ser
 
 \subsubsection{Nginx API-Gateway}
 \label{sec:nginx}
-Das API-Gateway bildet den einzigen Zugang zum System und ist für das Routing,
+Das \gls{API}-Gateway bildet den einzigen Zugang zum System und ist für das Routing,
 die Authentifizierung sowie die CORS-Konfiguration aller Anfragen zuständig.
 
 \paragraph{Routing}
@@ -63,7 +63,7 @@ Service zugeordnet:
 Bei jeder weitergeleiteten Anfrage wird ein Subrequest an den Auth Service gesendet,
 welcher den angehängten \gls{JWT} validiert und die Rolle des Users prüft.
 Schlägt die Validierung fehl, wird die Anfrage abgewiesen, ohne die anderen
-Services zu treffen. Anfragen mit einem gültigen API-Key bilden eine Ausnahme,
+Services zu treffen. Anfragen mit einem gültigen \gls{API}-Key bilden eine Ausnahme,
 sie sind für die Kommunikation mit anderen Applikationen im System vorgesehen.
 
 \paragraph{Header-Weitergabe}
@@ -72,7 +72,7 @@ Services können so auf die Identität des Nutzers zugreifen, ohne Tokenvalidier
 
 \paragraph{CORS}
 Für alle Endpunkte werden die CORS-Header gesetzt, sodass die Webanwendung vom Browser 
-aus auf die API zugreifen kann. Preflight-Anfragen werden direkt von Nginx beantwortet, 
+aus auf die \gls{API} zugreifen kann. Preflight-Anfragen werden direkt von Nginx beantwortet, 
 ohne dass ein Backend-Service involviert wird.
 
 \newpage
@@ -84,7 +84,7 @@ Keycloak als Identity Provider verbunden.
 
 \paragraph{Interne Verifikation}
 Der Auth Service stellt drei interne Endpunkte bereit, welche ausschließlich 
-vom API-Gateway aufgerufen werden. Es gibt pro Nutzerrolle (Administrator, Teamleiter, Viewer) 
+vom \gls{API}-Gateway aufgerufen werden. Es gibt pro Nutzerrolle (Administrator, Teamleiter, Viewer) 
 einen Endpunkt, welcher überprüft, ob der Nutzer die entsprechende Rolle besitzt.
 
 \paragraph{Login \& Token-Refresh}
@@ -133,7 +133,7 @@ User Service über den Auth Service einen kurzlebigen Admin-Token.
 
 Der Team Service verwaltet die teilnehmenden Teams sowie deren 
 Fahrer und stellt diese Daten den anderen Services über seine 
-REST-API zur Verfügung.
+REST-\gls{API} zur Verfügung.
 
 \paragraph{Datenbankschema}
 \begin{table}[h]
@@ -175,7 +175,7 @@ REST-API zur Verfügung.
 \paragraph{Funktionalität}
 Der Team Service bietet die Funktionalität zum Erstellen, Lesen, 
 Aktualisieren und Löschen von Teams und Fahrern. Greift ein User mit der
-Rolle \texttt{TEAM\_LEAD} auf die API zu, wird überprüft, ob er auf sein eigenes Team zugreift, 
+Rolle \texttt{TEAM\_LEAD} auf die \gls{API} zu, wird überprüft, ob er auf sein eigenes Team zugreift, 
 andernfalls wird die Anfrage abgelehnt.
 
 \newpage
@@ -332,14 +332,14 @@ sodass die Ergebnisanzeige ohne Anmeldung auf die Daten zugreifen kann.
 
 Die Webanwendung ist mit Next.js\cite{nextjs} umgesetzt und bildet die
 Benutzeroberfläche des \gls{ZEC}-Timing-Systems. Sie kommuniziert 
-über das Nginx API-Gateway mit dem Backend und passt ihre Anzeige 
+über das Nginx \gls{API}-Gateway mit dem Backend und passt ihre Anzeige 
 dynamisch an die Rolle des angemeldeten Benutzers an.
 
 \paragraph{Authentifizierung \& Sitzungsverwaltung}
 
 Die Anmeldung erfolgt über den Login-Tab, auf dem Benutzername und Passwort eingegeben werden. 
 Nach erfolgreicher Anmeldung werden Access- und Refresh-Token lokal gespeichert und 
-bei jeder API-Anfrage mitgesendet. Läuft die Sitzung ab, wird der 
+bei jeder \gls{API}-Anfrage mitgesendet. Läuft die Sitzung ab, wird der 
 Benutzer automatisch zur Login-Seite weitergeleitet und über das 
 Sitzungsende informiert.
 
