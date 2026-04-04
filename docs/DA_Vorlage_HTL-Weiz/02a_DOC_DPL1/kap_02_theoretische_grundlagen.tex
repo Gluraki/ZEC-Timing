@@ -41,7 +41,7 @@ Docker-Container sind leichtgewichtig, da sie den Betriebssystemkernel des Host-
 
 \subsubsection{Docker Compose}
 Docker Compose ist ein Werkzeug zur Definition und Verwaltung von Multi-Container-Applikationen. In einer einzigen YAML-Datei
-\texttt{compose.yaml}, werden alle Komponenten einer Applikation beschrieben.\cite{docker_compose} 
+\texttt{compose.yaml} werden alle Komponenten einer Applikation beschrieben.\cite{docker_compose} 
 In dieser \gls{DA} wird Docker Compose verwendet, um Backend-Services, Datenbanken, \gls{API}-Gateway sowie
 den Authentifizierungsdienst mit einem einzigen Befehl starten zu können.
 
@@ -50,7 +50,7 @@ Der Hauptvorteil der Containerisierung liegt in der Eliminierung des \textit{„
 Ein Image, das einmal erstellt wurde, läuft auf jedem System identisch, unabhängig von der Infrastruktur, egal ob es sich um einen Raspberry Pi oder einen Server handelt.
 Da jeder Container komplett isoliert ist, eignet sich die Containerisierung auch sehr gut für die Microservice-Architektur, da jeder Service in einem eigenen Container laufen kann,
 ohne dass es zu Konflikten mit Abhängigkeiten anderer Services kommt.
-Das erleichtert sowohl die Entwicklung als auch Deployment und Betrieb, da das System immer identisch läuft.
+Das erleichtert sowohl die Entwicklung als auch das Deployment und den Betrieb, da das System immer identisch läuft.
 Weiters ermöglichen die Container eine leichte horizontale Skalierbarkeit. Mittels Orchestrierungstools wie Kubernetes können Container automatisch skaliert 
 und verwaltet werden, um den Anforderungen der Anwendung gerecht zu werden.
 

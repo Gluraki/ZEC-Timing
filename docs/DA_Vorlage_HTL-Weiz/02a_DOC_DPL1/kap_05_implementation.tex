@@ -1,21 +1,445 @@
-% ==============================================================
-% Kapitel 7: Implementation
+﻿% ==============================================================
+% Kapitel 05: Implementation
 % ==============================================================
 
 \section{Implementation}
 
-% -------------------------------------------------------------------
 \subsection{Server}
-% Autor: David | Umfang: 8–9 Seiten (inkl. Screenshots)
-% TODO: Screenshot von Web App
-%       API Gateway mit Beispielscode erklären
-%       CRUD Operationen mit Beispielscode erklären
-%       Authentifikation mit Keycloak
-%       API mit Beispielscode erklären
-%       Kommunikation zwischen den einzelnen Services mit Beispielcode erklären
-%       Zugriffsberechtigungen je Rolle
 
-% -------------------------------------------------------------------
+\subsubsection{Zugriffsberechtigungen}
+\label{sec:impl_zugriffsberechtigungen}
+
+Die Zugriffskontrolle im Backend basiert auf FastAPIs 
+Dependency-Injection-System. Rollen werden einmal definiert und dann 
+über die gesamte Anwendung verwendet. Die Hierarchie ist so aufgebaut, 
+dass höhere Rollen automatisch die Berechtigungen der darunterliegenden Rollen einschließen.
+
+\begin{CodeBox}[language=Python]
+ROLE_HIERARCHY = {
+    UserRole.VIEWER: {
+        UserRole.VIEWER,
+        UserRole.TEAM_LEAD,
+        UserRole.ADMIN,
+    },
+    UserRole.TEAM_LEAD: {
+        UserRole.TEAM_LEAD,
+        UserRole.ADMIN,
+    },
+    UserRole.ADMIN: {
+        UserRole.ADMIN,
+    },
+}
+
+def require_role(required_role: UserRole):
+    def role_checker(user: CurrentUser):
+        user_roles = {UserRole(role) for role in user["roles"]}
+        allowed_roles = ROLE_HIERARCHY[required_role]
+        if user_roles.isdisjoint(allowed_roles):
+            raise exception.InsufficientPermissions
+        return user
+    return role_checker
+
+AdminUser = Annotated[dict, Depends(require_role(UserRole.ADMIN))]
+TeamLeadUser = Annotated[dict, Depends(require_role(UserRole.TEAM_LEAD))]
+ViewerUser = Annotated[dict, Depends(require_role(UserRole.VIEWER))]
+\end{CodeBox}
+
+Die oben definierten Typen können direkt als Parameter in Endpunkt-Funktionen verwendet werden.
+FastAPI löst die Dependency automatisch auf und führt die Rollenprüfung vor der eigentlichen Endpunktlogik aus.
+
+\begin{CodeBox}[language=Python, caption={Verwendung der Rollendependencies in Endpunkten}]
+@router.get("/internal/verify/teamlead")
+def verify_teamlead(request: Request, response: Response,
+                    current_user: TeamLeadUser):
+    user_resp = requests.get(
+        f"{USER_URL}/api/users/me",
+        headers={"Authorization": request.headers.get("Authorization")}
+    )
+    user_data = user_resp.json()
+    response.headers["X-User-Id"] = current_user["sub"]
+    response.headers["X-Team-Id"] = str(user_data.get("team_id"))
+    response.headers["X-Role"] = current_user["roles"][0]
+    return {"active": True, **current_user}
+\end{CodeBox}
+
+Der \texttt{verify\_teamlead}-Endpunkt hat eine Besonderheit.
+Er sendet die Team-ID des Benutzers als HTTP-Antwort-Header zurück, 
+damit Nginx diese Informationen an die Ziel-Services weiterreichen kann.
+
+\subsubsection{API-Gateway}
+\label{sec:impl_nginx}
+
+Das Nginx \gls{API}-Gateway wird über eine zentrale Konfigurationsdatei 
+definiert. Die grundlegende Struktur besteht aus der Definition 
+der Upstream-Services sowie einem Server-Block, der alle 
+Routing- und Authentifizierungsregeln enthält.
+
+\paragraph{Upstream-Konfiguration}
+
+Jeder Microservice wird als eigener Upstream registriert, 
+damit Nginx die Anfragen richtig weiterleiten kann. Hier der User Service als Beispiel:
+\begin{CodeBox}[language=bash, caption={Upstream-Definition der Microservices}]
+upstream user_service {server user-service:8001;}
+\end{CodeBox}
+
+\newpage
+
+\paragraph{Interne Authentifizierungsendpunkte}
+Die Authentifizierung wird über drei interne Endpunkte realisiert, 
+die ausschließlich vom \texttt{auth\_request}-Modul aufgerufen 
+werden und von außen nicht erreichbar sind. Der einzige Unterschied zwischen den drei 
+ist die URL, die auf den Auth Service zeigt, welcher die jeweilige Rolle überprüft.
+Hier der Endpunkt für die Admin-Authentifizierung als Beispiel:
+\begin{CodeBox}[language=bash]
+location = /auth_admin {
+    internal;
+    proxy_pass http://auth_service/api/auth/internal/verify/admin;
+    proxy_pass_request_body off;
+    proxy_set_header Content-Length "";
+}
+\end{CodeBox}
+
+\paragraph{Routing mit Authentifizierung}
+Jeder Endpunkt verwendet \texttt{auth\_request}, um die Berechtigung zu prüfen. Das folgende 
+Beispiel zeigt das Routing für den User Service, der ausschließlich 
+Administratoren zugänglich ist:
+
+\begin{CodeBox}[language=bash]
+location ~ ^/users(/.*)?$ {
+    auth_request /auth_admin;
+    proxy_pass http://user_service/api/users$1$is_args$args;
+}
+\end{CodeBox}
+
+\paragraph{API-Key Bypass}
+Für die geplante Anbindung an die Zeitnehmer-App kann die Authentifizierung mittels \gls{API}-Key 
+umgangen werden:
+
+\begin{CodeBox}[language=bash]
+map $http_x_api_key $skip_auth {
+    default 0;
+    "this-is-not-the-key" 1;
+}
+location = /auth_admin {
+    internal;
+    if ($skip_auth = 1) { return 204; }
+    proxy_pass http://auth_service/api/auth/internal/verify/admin;
+}
+\end{CodeBox}
+
+\subsubsection{CRUD-Operationen}
+\label{sec:impl_crud}
+Die \gls{CRUD}-Operationen sind in allen Services nach demselben Muster 
+aufgebaut: Ein Router-Modul definiert die HTTP-Endpunkte und 
+delegiert die eigentliche Logik an ein separates \gls{CRUD}-Modul. 
+Dieses Muster wird am Beispiel des Team Service erläutert.
+
+\paragraph{Router}
+Der Router definiert die Endpunkte und deren HTTP-Methoden. 
+Die Datenbankverbindung wird über FastAPIs Dependency-Injection 
+als \texttt{SessionDep} bereitgestellt, sie wird automatisch 
+geöffnet, an den Endpunkt übergeben und nach dem Request 
+wieder geschlossen. Auf der HTTP-Ebene ändert sich dann immer nur die Methode,
+die der Router aufruft (POST, GET, PUT, DELETE).
+Hier der Create-Endpunkt des Team Service als Beispiel:
+
+\begin{CodeBox}[language=Python]
+@router.post("/", response_model=TeamResponse)
+def create_team(db: SessionDep, team: TeamCreate):
+    return crud.create_team(db=db, team=team)
+\end{CodeBox}
+
+\paragraph{Erstellen}
+Beim Erstellen eines Teams wird das eingehende Pydantic-Schema 
+direkt in ein SQLAlchemy-Modell umgewandelt und in der Datenbank 
+gespeichert. Bei einem Fehler wird die Transaktion zurückgerollt:
+\begin{CodeBox}[language=Python, caption={Erstellen eines Teams}]
+def create_team(*, db: SessionDep, team: TeamCreate):
+    try:
+        db_team = Team(**team.model_dump(exclude_unset=True))
+        db.add(db_team)
+        db.commit()
+        db.refresh(db_team)
+        return db_team
+    except Exception as exc:
+        db.rollback()
+        raise ServiceError() from exc
+\end{CodeBox}
+
+\newpage
+
+\paragraph{Aktualisieren}
+
+Beim Aktualisieren werden nur die Felder überschrieben, die 
+tatsächlich in der Anfrage enthalten sind. Das 
+\texttt{exclude\_unset=True}-Flag von Pydantic stellt sicher, 
+dass nicht gesetzte Felder nicht auf ihre Standardwerte 
+zurückgesetzt werden:
+
+\begin{CodeBox}[language=Python, caption={Aktualisieren eines Teams}]
+def update_team(*, db: SessionDep, team_id: int,
+                team_update: TeamUpdate, request: Request):
+    check_team_permissions(db=db, team_id=team_id, request=request)
+    try:
+        db_team = get_team(db=db, team_id=team_id, request=request)
+        update_data = team_update.model_dump(
+            exclude_unset=True,
+            exclude={"id"},
+        )
+        for field, value in update_data.items():
+            setattr(db_team, field, value)
+        db.commit()
+        db.refresh(db_team)
+        return db_team
+    except EntityDoesNotExistError:
+        db.rollback()
+        raise
+    except Exception as exc:
+        db.rollback()
+        raise ServiceError() from exc
+\end{CodeBox}
+
+\newpage
+
+\paragraph{Löschen}
+
+Beim Löschen wird das angeforderte Team aus der Datenbank entfernt.
+Zuvor wird eine Berechtigungsprüfung durchgeführt, um sicherzustellen, dass der Zugriff erlaubt ist.
+
+\begin{CodeBox}[language=Python, caption={Löschen eines Teams mit Vorabprüfung}]
+def delete_team(*, db: SessionDep, team_id: int, request: Request):
+    check_team_permissions(db=db, team_id=team_id, request=request)
+    try:
+        db_team = get_team(db=db, team_id=team_id, request=request)
+        db.delete(db_team)
+        db.commit()
+        return db_team
+    except EntityDoesNotExistError:
+        db.rollback()
+        raise
+    except Exception as exc:
+        db.rollback()
+        raise ServiceError() from exc
+\end{CodeBox}
+
+\paragraph{Rollenbasierte Berechtigungsprüfung}
+
+Zugriffe werden zusätzlich durch eine 
+serviceinterne Berechtigungsprüfung abgesichert. Teamleiter 
+dürfen ausschließlich auf ihr eigenes Team zugreifen,
+die Team-ID des anfragenden Benutzers wird dabei aus dem 
+vom Nginx API-Gateway weitergeleiteten \texttt{X-Team-Id}-Header 
+ausgelesen:
+
+\begin{CodeBox}[language=Python, caption={Rollenbasierte Berechtigungsprüfung im Team Service}]
+def check_team_permissions(*, db: SessionDep,
+                           team_id: int | None = None,
+                           request: Request):
+    role = request.headers.get("X-Role")
+    user_team_id = request.headers.get("X-Team-Id")
+    if role == "TEAM_LEAD" and team_id is not None:
+        if int(team_id) != int(user_team_id):
+            raise InsufficientPermissions(
+                "Teamleads can only operate on their own team."
+            )
+\end{CodeBox}
+
+\subsubsection{Authentifizierung mit Keycloak}
+\label{sec:impl_keycloak}
+Die Authentifizierung funktioniert mit JWT-Tokens, die von Keycloak 
+ausgestellt und vom Auth Service validiert werden. Keycloak 
+übernimmt dabei die vollständige Verwaltung von Benutzerkonten, 
+Passwörtern und Rollen. Der Auth Service fungiert als 
+Vermittler zwischen Keycloak und dem restlichen System.
+
+\paragraph{Login}
+
+Beim Login sendet die Webanwendung Benutzername und Passwort 
+an den Auth Service, der diese über den OAuth2 Resource Owner 
+Password Flow an Keycloak weiterleitet. Bei Erfolg liefert 
+Keycloak ein Access- sowie ein Refresh-Token zurück, die 
+in der Webanwendung im \texttt{localStorage} gespeichert werden.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{login_ablauf.png}
+    \caption{Sequenzdiagramm: Login-Ablauf}
+    \label{fig:seq_login}
+\end{figure}
+
+\newpage
+
+\paragraph{Authentifizierte Anfrage}
+
+Bei jeder API-Anfrage prüft Nginx über das 
+\texttt{auth\_request}-Modul, ob der mitgesendete JWT gültig 
+ist. Der Auth Service validiert den Token lokal anhand der 
+gecachten öffentlichen Schlüssel von Keycloak, Keycloak 
+selbst wird dabei nicht eingebunden. Nach erfolgreicher 
+Validierung wird die Anfrage mit den Benutzerinformationen 
+als Header an den Ziel-Service weitergeleitet.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{AuthentifizierteAnfrage.png}
+    \caption{Sequenzdiagramm: Authentifizierte Anfrage}
+    \label{fig:seq_request}
+\end{figure}
+
+\newpage
+
+\paragraph{Token-Refresh}
+
+Stellt die Webanwendung fest, dass das Access-Token abgelaufen 
+ist, wird vor der eigentlichen Anfrage automatisch ein 
+Token-Refresh durchgeführt. Ist auch das Refresh-Token 
+abgelaufen, wird die Sitzung beendet und der Benutzer zur 
+Login-Seite weitergeleitet.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{token_refresh.png}
+    \caption{Sequenzdiagramm: Token-Refresh}
+    \label{fig:seq_refresh}
+\end{figure}
+
+\subsubsection{Inter-Service-Kommunikation}
+\label{sec:impl_interservice}
+
+Die Services kommunizieren untereinander über synchrone 
+HTTP-Aufrufe mittels der Python-\texttt{requests}-Bibliothek\cite{requests}. 
+Die URLs der anderen Services werden dabei über Umgebungsvariablen 
+konfiguriert und beim Start des Containers eingelesen, sodass 
+keine URLs hart im Code hinterlegt sind.
+
+\paragraph{Validierung von Fremdbeziehungen}
+Wie in~\ref{sec:server} beschrieben, existieren keine echten Datenbankfremdschlüssel über Servicegrenzen hinweg.
+Stattdessen werden Referenzen auf andere Services vor dem Speichern explizit validiert. Der Attempt Service prüft 
+beispielsweise vor dem Erstellen eines Versuchs, ob das 
+referenzierte Team, der Fahrer und der Bewerb tatsächlich 
+existieren:
+
+\begin{CodeBox}[language=Python, caption={Validierung von Fremdbeziehungen vor dem Speichern}]
+def _validate_team(team_id: int):
+    resp = requests.get(f"{TEAM_URL}/api/teams/{team_id}")
+    if resp.status_code == 404:
+        raise EntityDoesNotExistError(f"Team {team_id} does not exist")
+    if resp.status_code in (401, 403):
+        raise AuthenticationFailed(f"Unauthorized to fetch team {team_id}")
+    if resp.status_code != 200:
+        raise ServiceError(f"Failed to fetch team {team_id}: {resp.text}")
+
+def create_attempt(*, db: SessionDep, attempt: AttemptCreate):
+    _validate_team(attempt.team_id)
+    _validate_driver(attempt.driver_id)
+    _validate_challenge(attempt.challenge_id)
+    # ...
+\end{CodeBox}
+
+\paragraph{Auslösen von Folgeoperationen}
+
+Nach dem Speichern eines Versuchs löst der Attempt Service 
+automatisch die Punkteberechnung im Score Service aus. 
+Werden dabei optional auch Strafpunkte mitgeliefert, werden 
+diese zuerst angelegt:
+
+\begin{CodeBox}[language=Python]
+if attempt.penalty_count and attempt.penalty_type:
+    penalty_payload = {
+        "attempt_id":    db_attempt.id,
+        "count":         attempt.penalty_count,
+        "penalty_type_id": attempt.penalty_type,
+    }
+    pen_resp = requests.post(
+        f"{SCORE_URL}/api/penalties/", json=penalty_payload
+
+score_resp = requests.post(
+    f"{SCORE_URL}/api/scores/",
+    json={"attempt_id": db_attempt.id}
+)
+\end{CodeBox}
+
 \subsection{Web App}
-% Autor: Niklas | Umfang: 2–3 Seiten (inkl. Screenshots)
-% TODO: Screenshot von Web App
+\label{sec:impl_webapp}
+
+\subsubsection{Kommunikation mit dem Server}
+\label{sec:impl_webapp_api}
+
+Die Kommunikation mit dem Backend erfolgt über typisierte 
+API-Client-Module, die für jeden Service ein eigenes Objekt 
+bereitstellen. Alle authentifizierten Anfragen laufen über 
+die zentrale \texttt{authenticatedFetch}-Funktion, die den 
+Token automatisch als \texttt{Authorization}-Header 
+beifügt:
+
+\begin{CodeBox}[, caption={Zentrale Fetch-Funktion mit automatischer Authentifizierung}]
+export async function authenticatedFetch(
+  url: string,
+  options: RequestInit = {}
+): Promise<Response> {
+  const token = await AuthService.getValidToken()
+
+  if (!token) {
+    window.dispatchEvent(new Event('auth:session-expired'))
+    throw new Error('Not authenticated')
+  }
+
+  const headers = new Headers(options.headers)
+  headers.set('Authorization', `Bearer ${token}`)
+  if (!(options.body instanceof FormData)) {
+    headers.set('Content-Type', 'application/json')
+  }
+  return fetch(url, { ...options, headers })
+}
+\end{CodeBox}
+
+\newpage
+
+Die API-Client-Module abstrahieren die HTTP-Aufrufe hinter 
+typisierten Funktionen. Das folgende Beispiel zeigt die 
+\texttt{createTeam}-Funktion des Team Service:
+
+\begin{CodeBox}[, caption={Typisierter API-Client am Beispiel des Team Service}]
+  async createTeam(data: TeamCreate): Promise<Team> {
+    const response = await authenticatedFetch(`${API_BASE_URL}/teams/`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    })
+    if (!response.ok) throw new Error('Failed to create team')
+    return response.json()
+  },
+\end{CodeBox}
+
+\subsubsection{Rollenbasierte Zugriffskontrolle}
+\label{sec:impl_webapp_permissions}
+
+Die Zugriffskontrolle auf der Clientseite wird über ein 
+zentrales Berechtigungsmodul gesteuert. Für jede Rolle 
+ist definiert, welche Tabs sichtbar und welche Aktionen 
+erlaubt sind.
+Hier ein Ausschnitt aus der Berechtigungsdefinition:
+
+\begin{CodeBox}[, caption={Rollenbasierte Berechtigungsdefinition}]
+const rolePermissions: Record<UserRole, RolePermissions> = {
+  admin: {
+    allowedTabs: ['leaderboard', 'attempts', 'teams',
+                  'challenges', 'users', 'export', 'login'],
+    canViewAttempts: true,
+    canEditTeams: true,
+    canEditUsers: true,
+    canEditChallenges: true,
+    canExport: true,
+  },
+\end{CodeBox}
+
+In der Hauptkomponente wird bei jedem Tab-Wechsel geprüft, 
+ob die Rolle des aktuellen Benutzers den Zugriff erlaubt.
+
+\begin{CodeBox}[, caption={Tab-Zugriffskontrolle in der Hauptkomponente}]
+const handleTabChange = (tab: Tabs) => {
+  if (canAccessTab(currentUser?.role || null, tab)) {
+    setActiveTab(tab)
+  }
+}
+\end{CodeBox}
+

@@ -27,7 +27,7 @@ Komponenten des Servers und deren Zusammenspiel intern sowie nach außen.
 \subsection{Server}
 \label{sec:server}
 Die Microservices kommunizieren untereinander über \gls{API}, wenn sie Daten
-von anderen Services benötigen. Braucht z.B. der Attempt Service Informationen
+von anderen Services benötigen. Benötigt z. B. der Attempt Service Informationen
 über ein Team, fragt er diese beim Team Service ab. Jeder Service verwaltet seine 
 Daten in seiner eigenen PostgreSQL-Datenbank. Da jeder Service eine eigene Datenbank 
 besitzt, existieren die im Gesamtschema~\ref{fig:datenbankschema} dargestellten Beziehungen
@@ -85,7 +85,7 @@ Keycloak als Identity Provider verbunden.
 \paragraph{Interne Verifikation}
 Der Auth Service stellt drei interne Endpunkte bereit, welche ausschließlich 
 vom \gls{API}-Gateway aufgerufen werden. Es gibt pro Nutzerrolle (Administrator, Teamleiter, Viewer) 
-einen Endpunkt, welcher überprüft, ob der Nutzer die entsprechende Rolle besitzt.
+einen Endpunkt, der überprüft, ob der Nutzer die entsprechende Rolle besitzt.
 
 \paragraph{Login \& Token-Refresh}
 Öffentlich stellt der Auth Service zwei Endpunkte bereit: einen Login-Endpunkt
@@ -94,8 +94,8 @@ und einen Refresh-Endpunkt. Diese dienen der Authentifizierung sowie der Erneuer
 \subsubsection{User Service}
 \label{sec:user_service}
 Der User Service verwaltet die Nutzerkonten außerhalb von Keycloak und agiert 
-als Bindeglied zwischen Keycloak und der restlichen Anwendung. Er speichert nur systeminterne Daten
-; Passwörter und Rollen liegen jedoch in Keycloak.
+als Bindeglied zwischen Keycloak und der restlichen Anwendung. Er speichert nur systeminterne Daten,
+während Passwörter und Rollen in Keycloak liegen.
 
 \paragraph{Datenbankschema}
 \begin{table}[h]
