@@ -1,0 +1,99 @@
+\babel@toc {ngerman}{}\relax 
+\contentsline {section}{\numberline {1}Eidesstattliche Erklärung}{3}{section.1}%
+\contentsline {section}{\numberline {2}Kurzbeschreibung}{4}{section.2}%
+\contentsline {section}{\numberline {3}Vorwort}{6}{section.3}%
+\contentsline {section}{\numberline {4}Einleitung}{9}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Ziele}{9}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Individuelle Aufgabenstellung}{10}{subsection.4.2}%
+\contentsline {section}{\numberline {5}Theoretische Grundlagen}{11}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Containerisierung}{11}{subsection.5.1}%
+\contentsline {subsubsection}{\numberline {5.1.1}Docker}{11}{subsubsection.5.1.1}%
+\contentsline {subsubsection}{\numberline {5.1.2}Architektur von Docker}{11}{subsubsection.5.1.2}%
+\contentsline {subsubsection}{\numberline {5.1.3}Funktionsweise}{12}{subsubsection.5.1.3}%
+\contentsline {subsubsection}{\numberline {5.1.4}Docker Compose}{12}{subsubsection.5.1.4}%
+\contentsline {subsubsection}{\numberline {5.1.5}Vorteile der Containerisierung}{12}{subsubsection.5.1.5}%
+\contentsline {subsection}{\numberline {5.2}Microservices}{13}{subsection.5.2}%
+\contentsline {subsubsection}{\numberline {5.2.1}Vorteile von Microservices}{13}{subsubsection.5.2.1}%
+\contentsline {subsubsection}{\numberline {5.2.2}Nutzung von Microservices in dieser \gls {DA}}{13}{subsubsection.5.2.2}%
+\contentsline {section}{\numberline {6}Technologieauswahl}{14}{section.6}%
+\contentsline {subsection}{\numberline {6.1}GitHub}{14}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Nginx}{14}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Docker}{14}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}PostgreSQL}{15}{subsection.6.4}%
+\contentsline {subsection}{\numberline {6.5}Keycloak}{15}{subsection.6.5}%
+\contentsline {subsection}{\numberline {6.6}SQLAlchemy}{15}{subsection.6.6}%
+\contentsline {subsection}{\numberline {6.7}FastAPI}{16}{subsection.6.7}%
+\contentsline {subsection}{\numberline {6.8}Next.js}{16}{subsection.6.8}%
+\contentsline {subsection}{\numberline {6.9}shadcn/ui}{16}{subsection.6.9}%
+\contentsline {section}{\numberline {7}Systemarchitektur}{17}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Überblick}{17}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Server}{18}{subsection.7.2}%
+\contentsline {subsubsection}{\numberline {7.2.1}Nginx API-Gateway}{19}{subsubsection.7.2.1}%
+\contentsline {paragraph}{\nonumberline Routing}{19}{paragraph*.4}%
+\contentsline {paragraph}{\nonumberline Authentifizierung}{19}{paragraph*.5}%
+\contentsline {paragraph}{\nonumberline Header-Weitergabe}{19}{paragraph*.6}%
+\contentsline {paragraph}{\nonumberline CORS}{19}{paragraph*.7}%
+\contentsline {subsubsection}{\numberline {7.2.2}Auth Service}{20}{subsubsection.7.2.2}%
+\contentsline {paragraph}{\nonumberline Interne Verifikation}{20}{paragraph*.8}%
+\contentsline {paragraph}{\nonumberline Login \& Token-Refresh}{20}{paragraph*.9}%
+\contentsline {subsubsection}{\numberline {7.2.3}User Service}{20}{subsubsection.7.2.3}%
+\contentsline {paragraph}{\nonumberline Datenbankschema}{20}{paragraph*.10}%
+\contentsline {paragraph}{\nonumberline Funktionalität}{20}{paragraph*.12}%
+\contentsline {subsubsection}{\numberline {7.2.4}Team Service}{21}{subsubsection.7.2.4}%
+\contentsline {paragraph}{\nonumberline Datenbankschema}{21}{paragraph*.13}%
+\contentsline {paragraph}{\nonumberline Funktionalität}{21}{paragraph*.16}%
+\contentsline {subsubsection}{\numberline {7.2.5}Challenge Service}{22}{subsubsection.7.2.5}%
+\contentsline {paragraph}{\nonumberline Datenbankschema}{22}{paragraph*.17}%
+\contentsline {paragraph}{\nonumberline Funktionalität}{22}{paragraph*.19}%
+\contentsline {subsubsection}{\numberline {7.2.6}Attempt Service}{23}{subsubsection.7.2.6}%
+\contentsline {paragraph}{\nonumberline Datenbankschema}{23}{paragraph*.20}%
+\contentsline {paragraph}{\nonumberline Funktionalität}{23}{paragraph*.22}%
+\contentsline {paragraph}{\nonumberline Export}{23}{paragraph*.23}%
+\contentsline {subsubsection}{\numberline {7.2.7}Score Service}{24}{subsubsection.7.2.7}%
+\contentsline {paragraph}{\nonumberline Datenbankschema}{24}{paragraph*.24}%
+\contentsline {paragraph}{\nonumberline Punkteberechnung}{24}{paragraph*.28}%
+\contentsline {paragraph}{\nonumberline Leaderboard}{24}{paragraph*.29}%
+\contentsline {subsection}{\numberline {7.3}Web App}{25}{subsection.7.3}%
+\contentsline {paragraph}{\nonumberline Authentifizierung \& Sitzungsverwaltung}{25}{paragraph*.30}%
+\contentsline {paragraph}{\nonumberline Rollenbasierte Ansichten}{25}{paragraph*.31}%
+\contentsline {paragraph}{\nonumberline Tabs}{26}{paragraph*.32}%
+\contentsline {section}{\numberline {8}Implementation}{28}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Server}{28}{subsection.8.1}%
+\contentsline {subsubsection}{\numberline {8.1.1}Zugriffsberechtigungen}{28}{subsubsection.8.1.1}%
+\contentsline {subsubsection}{\numberline {8.1.2}API-Gateway}{29}{subsubsection.8.1.2}%
+\contentsline {paragraph}{\nonumberline Upstream-Konfiguration}{29}{paragraph*.36}%
+\contentsline {paragraph}{\nonumberline Interne Authentifizierungsendpunkte}{30}{paragraph*.37}%
+\contentsline {paragraph}{\nonumberline Routing mit Authentifizierung}{30}{paragraph*.38}%
+\contentsline {paragraph}{\nonumberline API-Key Bypass}{30}{paragraph*.39}%
+\contentsline {subsubsection}{\numberline {8.1.3}CRUD-Operationen}{31}{subsubsection.8.1.3}%
+\contentsline {paragraph}{\nonumberline Router}{31}{paragraph*.40}%
+\contentsline {paragraph}{\nonumberline Erstellen}{31}{paragraph*.41}%
+\contentsline {paragraph}{\nonumberline Aktualisieren}{32}{paragraph*.42}%
+\contentsline {paragraph}{\nonumberline Löschen}{33}{paragraph*.43}%
+\contentsline {paragraph}{\nonumberline Rollenbasierte Berechtigungsprüfung}{33}{paragraph*.44}%
+\contentsline {subsubsection}{\numberline {8.1.4}Authentifizierung mit Keycloak}{34}{subsubsection.8.1.4}%
+\contentsline {paragraph}{\nonumberline Login}{34}{paragraph*.45}%
+\contentsline {paragraph}{\nonumberline Authentifizierte Anfrage}{35}{paragraph*.47}%
+\contentsline {paragraph}{\nonumberline Token-Refresh}{36}{paragraph*.49}%
+\contentsline {subsubsection}{\numberline {8.1.5}Inter-Service-Kommunikation}{36}{subsubsection.8.1.5}%
+\contentsline {paragraph}{\nonumberline Validierung von Fremdbeziehungen}{36}{paragraph*.51}%
+\contentsline {paragraph}{\nonumberline Auslösen von Folgeoperationen}{37}{paragraph*.52}%
+\contentsline {subsection}{\numberline {8.2}Web App}{38}{subsection.8.2}%
+\contentsline {subsubsection}{\numberline {8.2.1}Kommunikation mit dem Server}{38}{subsubsection.8.2.1}%
+\contentsline {subsubsection}{\numberline {8.2.2}Rollenbasierte Zugriffskontrolle}{39}{subsubsection.8.2.2}%
+\contentsline {section}{\numberline {9}Testen}{40}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Teststrategie}{40}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}Pytest}{40}{subsection.9.2}%
+\contentsline {subsubsection}{\numberline {9.2.1}Unit-Tests}{40}{subsubsection.9.2.1}%
+\contentsline {subsubsection}{\numberline {9.2.2}Integrationstests}{41}{subsubsection.9.2.2}%
+\contentsline {subsection}{\numberline {9.3}Playwright}{41}{subsection.9.3}%
+\contentsline {section}{\numberline {10}Fazit und Ausblick}{42}{section.10}%
+\contentsline {subsection}{\numberline {10.1}Zusammenfassung}{42}{subsection.10.1}%
+\contentsline {subsection}{\numberline {10.2}Zukunftsausblick}{42}{subsection.10.2}%
+\contentsline {section}{\numberline {11}Anhang}{43}{section.11}%
+\contentsline {section}{\numberline {12}Verzeichnisse}{47}{section.12}%
+\contentsline {subsection}{\numberline {12.1}Abbildungsverzeichnis}{47}{subsection.12.1}%
+\contentsline {subsection}{\numberline {12.2}Tabellenverzeichnis}{48}{subsection.12.2}%
+\contentsline {subsection}{\numberline {12.3}Abkürzungsverzeichnis}{49}{subsection.12.3}%
+\contentsline {subsection}{\numberline {12.4}Literaturverzeichnis}{50}{subsection.12.4}%
+\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

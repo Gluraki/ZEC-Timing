@@ -1,0 +1,10 @@
+\babel@toc {ngerman}{}\relax 
+\contentsline {figure}{\numberline {1}{\ignorespaces Docker Logo}}{11}{figure.caption.1}%
+\contentsline {figure}{\numberline {2}{\ignorespaces Systemarchitektur}}{17}{figure.caption.2}%
+\contentsline {figure}{\numberline {3}{\ignorespaces Datenbankschema des ZEC-Timing-Systems}}{18}{figure.caption.3}%
+\contentsline {figure}{\numberline {4}{\ignorespaces Leaderboard-Tab für Viewer}}{26}{figure.caption.33}%
+\contentsline {figure}{\numberline {5}{\ignorespaces Teams-Tab für Teamleiter}}{27}{figure.caption.34}%
+\contentsline {figure}{\numberline {6}{\ignorespaces Teams-Tab für Administrator}}{27}{figure.caption.35}%
+\contentsline {figure}{\numberline {7}{\ignorespaces Sequenzdiagramm: Login-Ablauf}}{34}{figure.caption.46}%
+\contentsline {figure}{\numberline {8}{\ignorespaces Sequenzdiagramm: Authentifizierte Anfrage}}{35}{figure.caption.48}%
+\contentsline {figure}{\numberline {9}{\ignorespaces Sequenzdiagramm: Token-Refresh}}{36}{figure.caption.50}%
