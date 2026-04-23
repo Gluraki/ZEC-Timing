@@ -3,8 +3,6 @@ services:
     build:
       context: ./Web-App
       dockerfile: Dockerfile
-      args:
-        NEXT_PUBLIC_API_URL: http://localhost
     container_name: web
     ports:
       - "3000:3000"
@@ -35,7 +33,8 @@ services:
     ports:
       - "8001:8000"
     depends_on:
-      - user-db
+      user-db:
+        condition: service_healthy
     environment:
       PROJECT_NAME: user-service
       POSTGRES_SERVER: user-db
@@ -57,7 +56,8 @@ services:
     ports:
       - "8002:8000"
     depends_on:
-      - auth-db
+      auth-db:
+        condition: service_healthy
     environment:
       PROJECT_NAME: auth-service
       POSTGRES_SERVER: auth-db
@@ -84,7 +84,8 @@ services:
     ports:
       - "8003:8000"
     depends_on:
-      - challenge-db
+      challenge-db:
+        condition: service_healthy
     environment:
       PROJECT_NAME: challenge-service
       POSTGRES_SERVER: challenge-db
@@ -101,7 +102,8 @@ services:
     ports:
       - "8004:8000"
     depends_on:
-      - attempt-db
+      attempt-db:
+        condition: service_healthy
     environment:
       PROJECT_NAME: attempt-service
       POSTGRES_SERVER: attempt-db
@@ -121,7 +123,8 @@ services:
     ports:
       - "8005:8000"
     depends_on:
-      - score-db
+      score-db:
+        condition: service_healthy
     environment:
       PROJECT_NAME: score-service
       POSTGRES_SERVER: score-db
@@ -141,7 +144,8 @@ services:
     ports:
       - "8006:8000"
     depends_on:
-      - team-db
+      team-db:
+        condition: service_healthy
     environment:
       PROJECT_NAME: team-service
       POSTGRES_SERVER: team-db
@@ -152,86 +156,116 @@ services:
       ATTEMPT_SERVICE_URL: http://attempt-service:8004
 
   user-db:
-    image: postgres:16
+    image: postgres:18-alpine
     container_name: user-db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: userdb
     volumes:
-      - user_db_data:/var/lib/postgresql/data
+      - user_db_data:/var/lib/postgresql
     ports:
       - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d userdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   auth-db:
-    image: postgres:16
+    image: postgres:18-alpine
     container_name: auth-db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: authdb
     volumes:
-      - auth_db_data:/var/lib/postgresql/data
+      - auth_db_data:/var/lib/postgresql
     ports:
       - "5434:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d authdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   challenge-db:
-    image: postgres:16
+    image: postgres:18-alpine
     container_name: challenge-db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: challengedb
     volumes:
-      - challenge_db_data:/var/lib/postgresql/data
+      - challenge_db_data:/var/lib/postgresql
     ports:
       - "5435:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d challengedb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   attempt-db:
-    image: postgres:16
+    image: postgres:18-alpine
     container_name: attempt-db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: attemptdb
     volumes:
-      - attempt_db_data:/var/lib/postgresql/data
+      - attempt_db_data:/var/lib/postgresql
     ports:
       - "5436:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d attemptdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   score-db:
-    image: postgres:16
+    image: postgres:18-alpine
     container_name: score-db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: scoredb
     volumes:
-      - score_db_data:/var/lib/postgresql/data
+      - score_db_data:/var/lib/postgresql
     ports:
       - "5437:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d scoredb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   team-db:
-    image: postgres:16
+    image: postgres:18-alpine
     container_name: team-db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: teamdb
     volumes:
-      - team_db_data:/var/lib/postgresql/data
+      - team_db_data:/var/lib/postgresql
     ports:
       - "5438:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d teamdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   keycloak-db:
-    image: postgres:17
+    image: postgres:18-alpine
     container_name: keycloak-db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: keycloak
     volumes:
-      - keycloak_db_data:/var/lib/postgresql/data
+      - keycloak_db_data:/var/lib/postgresql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
@@ -243,8 +277,8 @@ services:
     container_name: keycloak
     command: ["start-dev"]
     environment:
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
       KC_DB: postgres
       KC_DB_URL_HOST: keycloak-db
       KC_DB_URL_PORT: 5432

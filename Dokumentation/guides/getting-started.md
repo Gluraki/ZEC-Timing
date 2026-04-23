@@ -2,6 +2,7 @@
 
 ## Prerequisites
 - Docker
+- Docker Compose
 
 ## Setup Instructions
 
@@ -9,7 +10,6 @@
 ```bash
 docker-compose up --build
 ```
-Add `-d` to run in detached mode.
 
 ### 2. Configure Keycloak
 
@@ -30,5 +30,3 @@ Add `-d` to run in detached mode.
     - docker-compose down
     - docker-compose up --build -d
 
-### 3. Verify Installation
-Once configured, the ZEC-API should be running and ready to accept requests.

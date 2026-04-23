@@ -1,32 +1,36 @@
 # ZEC-Timing
 
-This repository contains:
-- A Next.js frontend in [Web-App/](Web-App/)
-- A microservice backend stack in [ZEC-API/](ZEC-API/)
-- Architecture and API docs in [docs/](docs/)
+Dieses Repository enthält:
+- Ein Next.js-Frontend in [Web-App/](Web-App/)
+- Einen Microservice-Backend-Stack in [ZEC-API/](ZEC-API/)
+- Dokumentation in [Dokumentation/](Dokumentation/)
 
-## What This Is
+## Was das ist
 
-ZEC-Timing is a containerized system for:
-- User/authentication handling (with Keycloak)
-- Teams and drivers management
-- Challenge and attempt tracking
-- Score and penalty calculation
+ZEC-Timing ist ein containerisiertes System für:
+- Benutzer- und Authentifizierungsverwaltung (mit Keycloak)
+- Verwaltung von Teams und Fahrern
+- Tracking von Challenges und Versuchen
+- Berechnung von Scores und Strafpunkten
 
-## Starter Guide
-Start here:
-- Getting started: [docs/guides/getting-started.md](docs/guides/getting-started.md)
+## Schnellstart
 
-## Documentation
+Beginne hier:
+- Erste Schritte: [Dokumentation/guides/getting-started.md](Dokumentation/guides/getting-started.md)
 
-Architecture:
-- System design: [docs/architecture/system-design.md](docs/architecture/system-design.md)
-- Database schema: [docs/architecture/database-schema.md](docs/architecture/database-schema.md)
+## Dokumentation
 
-Service API docs:
-- Attempt Service: [docs/api/attempt_service.md](docs/api/attempt_service.md)
-- Auth Service: [docs/api/auth_service.md](docs/api/auth_service.md)
-- Challenge Service: [docs/api/challenge_service.md](docs/api/challenge_service.md)
-- Score Service: [docs/api/score_service.md](docs/api/score_service.md)
-- Team Service: [docs/api/team_service.md](docs/api/team_service.md)
-- User Service: [docs/api/user_service.md](docs/api/user_service.md)
+Architektur:
+- Systemdesign: [Dokumentation/architecture/system-design.md](Dokumentation/architecture/system-design.md)
+- Datenbankschema: [Dokumentation/architecture/database-schema.md](Dokumentation/architecture/database-schema.md)
+
+Service-API-Dokumentation:
+- Attempt Service: [Dokumentation/api/attempt_service.md](Dokumentation/api/attempt_service.md)
+- Auth Service: [Dokumentation/api/auth_service.md](Dokumentation/api/auth_service.md)
+- Challenge Service: [Dokumentation/api/challenge_service.md](Dokumentation/api/challenge_service.md)
+- Score Service: [Dokumentation/api/score_service.md](Dokumentation/api/score_service.md)
+- Team Service: [Dokumentation/api/team_service.md](Dokumentation/api/team_service.md)
+- User Service: [Dokumentation/api/user_service.md](Dokumentation/api/user_service.md)
+
+Schriftlicher Teil:
+-  Latex Code Sammlung: [Dokumentation/Schriftliche_Abgabe/](Dokumentation/schriftliche_abgabe/)

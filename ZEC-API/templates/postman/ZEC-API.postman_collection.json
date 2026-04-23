@@ -1,0 +1,2120 @@
+{
+  "info": {
+    "_postman_id": "f48f1c62-6a49-42c0-a937-5c074ee139d8",
+    "name": "ZEC-API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "51127673",
+    "_collection_link": "https://go.postman.co/collection/51127673-f48f1c62-6a49-42c0-a937-5c074ee139d8?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "acces token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "username",
+                  "value": "team_lead",
+                  "type": "text",
+                  "uuid": "62b75684-0998-4db0-a29c-d2164d1736b0"
+                },
+                {
+                  "key": "password",
+                  "value": "123",
+                  "type": "text",
+                  "uuid": "3022e1b4-9380-4356-8824-cd66ffec420c"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "login"
+              ]
+            },
+            "description": "Generated from cURL: curl -X POST \"http://localhost/api/auth/login\" -H \"Content-Type: application/json\" -d '{\"username\": \"{{test_username}}\", \"password\": \"{{test_password}}\"}'"
+          },
+          "response": []
+        },
+        {
+          "name": "refresh token",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "refresh_token",
+                  "value": "eyJhbGciOiJIUzUxMiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI1ZTY0YWU3Ni0wMzZjLTQyNmUtYTUwMC01ZTQ3Yjc3NDdhNDEifQ.eyJleHAiOjE3NjczOTYwMjMsImlhdCI6MTc2NzM5NDIyMywianRpIjoiMjg4NjY0M2ItZDQzNi05MmE5LTI1OTUtYzk5YTQ4NDc3YjUxIiwiaXNzIjoiaHR0cDovL2tleWNsb2FrOjgwODAvcmVhbG1zL3plYy1yZWFsbSIsImF1ZCI6Imh0dHA6Ly9rZXljbG9hazo4MDgwL3JlYWxtcy96ZWMtcmVhbG0iLCJzdWIiOiI3OGI5NjUwYS1lMTdkLTRmZjEtYmRmMC1mZWMyNzJhOWFhODciLCJ0eXAiOiJSZWZyZXNoIiwiYXpwIjoibG9naW4tY2xpZW50Iiwic2lkIjoiMDU5YjE3NzQtODhkOC0wNWVlLThjMzctZGU4YjdjMzA5MjE5Iiwic2NvcGUiOiJvcGVuaWQgYWNyIHdlYi1vcmlnaW5zIGVtYWlsIHByb2ZpbGUgYmFzaWMgcm9sZXMifQ.ps19NC_Ea4hg5UR9wS0t92frhYbR6aPfhiTbzDNjDfinsTfS3ZVhzU1FXEHezHIjDE2scNEpfD7oSTY19_CLzA",
+                  "type": "text",
+                  "uuid": "6484989d-9fab-48d1-95c9-d077fcf6257a"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost/refresh",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "refresh"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "attempt",
+      "item": [
+        {
+          "name": "create attempt",
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key",
+                  "type": "string"
+                },
+                {
+                  "key": "value",
+                  "value": "api-key-1-very-secret",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"team_id\":2,\r\n  \"driver_id\":7,\r\n  \"challenge_id\":1,\r\n  \"start_time\":\"1970-01-01T11:10:10.000001\",\r\n  \"end_time\":\"1970-01-01T11:10:50.000001\",\r\n  \"energy_used\":1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost/attempts/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "attempts",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update attempt",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJneE05czJjcGg5ajhJZzFHeWVGb1JXWDVGdjJ1RFlGZWxQOU5KX200cUJnIn0.eyJleHAiOjE3Njc5ODk2NTksImlhdCI6MTc2Nzk4OTM1OSwianRpIjoib25ydHJvOmQzYzMxNmNlLTE3NmQtY2Q1Yy00NTBlLTJhMjBlMDA0ODdlYyIsImlzcyI6Imh0dHA6Ly9rZXljbG9hazo4MDgwL3JlYWxtcy96ZWMtcmVhbG0iLCJhdWQiOlsidXNlci1hZG1pbi1jbGllbnQiLCJhY2NvdW50Il0sInN1YiI6Ijc4Yjk2NTBhLWUxN2QtNGZmMS1iZGYwLWZlYzI3MmE5YWE4NyIsInR5cCI6IkJlYXJlciIsImF6cCI6ImxvZ2luLWNsaWVudCIsInNpZCI6IjlkYWJmN2E3LWE3MzEtNGRmYi0wNjk0LTNlYzIxOTNkN2RmOSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiLyoiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbImRlZmF1bHQtcm9sZXMtemVjLXJlYWxtIiwib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7InVzZXItYWRtaW4tY2xpZW50Ijp7InJvbGVzIjpbIlZJRVdFUiJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgZW1haWwgcHJvZmlsZSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoicGxhY2Vob2xkZXIgcGxhY2Vob2xkZXIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJzdHJpbmciLCJnaXZlbl9uYW1lIjoicGxhY2Vob2xkZXIiLCJmYW1pbHlfbmFtZSI6InBsYWNlaG9sZGVyIiwiZW1haWwiOiJzdHJpbmdAcGxhY2Vob2xkZXIubG9jYWwifQ.tKMFsSdzPwHUcwIXYXYl2e6CvLquFP1ZkPgk9ahqDPekjdoNVEDgboVVd_kHyGwZdhXZr_mP9appjjYk1kXhNpHP5cPl5XSF86ZTAGsoZ1uB8zbY0MRMHqFk5yaXau9ARJ2e3H5N8YUjGVn3vRViiOxfOkMu-LWeM4pvzdYdT__iWgWpJrqO7yVDQW58uEpXv-PmcPdz7Rx5BOYaS9fI03ibfuS1dDGKw-hfCfuJkfL07u0sMTRYcCW2iLB6EeANYyytMHZ5wx3Y-w1cMwPAhtK53E5F_KlPOYPdrHs6ZLA9ULm4wlrpde1I4zRJGHBJokvmWIkn9yNu2lgRsyj1ow",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"team_id\": 1,\r\n    \"driver_id\": 1,\r\n    \"challenge_id\": 1,\r\n    \"attempt_number\": 2,\r\n    \"start_time\": \"2026-01-02T22:05:28.123456+0000\",\r\n    \"end_time\": \"2026-01-02T22:05:38.987654+0000\",\r\n    \"energy_used\": 3.1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost/attempts/49",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "attempts",
+                "49"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete attempt",
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key",
+                  "type": "string"
+                },
+                {
+                  "key": "value",
+                  "value": "api-key-1-very-secret",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost/attempts/53",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "attempts",
+                "53"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get attempt",
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "value",
+                  "value": "api-key-1-very-secret",
+                  "type": "string"
+                },
+                {
+                  "key": "key",
+                  "value": "X-API-Key",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://172.31.177.41/attempts/42",
+              "protocol": "http",
+              "host": [
+                "172",
+                "31",
+                "177",
+                "41"
+              ],
+              "path": [
+                "attempts",
+                "42"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all attempts",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key",
+                  "type": "string"
+                },
+                {
+                  "key": "value",
+                  "value": "api-key-1-very-secret",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://172.31.177.41/attempts/",
+              "protocol": "http",
+              "host": [
+                "172",
+                "31",
+                "177",
+                "41"
+              ],
+              "path": [
+                "attempts",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all attempts per challenge",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key",
+                  "type": "string"
+                },
+                {
+                  "key": "value",
+                  "value": "api-key-1-very-secret",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            },
+            "url": {
+              "raw": "http://http://172.31.177.41/attempts/challenges/1",
+              "protocol": "http",
+              "host": [
+                "http"
+              ],
+              "port": "",
+              "path": [
+                "",
+                "172.31.177.41",
+                "attempts",
+                "challenges",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all attempts per team",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key",
+                  "type": "string"
+                },
+                {
+                  "key": "value",
+                  "value": "api-key-1-very-secret",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            },
+            "url": {
+              "raw": "http://localhost/attempts/per-team/3",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "attempts",
+                "per-team",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all attempts per driver",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key",
+                  "type": "string"
+                },
+                {
+                  "key": "value",
+                  "value": "api-key-1-very-secret",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            },
+            "url": {
+              "raw": "http://localhost/attempts/per-driver/9",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "attempts",
+                "per-driver",
+                "9"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get valid attempts per challenge",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key",
+                  "type": "string"
+                },
+                {
+                  "key": "value",
+                  "value": "api-key-1-very-secret",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            },
+            "url": {
+              "raw": "http://localhost/attempts/challenges/valid/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "attempts",
+                "challenges",
+                "valid",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get fastest attempt for challenge",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJneE05czJjcGg5ajhJZzFHeWVGb1JXWDVGdjJ1RFlGZWxQOU5KX200cUJnIn0.eyJleHAiOjE3Njc5ODQzOTIsImlhdCI6MTc2Nzk4NDA5MiwianRpIjoib25ydHJvOmNiYzIxMjE2LWY5NTAtYjk2MS02NDY0LTFkYThhYjY2NTYzNSIsImlzcyI6Imh0dHA6Ly9rZXljbG9hazo4MDgwL3JlYWxtcy96ZWMtcmVhbG0iLCJhdWQiOlsidXNlci1hZG1pbi1jbGllbnQiLCJhY2NvdW50Il0sInN1YiI6Ijc4Yjk2NTBhLWUxN2QtNGZmMS1iZGYwLWZlYzI3MmE5YWE4NyIsInR5cCI6IkJlYXJlciIsImF6cCI6ImxvZ2luLWNsaWVudCIsInNpZCI6IjI1ZDE4ZjZjLTljMWEtMzkwYi02ZjNjLTNkYzg1MDIzOGEyYiIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiLyoiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbImRlZmF1bHQtcm9sZXMtemVjLXJlYWxtIiwib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7InVzZXItYWRtaW4tY2xpZW50Ijp7InJvbGVzIjpbIlZJRVdFUiJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgZW1haWwgcHJvZmlsZSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoicGxhY2Vob2xkZXIgcGxhY2Vob2xkZXIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJzdHJpbmciLCJnaXZlbl9uYW1lIjoicGxhY2Vob2xkZXIiLCJmYW1pbHlfbmFtZSI6InBsYWNlaG9sZGVyIiwiZW1haWwiOiJzdHJpbmdAcGxhY2Vob2xkZXIubG9jYWwifQ.YPN0tSEFurH19ye5bwGJhkmazEWbp4tNagWdEUMDf5qi4luvUvB4sl_aEfkCt0eGWOeymZa0BQwYkY6jjGifqo5sR-6oqmzCpBX93uTLn8eCqbuOhsm1EObbZQAV2LrCSEd8eIGCtp_GCmilE4zAEz9XGTC4MpCrn_NaFTfgaUI8Ct52CVHi6qvmLTApxm3mxBAtXWB7kWetAKRHcw_g7qQ5hFHA1KEvsuKya6ZEmu9-zg9-UwyIvn3MpNs_uLW0S9xJa6_hVMmOhuxOjS_k1zz35n24fjfdQHKzST_GLuyneryy69-GjVObzYBm_GyaiEuBgc0doJEguPDvOGfFmw",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost/attempts/fastest/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "attempts",
+                "fastest",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get fastest attempt for challenge per team",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJneE05czJjcGg5ajhJZzFHeWVGb1JXWDVGdjJ1RFlGZWxQOU5KX200cUJnIn0.eyJleHAiOjE3Njc5ODY1MTIsImlhdCI6MTc2Nzk4NjIxMiwianRpIjoib25ydHJvOjIxMDAxNjNhLWE2NzktYmI4NC02MmIwLWJhN2UxZTQ0NmRlZiIsImlzcyI6Imh0dHA6Ly9rZXljbG9hazo4MDgwL3JlYWxtcy96ZWMtcmVhbG0iLCJhdWQiOlsidXNlci1hZG1pbi1jbGllbnQiLCJhY2NvdW50Il0sInN1YiI6Ijc4Yjk2NTBhLWUxN2QtNGZmMS1iZGYwLWZlYzI3MmE5YWE4NyIsInR5cCI6IkJlYXJlciIsImF6cCI6ImxvZ2luLWNsaWVudCIsInNpZCI6ImVjNDEyMjVjLTc2ZjYtM2U3ZS1hYjA0LWVlYTJmMGE3YjE0OSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiLyoiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbImRlZmF1bHQtcm9sZXMtemVjLXJlYWxtIiwib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7InVzZXItYWRtaW4tY2xpZW50Ijp7InJvbGVzIjpbIlZJRVdFUiJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgZW1haWwgcHJvZmlsZSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoicGxhY2Vob2xkZXIgcGxhY2Vob2xkZXIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJzdHJpbmciLCJnaXZlbl9uYW1lIjoicGxhY2Vob2xkZXIiLCJmYW1pbHlfbmFtZSI6InBsYWNlaG9sZGVyIiwiZW1haWwiOiJzdHJpbmdAcGxhY2Vob2xkZXIubG9jYWwifQ.Rpvg2g_R7JCoOaEspl-6rH4zXhXCr0ujWgpiil34TgV-PlimwKf_DBSWK9TsIPfbPc5gFWAN_qfPkaxD0cRthWlRgnQSohIYwBSfyiI18U2LTA7uIZxgQEywYcbWdBqp2QUsyyL6uHDSWXKx1v9MZOOMKjNyoQ_oDvTeWMtNUAThIkTZAxHTItBlPCNsvAepVsEk-s7GdfBuqGibXMWhjVAdCA8a3Wts4fmgs1OpaolVDwivFpqTz4RC4xjqQIHnEMmowua9LCnEgoT5zNZ_uj01Mdz76zk3ggfzlaQWyyp1CL8gtoFNC2lrqU3MC7bcjRUy6a67qkM_Nbnynmc_Tg",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost/attempts/fastest/per-team/?challenge_id=1&team_id=1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "attempts",
+                "fastest",
+                "per-team",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "challenge_id",
+                  "value": "1"
+                },
+                {
+                  "key": "team_id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get least energy attempt per team",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{acces_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost/attempts/least-energy/3",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "attempts",
+                "least-energy",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get least energy attempt per team per challenge",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{acces_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost/attempts/least-energy/per-team/?challenge_id=1&team_id=1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "attempts",
+                "least-energy",
+                "per-team",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "challenge_id",
+                  "value": "1"
+                },
+                {
+                  "key": "team_id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "export attempts",
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "value",
+                  "value": "api-key-1-very-secret",
+                  "type": "string"
+                },
+                {
+                  "key": "key",
+                  "value": "X-API-Key",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost/export/attempts?challenge_id=1&category=close_to_series&format=xlsx",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "export",
+                "attempts"
+              ],
+              "query": [
+                {
+                  "key": "challenge_id",
+                  "value": "1"
+                },
+                {
+                  "key": "category",
+                  "value": "close_to_series"
+                },
+                {
+                  "key": "format",
+                  "value": "xlsx"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "user",
+      "item": [
+        {
+          "name": "create user",
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key",
+                  "type": "string"
+                },
+                {
+                  "key": "value",
+                  "value": "api-key-1-very-secret",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"username\": \"bitte\",\r\n  \"password\": \"123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost/users/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "users",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update user",
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key",
+                  "type": "string"
+                },
+                {
+                  "key": "value",
+                  "value": "api-key-1-very-secret",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"team_id\": null\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost/users/5f2d52db-b766-4eb7-8f81-9ad1bc6fde26",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "users",
+                "5f2d52db-b766-4eb7-8f81-9ad1bc6fde26"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete user",
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key",
+                  "type": "string"
+                },
+                {
+                  "key": "value",
+                  "value": "api-key-1-very-secret",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost/users/413f8de2-3356-4d7a-9a93-ae95371a4200",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "users",
+                "413f8de2-3356-4d7a-9a93-ae95371a4200"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get user by name",
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key",
+                  "type": "string"
+                },
+                {
+                  "key": "value",
+                  "value": "api-key-1-very-secret",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost/users/username/team_lead",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "users",
+                "username",
+                "team_lead"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get user by id",
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key",
+                  "type": "string"
+                },
+                {
+                  "key": "value",
+                  "value": "api-key-1-very-secret",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost/users/id/b6f549d4-daae-4798-8a1e-bb6880668644",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "users",
+                "id",
+                "b6f549d4-daae-4798-8a1e-bb6880668644"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all users",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJneE05czJjcGg5ajhJZzFHeWVGb1JXWDVGdjJ1RFlGZWxQOU5KX200cUJnIn0.eyJleHAiOjE3NzE3NjM2ODYsImlhdCI6MTc3MTc2MzM4NiwianRpIjoib25ydHJvOjI5MTU4YzM0LTRjYTQtZjcyZC0wMzlmLWQ2YTc5MmUzZTUxYyIsImlzcyI6Imh0dHA6Ly9rZXljbG9hazo4MDgwL3JlYWxtcy96ZWMtcmVhbG0iLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiNWYyZDUyZGItYjc2Ni00ZWI3LThmODEtOWFkMWJjNmZkZTI2IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoibG9naW4tY2xpZW50Iiwic2lkIjoiYzJhYzhjZTAtMmYwNy1kMDVmLTliN2MtOTNjYzFiYzYzYmJlIiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyIvKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZGVmYXVsdC1yb2xlcy16ZWMtcmVhbG0iLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsibG9naW4tY2xpZW50Ijp7InJvbGVzIjpbIkFETUlOIl19LCJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBlbWFpbCBwcm9maWxlIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJwbGFjZWhvbGRlciBwbGFjZWhvbGRlciIsInByZWZlcnJlZF91c2VybmFtZSI6ImFkbWluIiwiZ2l2ZW5fbmFtZSI6InBsYWNlaG9sZGVyIiwiZmFtaWx5X25hbWUiOiJwbGFjZWhvbGRlciIsImVtYWlsIjoiYWRtaW5AcGxhY2Vob2xkZXIubG9jYWwifQ",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost/users/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "users",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "assign roles",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{acces_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"roles\": [\"TEAM_LEAD\"]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost/users/5187af5e-43a6-4948-b5a2-74c4c3d29b39/roles",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "users",
+                "5187af5e-43a6-4948-b5a2-74c4c3d29b39",
+                "roles"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "remove roles",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{acces_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"roles\": [\"VIEWER\"]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost/users/015e8f4f-b0ca-411c-ab95-5dcd00961f7d/roles",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "users",
+                "015e8f4f-b0ca-411c-ab95-5dcd00961f7d",
+                "roles"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get current user",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{acces_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost/users/me",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "users",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "team",
+      "item": [
+        {
+          "name": "create team",
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "value",
+                  "value": "api-key-1-very-secret",
+                  "type": "string"
+                },
+                {
+                  "key": "key",
+                  "value": "X-API-Key",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\" : \"test1\",\r\n    \"mean_power\": 1,\r\n    \"vehicle_weight\": 2,\r\n    \"rfid_identifier\": \"3\",\r\n    \"category\": \"close_to_series\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost/teams/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "teams",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update team",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{acces_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"string\",\r\n    \"mean_power\": 1000,\r\n    \"vehicle_weight\": 2,\r\n    \"rfid_identifier\": \"3\",\r\n    \"category\": \"close_to_series\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost/teams/3",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "teams",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete team",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{acces_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost/teams/3",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "teams",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get team",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{acces_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost/teams/3",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "teams",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all teams",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{acces_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://localhost/teams/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "teams",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get teams by ids",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJneE05czJjcGg5ajhJZzFHeWVGb1JXWDVGdjJ1RFlGZWxQOU5KX200cUJnIn0.eyJleHAiOjE3Njc5ODg5NDgsImlhdCI6MTc2Nzk4ODY0OCwianRpIjoib25ydHJvOmU0YmU5YzgxLTYyZTktNzg2Ni1kM2E2LTkxMmI3OTgwYTdiYyIsImlzcyI6Imh0dHA6Ly9rZXljbG9hazo4MDgwL3JlYWxtcy96ZWMtcmVhbG0iLCJhdWQiOlsidXNlci1hZG1pbi1jbGllbnQiLCJhY2NvdW50Il0sInN1YiI6Ijc4Yjk2NTBhLWUxN2QtNGZmMS1iZGYwLWZlYzI3MmE5YWE4NyIsInR5cCI6IkJlYXJlciIsImF6cCI6ImxvZ2luLWNsaWVudCIsInNpZCI6IjQ1MjBhOWNlLTUxNDctMzcwMC03ODdkLTdiNDdhMTAyZjhhZSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiLyoiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbImRlZmF1bHQtcm9sZXMtemVjLXJlYWxtIiwib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7InVzZXItYWRtaW4tY2xpZW50Ijp7InJvbGVzIjpbIlZJRVdFUiJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgZW1haWwgcHJvZmlsZSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoicGxhY2Vob2xkZXIgcGxhY2Vob2xkZXIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJzdHJpbmciLCJnaXZlbl9uYW1lIjoicGxhY2Vob2xkZXIiLCJmYW1pbHlfbmFtZSI6InBsYWNlaG9sZGVyIiwiZW1haWwiOiJzdHJpbmdAcGxhY2Vob2xkZXIubG9jYWwifQ.lhkmNksoBSxK3pnGMLkKb1IH8KYeY_dDWcdFBh83A0cCEd_0_Je-UMZFIY4DnZUC5k0Fz9iTWztUsw9H7vVkX-B0zj6hq9NuTd47_JCzvgha7fFTPcImjuD0obxZSHbwjtd19o8cO03sViVLkT5qIbV0ajGG6JVWokNfhCZsHPtoUOPEwi-PUpsW6w_N3krHXXcoG_pqbsI3Ficd9TteXDx3azc_V8Asd4oclNPjLdian4OFGBbsmikOo08I4l-oI8g3ah2NlHv4aEXqSLsNPTiD4h1gshlHzFyFbPMRAUPPhC5Ml2G9tFURp9vBKZ6yzPA47EQDTIpPqmpix9Xquw",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "arr[0]",
+                  "value": "1",
+                  "type": "text",
+                  "uuid": "f3b6269b-a32a-4f58-ad8c-e6834e7af39f",
+                  "disabled": true
+                },
+                {
+                  "key": "ar[1]",
+                  "value": "2",
+                  "type": "text",
+                  "uuid": "2d0c7b2b-aac1-4204-9c00-ae2d670b0620",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost/teams/by-ids/?team_ids=1&team_ids=2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "teams",
+                "by-ids",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "team_ids",
+                  "value": "1"
+                },
+                {
+                  "key": "team_ids",
+                  "value": "2"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "driver",
+      "item": [
+        {
+          "name": "create driver",
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "value",
+                  "value": "api-key-1-very-secret",
+                  "type": "string"
+                },
+                {
+                  "key": "key",
+                  "value": "X-API-Key",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\" : \"bessamember1\",\r\n    \"team_id\": 3,\r\n    \"weight\": 3\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost/drivers/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "drivers",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update driver",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{acces_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"string1da23\",\r\n    \"team_id\": 2,\r\n    \"weight\": 3\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost/drivers/8",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "drivers",
+                "8"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete driver",
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key",
+                  "type": "string"
+                },
+                {
+                  "key": "value",
+                  "value": "api-key-1-very-secret",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost/drivers/9",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "drivers",
+                "9"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get driver",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{acces_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost/drivers/8",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "drivers",
+                "8"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all drivers",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key",
+                  "type": "string"
+                },
+                {
+                  "key": "value",
+                  "value": "api-key-1-very-secret",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://localhost/drivers/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "drivers",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get drivers for team",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{acces_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost/drivers/team/3",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "drivers",
+                "team",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "penalty",
+      "item": [
+        {
+          "name": "create penalty",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{acces_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"attempt_id\" : 30,\r\n    \"count\": 3,\r\n    \"penalty_type_id\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost/penalties/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "penalties",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update penalty",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{acces_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"attempt_id\" : 19,\r\n    \"count\": 2,\r\n    \"penalty_type_id\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost/penalties/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "penalties",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete penalty",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJneE05czJjcGg5ajhJZzFHeWVGb1JXWDVGdjJ1RFlGZWxQOU5KX200cUJnIn0.eyJleHAiOjE3Njc5ODkzNjYsImlhdCI6MTc2Nzk4OTA2NiwianRpIjoib25ydHJvOjQwMGUyZGQ2LTE3ODgtZTcxMi0zOGUzLWIwMTE0MmViZjNhYyIsImlzcyI6Imh0dHA6Ly9rZXljbG9hazo4MDgwL3JlYWxtcy96ZWMtcmVhbG0iLCJhdWQiOlsidXNlci1hZG1pbi1jbGllbnQiLCJhY2NvdW50Il0sInN1YiI6Ijc4Yjk2NTBhLWUxN2QtNGZmMS1iZGYwLWZlYzI3MmE5YWE4NyIsInR5cCI6IkJlYXJlciIsImF6cCI6ImxvZ2luLWNsaWVudCIsInNpZCI6IjU0OWMxMDI5LWU0ODQtOWVhMC02OGUyLWQ4NDBkZTcxZGMxYiIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiLyoiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbImRlZmF1bHQtcm9sZXMtemVjLXJlYWxtIiwib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7InVzZXItYWRtaW4tY2xpZW50Ijp7InJvbGVzIjpbIlZJRVdFUiJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgZW1haWwgcHJvZmlsZSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoicGxhY2Vob2xkZXIgcGxhY2Vob2xkZXIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJzdHJpbmciLCJnaXZlbl9uYW1lIjoicGxhY2Vob2xkZXIiLCJmYW1pbHlfbmFtZSI6InBsYWNlaG9sZGVyIiwiZW1haWwiOiJzdHJpbmdAcGxhY2Vob2xkZXIubG9jYWwifQ.dCeZ9C-jIQzCepCuMlyM-yPl1JQ33n1gLaP60PZ1IewdRobTCdYrH53K4ToF2GtjYeSSwlVsk5i3wd04cWGcFreHBTyz9nU1Gf9RfWMrTJqOOgfH2Skjia6ZTtIUZy6GfsR2n3660nSoR5elprFCyyFr0AfQY0tyhn7B5k8y1hePJ-jhgCRHrAQJF4gU_iC10sdeYyR-tWRao5HMAS2w82M7Q-YIaOL6Ppc0rxBdD7oDw1-G9NAl4C2xP6uyaWQKU1qFNI4pKY1IZv_167JkofH68f1hXqHIYOTMk1cvLoSYzwcecQ3UrWXHxdSuxpIUntI0GhVwWyzLDKsn563KiQ",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost/penalties/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "penalties",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete penalties for attempt",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{acces_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost/penalties/attempt/30",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "penalties",
+                "attempt",
+                "30"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get penalty",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{acces_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost/penalties/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "penalties",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all penalty",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{acces_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://localhost/penalties/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "penalties",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "penalties for attempt",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{acces_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost/penalties/attempt/4",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "penalties",
+                "attempt",
+                "4"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get penalty types",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{acces_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost/penalties/types/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "penalties",
+                "types",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "score",
+      "item": [
+        {
+          "name": "create score",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{acces_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"attempt_id\": 30\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost/scores/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "scores",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update score",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJneE05czJjcGg5ajhJZzFHeWVGb1JXWDVGdjJ1RFlGZWxQOU5KX200cUJnIn0.eyJleHAiOjE3Njc5ODUzNDAsImlhdCI6MTc2Nzk4NTA0MCwianRpIjoib25ydHJvOmNjZTczNDQzLTZhN2YtOWY3YS1hMzQ4LTVjMGE5NjcxMThmMyIsImlzcyI6Imh0dHA6Ly9rZXljbG9hazo4MDgwL3JlYWxtcy96ZWMtcmVhbG0iLCJhdWQiOlsidXNlci1hZG1pbi1jbGllbnQiLCJhY2NvdW50Il0sInN1YiI6Ijc4Yjk2NTBhLWUxN2QtNGZmMS1iZGYwLWZlYzI3MmE5YWE4NyIsInR5cCI6IkJlYXJlciIsImF6cCI6ImxvZ2luLWNsaWVudCIsInNpZCI6Ijk5YWFlN2Y0LTE3ZjEtMzEwYi1lZWE3LWY5OTY3MjI5Yjc2MyIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiLyoiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbImRlZmF1bHQtcm9sZXMtemVjLXJlYWxtIiwib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7InVzZXItYWRtaW4tY2xpZW50Ijp7InJvbGVzIjpbIlZJRVdFUiJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgZW1haWwgcHJvZmlsZSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoicGxhY2Vob2xkZXIgcGxhY2Vob2xkZXIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJzdHJpbmciLCJnaXZlbl9uYW1lIjoicGxhY2Vob2xkZXIiLCJmYW1pbHlfbmFtZSI6InBsYWNlaG9sZGVyIiwiZW1haWwiOiJzdHJpbmdAcGxhY2Vob2xkZXIubG9jYWwifQ.APL4GeXL25VWfXGZXifhBz69XSfrDYXZdz0yT65h_utB2ns6sXA63cszjfmke2AYQLvCjvXutGzUr3abvg644myaW1pBJvMmviloqF3BfPkeAeVhRglcZePY1eY7eA_jc7UxgY7MAVpTze5ROKpcmOyW50eXqVlwW2WNVbnjAMILVZ0EB4D6olgNEVoYd1u-tiD4XNINYcWdyesziIczj3YYbXji4bWL4a7F1_KBti8NeXUyc7pHkP2QTkWovAC8ry2WggJ_o6nlcF9KuLQWmM2DHCQrOc9rM9nj6aXRUn8xeIqTQSnxqzM_iXPJmQ_ISAJLf3n0p3VWwlix098Jyw",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"value\": 100\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost/scores/20",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "scores",
+                "20"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete score",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJneE05czJjcGg5ajhJZzFHeWVGb1JXWDVGdjJ1RFlGZWxQOU5KX200cUJnIn0.eyJleHAiOjE3Njc5ODU2MjUsImlhdCI6MTc2Nzk4NTMyNSwianRpIjoib25ydHJvOmJkMjc3MjE2LWY4MmQtZjljYS0zYzI1LTc2YjU5MzhkOTQxZCIsImlzcyI6Imh0dHA6Ly9rZXljbG9hazo4MDgwL3JlYWxtcy96ZWMtcmVhbG0iLCJhdWQiOlsidXNlci1hZG1pbi1jbGllbnQiLCJhY2NvdW50Il0sInN1YiI6Ijc4Yjk2NTBhLWUxN2QtNGZmMS1iZGYwLWZlYzI3MmE5YWE4NyIsInR5cCI6IkJlYXJlciIsImF6cCI6ImxvZ2luLWNsaWVudCIsInNpZCI6IjJkZjMxMGQ5LTQ4NDUtZDkyMi1mZTBiLTYyZGJhMmU5MjRlZiIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiLyoiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbImRlZmF1bHQtcm9sZXMtemVjLXJlYWxtIiwib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7InVzZXItYWRtaW4tY2xpZW50Ijp7InJvbGVzIjpbIlZJRVdFUiJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgZW1haWwgcHJvZmlsZSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoicGxhY2Vob2xkZXIgcGxhY2Vob2xkZXIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJzdHJpbmciLCJnaXZlbl9uYW1lIjoicGxhY2Vob2xkZXIiLCJmYW1pbHlfbmFtZSI6InBsYWNlaG9sZGVyIiwiZW1haWwiOiJzdHJpbmdAcGxhY2Vob2xkZXIubG9jYWwifQ.H5U6CBrfDEWyvXzjX-15JnT5W0PmjCjFsgasrJj2voVSvF_nj2CTaDZWL50S50Vl1MN_t2A1LtS6EwS0n0iILXCt9DEzTn0NvphQvDjofO61ljc73ltNyq7HqoV5I-Bq4NV4IEoSkt-WYD7kH5s__75QhqgXj8Qs3VzRyDGXtCk43d5pr0l7Ri8PaUChYu8x7tJR2u_eleBnE2K6udZAPZDxF8Y2NADY5O36SmQmzIPLvoC8Yg7Qluueui6O8Xdf4y4SvTBVUyEyvUltQ8V29SUa2zmMd9LV_09kLVxs38T34zCO1pvIZJpBAg2k7Mue_Ttg8xMziBco9yFJjf9H1w",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost/scores/21",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "scores",
+                "21"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete scores for attempt",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{acces_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost/scores/attempt/30",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "scores",
+                "attempt",
+                "30"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get score",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJneE05czJjcGg5ajhJZzFHeWVGb1JXWDVGdjJ1RFlGZWxQOU5KX200cUJnIn0.eyJleHAiOjE3Njc5ODU2MjUsImlhdCI6MTc2Nzk4NTMyNSwianRpIjoib25ydHJvOmJkMjc3MjE2LWY4MmQtZjljYS0zYzI1LTc2YjU5MzhkOTQxZCIsImlzcyI6Imh0dHA6Ly9rZXljbG9hazo4MDgwL3JlYWxtcy96ZWMtcmVhbG0iLCJhdWQiOlsidXNlci1hZG1pbi1jbGllbnQiLCJhY2NvdW50Il0sInN1YiI6Ijc4Yjk2NTBhLWUxN2QtNGZmMS1iZGYwLWZlYzI3MmE5YWE4NyIsInR5cCI6IkJlYXJlciIsImF6cCI6ImxvZ2luLWNsaWVudCIsInNpZCI6IjJkZjMxMGQ5LTQ4NDUtZDkyMi1mZTBiLTYyZGJhMmU5MjRlZiIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiLyoiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbImRlZmF1bHQtcm9sZXMtemVjLXJlYWxtIiwib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7InVzZXItYWRtaW4tY2xpZW50Ijp7InJvbGVzIjpbIlZJRVdFUiJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgZW1haWwgcHJvZmlsZSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoicGxhY2Vob2xkZXIgcGxhY2Vob2xkZXIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJzdHJpbmciLCJnaXZlbl9uYW1lIjoicGxhY2Vob2xkZXIiLCJmYW1pbHlfbmFtZSI6InBsYWNlaG9sZGVyIiwiZW1haWwiOiJzdHJpbmdAcGxhY2Vob2xkZXIubG9jYWwifQ.H5U6CBrfDEWyvXzjX-15JnT5W0PmjCjFsgasrJj2voVSvF_nj2CTaDZWL50S50Vl1MN_t2A1LtS6EwS0n0iILXCt9DEzTn0NvphQvDjofO61ljc73ltNyq7HqoV5I-Bq4NV4IEoSkt-WYD7kH5s__75QhqgXj8Qs3VzRyDGXtCk43d5pr0l7Ri8PaUChYu8x7tJR2u_eleBnE2K6udZAPZDxF8Y2NADY5O36SmQmzIPLvoC8Yg7Qluueui6O8Xdf4y4SvTBVUyEyvUltQ8V29SUa2zmMd9LV_09kLVxs38T34zCO1pvIZJpBAg2k7Mue_Ttg8xMziBco9yFJjf9H1w",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost/scores/20",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "scores",
+                "20"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all scores",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJneE05czJjcGg5ajhJZzFHeWVGb1JXWDVGdjJ1RFlGZWxQOU5KX200cUJnIn0.eyJleHAiOjE3Njc5ODU2MjUsImlhdCI6MTc2Nzk4NTMyNSwianRpIjoib25ydHJvOmJkMjc3MjE2LWY4MmQtZjljYS0zYzI1LTc2YjU5MzhkOTQxZCIsImlzcyI6Imh0dHA6Ly9rZXljbG9hazo4MDgwL3JlYWxtcy96ZWMtcmVhbG0iLCJhdWQiOlsidXNlci1hZG1pbi1jbGllbnQiLCJhY2NvdW50Il0sInN1YiI6Ijc4Yjk2NTBhLWUxN2QtNGZmMS1iZGYwLWZlYzI3MmE5YWE4NyIsInR5cCI6IkJlYXJlciIsImF6cCI6ImxvZ2luLWNsaWVudCIsInNpZCI6IjJkZjMxMGQ5LTQ4NDUtZDkyMi1mZTBiLTYyZGJhMmU5MjRlZiIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiLyoiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbImRlZmF1bHQtcm9sZXMtemVjLXJlYWxtIiwib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7InVzZXItYWRtaW4tY2xpZW50Ijp7InJvbGVzIjpbIlZJRVdFUiJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgZW1haWwgcHJvZmlsZSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoicGxhY2Vob2xkZXIgcGxhY2Vob2xkZXIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJzdHJpbmciLCJnaXZlbl9uYW1lIjoicGxhY2Vob2xkZXIiLCJmYW1pbHlfbmFtZSI6InBsYWNlaG9sZGVyIiwiZW1haWwiOiJzdHJpbmdAcGxhY2Vob2xkZXIubG9jYWwifQ.H5U6CBrfDEWyvXzjX-15JnT5W0PmjCjFsgasrJj2voVSvF_nj2CTaDZWL50S50Vl1MN_t2A1LtS6EwS0n0iILXCt9DEzTn0NvphQvDjofO61ljc73ltNyq7HqoV5I-Bq4NV4IEoSkt-WYD7kH5s__75QhqgXj8Qs3VzRyDGXtCk43d5pr0l7Ri8PaUChYu8x7tJR2u_eleBnE2K6udZAPZDxF8Y2NADY5O36SmQmzIPLvoC8Yg7Qluueui6O8Xdf4y4SvTBVUyEyvUltQ8V29SUa2zmMd9LV_09kLVxs38T34zCO1pvIZJpBAg2k7Mue_Ttg8xMziBco9yFJjf9H1w",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://localhost/scores/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "scores",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get leaderboard",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost/leaderboard/3/category/close_to_series",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "leaderboard",
+                "3",
+                "category",
+                "close_to_series"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "export leaderboard",
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "value",
+                  "value": "api-key-1-very-secret",
+                  "type": "string"
+                },
+                {
+                  "key": "key",
+                  "value": "X-API-Key",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost/export/leaderboard/1/category/close_to_series?format=xlsx",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "export",
+                "leaderboard",
+                "1",
+                "category",
+                "close_to_series"
+              ],
+              "query": [
+                {
+                  "key": "format",
+                  "value": "xlsx"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "challenge",
+      "item": [
+        {
+          "name": "update challenge",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJneE05czJjcGg5ajhJZzFHeWVGb1JXWDVGdjJ1RFlGZWxQOU5KX200cUJnIn0.eyJleHAiOjE3Njc5ODk4MjIsImlhdCI6MTc2Nzk4OTUyMiwianRpIjoib25ydHJvOjZhMzI0OGQyLWFjYzItYTQ1MC1mZjQyLTNhMGFiODVkOTE2ZiIsImlzcyI6Imh0dHA6Ly9rZXljbG9hazo4MDgwL3JlYWxtcy96ZWMtcmVhbG0iLCJhdWQiOlsidXNlci1hZG1pbi1jbGllbnQiLCJhY2NvdW50Il0sInN1YiI6Ijc4Yjk2NTBhLWUxN2QtNGZmMS1iZGYwLWZlYzI3MmE5YWE4NyIsInR5cCI6IkJlYXJlciIsImF6cCI6ImxvZ2luLWNsaWVudCIsInNpZCI6ImMwMWQ1ZmNjLTMyZDUtYmRiZC0yMTMzLTdlOGVkZGQ4MDVlYiIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiLyoiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbImRlZmF1bHQtcm9sZXMtemVjLXJlYWxtIiwib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7InVzZXItYWRtaW4tY2xpZW50Ijp7InJvbGVzIjpbIlZJRVdFUiJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgZW1haWwgcHJvZmlsZSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoicGxhY2Vob2xkZXIgcGxhY2Vob2xkZXIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJzdHJpbmciLCJnaXZlbl9uYW1lIjoicGxhY2Vob2xkZXIiLCJmYW1pbHlfbmFtZSI6InBsYWNlaG9sZGVyIiwiZW1haWwiOiJzdHJpbmdAcGxhY2Vob2xkZXIubG9jYWwifQ.l217J869yroQC92aaHtlrvdO3vIUAi98D_qoNjO1Woyn7ocuODGPQr_PC4MoPETeQIpmAOEskvR4hcj1NQosEJgXEM9K14mwTmTLZHgViF9WdhO42LqQ-OUVAvXBbKCieN2tJ875pvmC1XAe46IzfKV-dapcDc5hXFZVhLvRhWrKQTNOYMpoQ3zG2rlv0GIMs13MIBTLj2GjgsMoFBm1915RB-hb3-bgv_hsIuysAX_gWObxSTJZHrxJEQAEb_ltT4VH-ysStjq0fNBVaTtMObU2J7CSphXv8J47ofLLjuj86kjiRU-zsI0e3FC5UC9foFMLbuQmm08BF00FlUoeng",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Skidpad\",\r\n  \"max_attempts\": 3,\r\n  \"esp_mac_start1\": \"string\",\r\n  \"esp_mac_start2\": \"string\",\r\n  \"esp_mac_finish1\": \"string\",\r\n  \"esp_mac_finish2\": \"string\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost/challenges/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "challenges",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get challenge by id",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost/challenges/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "challenges",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get challenge by name",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJneE05czJjcGg5ajhJZzFHeWVGb1JXWDVGdjJ1RFlGZWxQOU5KX200cUJnIn0.eyJleHAiOjE3NzE3NjM2ODYsImlhdCI6MTc3MTc2MzM4NiwianRpIjoib25ydHJvOjI5MTU4YzM0LTRjYTQtZjcyZC0wMzlmLWQ2YTc5MmUzZTUxYyIsImlzcyI6Imh0dHA6Ly9rZXljbG9hazo4MDgwL3JlYWxtcy96ZWMtcmVhbG0iLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiNWYyZDUyZGItYjc2Ni00ZWI3LThmODEtOWFkMWJjNmZkZTI2IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoibG9naW4tY2xpZW50Iiwic2lkIjoiYzJhYzhjZTAtMmYwNy1kMDVmLTliN2MtOTNjYzFiYzYzYmJlIiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyIvKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZGVmYXVsdC1yb2xlcy16ZWMtcmVhbG0iLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsibG9naW4tY2xpZW50Ijp7InJvbGVzIjpbIkFETUlOIl19LCJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBlbWFpbCBwcm9maWxlIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJwbGFjZWhvbGRlciBwbGFjZWhvbGRlciIsInByZWZlcnJlZF91c2VybmFtZSI6ImFkbWluIiwiZ2l2ZW5fbmFtZSI6InBsYWNlaG9sZGVyIiwiZmFtaWx5X25hbWUiOiJwbGFjZWhvbGRlciIsImVtYWlsIjoiYWRtaW5AcGxhY2Vob2xkZXIubG9jYWwifQ",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost/challenges/name/Skidpad",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "challenges",
+                "name",
+                "Skidpad"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all challenges",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost/challenges/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "challenges",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
