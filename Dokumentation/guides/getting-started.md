@@ -15,6 +15,7 @@ docker-compose up --build
 ### 2. Keycloak konfigurieren
 
 1. Navigiere zur Keycloak-Administrationskonsole unter http://localhost:8090
+    - Kann etwas dauern bis Zugreifbar ist
     - Standardzugangsdaten: `admin` / `admin`
     - **Wichtig:** Ändere diese Standardzugangsdaten unmittelbar nach der ersten Anmeldung aus Sicherheitsgründen
 2. Erstelle ein neues Realm, indem du die Konfigurationsdatei importierst:
@@ -26,7 +27,7 @@ docker-compose up --build
     - Navigiere zum Tab **Credentials** und generiere das Secret neu
     - Kopiere das neue Secret
     - Wiederhole den Vorgang für den **user-admin-client**
-4. Kopiere diese Secrets in 
+4. Kopiere diese Secrets in die docker-compose Datei -> auth-service
 5. Gesamten Docker-Container neu bauen:
     - docker-compose down
     - docker-compose up --build -d
