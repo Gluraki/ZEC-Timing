@@ -1,32 +1,38 @@
-# Getting Started with ZEC-API
+````markdown
+# Erste Schritte mit ZEC-API
 
-## Prerequisites
+## Voraussetzungen
 - Docker
 - Docker Compose
 
-## Setup Instructions
+## Einrichtungsanleitung
 
-### 1. Start the Application
+### 1. Anwendung starten
 ```bash
 docker-compose up --build
 ```
 
-### 2. Configure Keycloak
+### 2. Keycloak konfigurieren
 
-1. Navigate to your Keycloak admin console at http://localhost:8090
-    - Default credentials: `admin` / `admin`
-    - **Important:** Change these default credentials immediately after first login for security purposes
-2. Create a new realm by importing the configuration file:
-    - Location: `ZEC-API/config/keycloak/realm-export.json`
-3. Regenerate client secrets:
-    - Switch to your newly created **zec-realm**
-    - Go to clients
-    - Open the **login-client** configuration
-    - Navigate to the **Credentials** tab and regenerate the secret
-    - Copy the new secret
-    - Repeat for **user-admin-client**
-4. Update your environment variables with the new client secrets your Docker environment configuration
-5. Rebuild the entire docker-container
+1. Navigiere zur Keycloak-Administrationskonsole unter http://localhost:8090
+    - Standardzugangsdaten: `admin` / `admin`
+    - **Wichtig:** Ändere diese Standardzugangsdaten unmittelbar nach der ersten Anmeldung aus Sicherheitsgründen
+2. Erstelle ein neues Realm, indem du die Konfigurationsdatei importierst:
+    - Speicherort: `ZEC-API/templates/keycloak/realm-export.json`
+3. Client-Secrets neu generieren:
+    - Wechsle zu deinem neu erstellten **zec-realm**
+    - Gehe zu „Clients"
+    - Öffne die Konfiguration des **login-client**
+    - Navigiere zum Tab **Credentials** und generiere das Secret neu
+    - Kopiere das neue Secret
+    - Wiederhole den Vorgang für den **user-admin-client**
+4. Kopiere diese Secrets in 
+5. Gesamten Docker-Container neu bauen:
     - docker-compose down
     - docker-compose up --build -d
+````
 
+### 3. Testen
+1. Das Web-Frontend läuft auf http://localhost:3000 
+2. Anmelden testen mit den Standardzugangsdaten: `admin` / `changeme`
+    - Auch diese Daten nach erstem Anmelden as Sicherheitsgründen ändern
