@@ -3,8 +3,6 @@ from fastapi.routing import APIRoute
 from fastapi.responses import JSONResponse
 from app.api.main import api_router
 from app.core.config import settings
-from app.database.seed import seed_penalty_types
-from sqlalchemy.orm import Session
 from app.database.session import engine, Base
 from typing import Callable
 from app.exceptions.exceptions import (
@@ -32,12 +30,6 @@ app = FastAPI(
 app.include_router(api_router, prefix=settings.API_STR)
 if settings.ENVIRONMENT != "testing":
     Base.metadata.create_all(bind=engine)
-
-@app.on_event("startup")
-def startup_event():
-    db = Session(bind=engine)
-    seed_penalty_types(db)
-    db.commit()
 
 def create_exception_handler(
     status_code: int, initial_detail: str

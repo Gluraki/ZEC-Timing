@@ -1,0 +1,3 @@
+[
+	{"username": "admin", "password": "changeme", "roles": ["ADMIN"], "team_id": null}
+]

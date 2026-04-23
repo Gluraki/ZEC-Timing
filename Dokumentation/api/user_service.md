@@ -19,7 +19,7 @@ Manage user accounts and role assignments.
 The predefined user **admin** with password **changeme** is seeded in the service.  
 You can modify or extend these defaults in the following file:
 
-`ZEC-Timing/services/user-service/app/database/seed.py`
+`ZEC-Timing/seed/user.json`
 
 ## Response Schema
 Response schema for all get endpoints

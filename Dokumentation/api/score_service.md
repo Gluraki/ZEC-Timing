@@ -176,6 +176,12 @@ curl -X GET "http://hostname/leaderboard/1/category/advanced_class" \
 
 # Penalties Service
 
+## Seeded Penalty Types
+The default seeded types are `Hüterln nieder` and `Strecke verlassen`
+You can modify or extend these defaults in the following file:
+
+`ZEC-Timing/seed/penalty_types.json`
+
 Manage penalties applied to attempts.
 
 ## Penalty Response Schema

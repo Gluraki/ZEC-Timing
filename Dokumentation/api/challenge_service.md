@@ -15,7 +15,7 @@ Manage racing challenges and their configuration.
 The predefined challenges **Skidpad**, **Slalom**, **Acceleration**, and **Endurance** are seeded in the service.  
 You can modify or extend these defaults in the following file:
 
-`ZEC-Timing/services/challenge-service/app/database/seed.py`
+`ZEC-Timing/seed/challenge.json`
 
 ## Response Schema
 Response schema for all get endpoints

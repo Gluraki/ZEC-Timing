@@ -1,4 +1,3 @@
-````markdown
 # Erste Schritte mit ZEC-API
 
 ## Voraussetzungen
@@ -8,6 +7,7 @@
 ## Einrichtungsanleitung
 
 ### 1. Anwendung starten
+Im root Directory ausführen:
 ```bash
 docker-compose up --build
 ```
@@ -30,9 +30,18 @@ docker-compose up --build
 5. Gesamten Docker-Container neu bauen:
     - docker-compose down
     - docker-compose up --build -d
-````
 
-### 3. Testen
-1. Das Web-Frontend läuft auf http://localhost:3000 
-2. Anmelden testen mit den Standardzugangsdaten: `admin` / `changeme`
-    - Auch diese Daten nach erstem Anmelden as Sicherheitsgründen ändern
+### 3. Seed-Daten importieren
+Anpassen können sie die Seed-Daten in `/ZEC-API/seed/`
+Zum importieren der Seed-Daten führen sie das `seed_initial_data.sh` aus
+    - **Wichtig** das Skript funktioniert nur bei Neuaufsetzung
+```bash
+./ZEC-API/seed_initial_data.sh
+```
+
+### 4. Testen
+1. Das Web-Frontend läuft auf http://localhost:3000  
+2. Anmeldung testen mit den Standardzugangsdaten: `admin` / `changeme`  
+   - **Hinweis:** Ändere auch diese Zugangsdaten nach der ersten Anmeldung aus Sicherheitsgründen  
+3. Für API-Tests steht zusätzlich eine vorbereitete Postman-Collection zur Verfügung:  
+   - Speicherort: `ZEC-API/templates/postman`  

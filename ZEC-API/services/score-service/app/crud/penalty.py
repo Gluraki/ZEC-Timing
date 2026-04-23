@@ -5,8 +5,28 @@ from app.models.penalty_type import PenaltyType
 from app.exceptions.exceptions import EntityDoesNotExistError, ServiceError
 from app.core.config import settings
 import requests
+from app.schemas.penalty import PenaltyTypeCreate
 
 ATTEMPT_URL = settings.ATTEMPT_SERVICE_URL
+
+
+def create_penalty_type(*, db: SessionDep, penalty_type: PenaltyTypeCreate):
+    try:
+        db_penalty_type = PenaltyType(**penalty_type.model_dump())
+        db.add(db_penalty_type)
+        db.commit()
+        db.refresh(db_penalty_type)
+        return db_penalty_type
+    except Exception as exc:
+        db.rollback()
+        raise ServiceError("Failed to create penalty type") from exc
+
+
+def get_penalty_type_by_type(*, db: SessionDep, penalty_type_name: str):
+    penalty_type = db.query(PenaltyType).filter(PenaltyType.type == penalty_type_name).first()
+    if not penalty_type:
+        raise EntityDoesNotExistError(f"PenaltyType with type '{penalty_type_name}' does not exist")
+    return penalty_type
 
 def create_penalty(*, db: SessionDep, penalty: PenaltyCreate):
     response = requests.get(f"{ATTEMPT_URL}/api/attempts/{penalty.attempt_id}")

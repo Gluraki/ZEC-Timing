@@ -3,12 +3,13 @@ services:
     build:
       context: ./Web-App
       dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost}
     container_name: web
     ports:
       - "3000:3000"
     environment:
       NODE_ENV: production
-      NEXT_PUBLIC_API_URL: http://localhost
     depends_on:
       - nginx
 
@@ -68,9 +69,9 @@ services:
       KEYCLOAK_URL: http://keycloak:8080
       KEYCLOAK_REALM: zec-realm
       KEYCLOAK_LOGIN_CLIENT_ID: login-client
-      KEYCLOAK_LOGIN_CLIENT_SECRET: BAYT7KoAlKZIXA22ua3k8BXcub15jxfH
+      KEYCLOAK_LOGIN_CLIENT_SECRET: LGbNK7EwIXZe0uLnI9hxvOjKyBfly0GE
       KEYCLOAK_USER_ADMIN_CLIENT_ID: user-admin-client
-      KEYCLOAK_USER_ADMIN_CLIENT_SECRET: o4Vy1ZJWldRMW6rbNbB6FHrSYxoaDRbQ
+      KEYCLOAK_USER_ADMIN_CLIENT_SECRET: rW4ifYZx2Zb3vfSYb3AS3jcNJc1zgyCJ
       KEYCLOAK_TOKEN_URL: http://keycloak:8080/realms/zec-realm/protocol/openid-connect/token
       KEYCLOAK_JWKS_URL: http://keycloak:8080/realms/zec-realm/protocol/openid-connect/certs
       KEYCLOAK_USER_URL: http://keycloak:8080/admin/realms/zec-realm/users

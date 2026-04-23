@@ -1,0 +1,6 @@
+[
+	{"name": "Skidpad", "max_attempts": 3},
+	{"name": "Slalom", "max_attempts": 3},
+	{"name": "Endurance", "max_attempts": 3},
+	{"name": "Acceleration", "max_attempts": 3}
+]

@@ -1,7 +1,19 @@
 from app.database.dependency import SessionDep
-from app.schemas.challenge import ChallengeUpdate
+from app.schemas.challenge import ChallengeCreate, ChallengeUpdate
 from app.models.challenge import Challenge
 from app.exceptions.exceptions import EntityDoesNotExistError, ServiceError
+
+
+def create_challenge(*, db: SessionDep, challenge: ChallengeCreate):
+    try:
+        db_challenge = Challenge(**challenge.model_dump())
+        db.add(db_challenge)
+        db.commit()
+        db.refresh(db_challenge)
+        return db_challenge
+    except Exception as exc:
+        db.rollback()
+        raise ServiceError(message="Failed to create challenge") from exc
 
 def update_challenge(*, db: SessionDep, challenge_id: int, challenge_update: ChallengeUpdate):
     try:

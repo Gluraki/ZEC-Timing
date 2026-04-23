@@ -7,6 +7,11 @@ class PenaltyTypeResponse(BaseModel):
     type: str
     amount: int
 
+
+class PenaltyTypeCreate(BaseModel):
+    type: str
+    amount: int
+
 class PenaltyBase(BaseModel):
     attempt_id: int
     count: int
